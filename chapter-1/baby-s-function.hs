@@ -1,3 +1,4 @@
 doubleMe x = x + x
+doubleUs x y = doubleMe x + doubleMe y
 
-main = print (doubleMe 10)
+main = print (doubleUs 10 20)
