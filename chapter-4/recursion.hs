@@ -16,3 +16,7 @@ take2' n xs
   | length xs == 0  = []
   | n == 0 = []
   | otherwise = head(xs) : take2' (n-1) (tail xs)
+
+reverse' :: [a] -> [a]
+reverse' [] = []
+reverse' (x:xs) = reverse' xs ++ [x]
