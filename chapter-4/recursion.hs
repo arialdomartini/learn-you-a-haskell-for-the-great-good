@@ -36,3 +36,8 @@ elem' a (x:xs)
   | otherwise = elem' a xs
 
 
+quicksort' :: (Ord a) => [a] -> [a]
+quicksort' [] = []
+quicksort' (x:xs) =
+  quicksort' [e | e <- xs, e <= x] ++ [x] ++ quicksort' [e | e <- xs, e > x]
+
