@@ -28,3 +28,11 @@ zip' :: [a] -> [b] -> [(a,b)]
 zip' _ [] = []
 zip' [] _ = []
 zip' (a:as) (b:bs) = (a,b) : zip as bs
+
+elem' :: (Eq a) => a -> [a] -> Bool
+elem' a [] = False
+elem' a (x:xs)
+  | a == x    = True
+  | otherwise = elem' a xs
+
+
