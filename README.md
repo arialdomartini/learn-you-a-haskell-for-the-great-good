@@ -6,7 +6,29 @@ Exercises and notes while reading [Learn You A Haskell For The Great Good](http:
 # Usage
 Either install Haskell or use the command `run.sh`, based on Docker.
 
-## Use with Docker
+## Run an interactive console
+Just run:
+
+```bash
+./console.sh
+```
+
+The relative Docker container has visibility to the current directory, so for example it's possible to execute:
+
+```haskell
+*Main> :l chapter-1/lists.hs
+[1 of 1] Compiling Main             ( chapter-1/lists.hs, interpreted )
+Ok, one module loaded.
+*Main> printList
+[4,8,15,16,23,42]
+```
+
+To cleanup the filesystem from the `.hi` and the `.o` files, run:
+
+```bash
+./clean.sh
+```
+## Compile with Docker
 Run:
 
 ```bash
