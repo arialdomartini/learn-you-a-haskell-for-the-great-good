@@ -38,7 +38,11 @@ listComprehension4 = [ if x < 10 then "bang" else "boom" | x <- [1..100], odd x]
 boomBangs xs =       [ if x < 10 then "bang" else "boom" | x <- xs, odd x]
 listComprehension5 = boomBangs [1..100]
 
+
 fizzBuzz n = take n [if x `mod` 15 == 0 then "fizzbuzz" else if x `mod` 3 == 0 then "fizz" else if x `mod` 5 == 0 then "buzz" else show x | x <- [1..100]]
+
+fizzBuzz2 tot = take tot [snd (head (filter (\r -> x `mod` (fst r) == 0) (fill x))) | x <- [1..]] where fill n = [(15, "fizzbuzz"), (3, "fizz"), (5, "buzz"), (1, show n)] 
+
 
 multiplePredicates = [x + y | x <- [1,2,3], y <-[1..100]]
 
