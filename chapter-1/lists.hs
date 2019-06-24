@@ -43,6 +43,7 @@ fizzBuzz n = take n [if x `mod` 15 == 0 then "fizzbuzz" else if x `mod` 3 == 0 t
 
 fizzBuzz2 tot = take tot [snd (head (filter (\r -> x `mod` (fst r) == 0) (fill x))) | x <- [1..]] where fill n = [(15, "fizzbuzz"), (3, "fizz"), (5, "buzz"), (1, show n)] 
 
+booms tot = take tot [boom n | n <- [2..]] where boom n = 'B' : take n (repeat 'o') ++ ['m']
 
 multiplePredicates = [x + y | x <- [1,2,3], y <-[1..100]]
 
