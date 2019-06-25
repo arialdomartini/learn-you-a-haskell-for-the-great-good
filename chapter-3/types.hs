@@ -42,3 +42,46 @@ myFst (a,b) = a
 
 tryAreEqual a b = a >>>= b
 
+-- tail-recursive prefix operator that perfmorms a multiplication
+(>*) :: Int -> Int -> Int
+(>*) a 0 = 0
+(>*) a 1 = a
+(>*) a b = a + (>*) a (b-1)
+
+-- :t elem
+-- could be:
+-- (Eq a) => a -> [a] -> Bool
+-- actually, it is:
+-- (Foldable t, Eq a) => a -> t a -> Bool
+
+tryRead = (read "4" :: Integer) * 10 -- the explicit type annotation is needed otherwise an exception is raised
+tryRead2 = 0 : read "[1,2,3,4]" ++ read "[5,6]" -- here the type is inferred
+
+-- To know the typeclasses implemented by a type use :info
+-- *Main> :info Int
+-- data Int = GHC.Types.I# GHC.Prim.Int#   -- Defined in ‘GHC.Types’
+-- instance Eq Int -- Defined in ‘GHC.Classes’
+-- instance Ord Int -- Defined in ‘GHC.Classes’
+-- instance Show Int -- Defined in ‘GHC.Show’
+-- instance Read Int -- Defined in ‘GHC.Read’
+-- instance Enum Int -- Defined in ‘GHC.Enum’
+-- instance Num Int -- Defined in ‘GHC.Num’
+-- instance Real Int -- Defined in ‘GHC.Real’
+-- instance Bounded Int -- Defined in ‘GHC.Enum’
+-- instance Integral Int -- Defined in ‘GHC.Real’
+
+
+
+-- a number is a polymorphic type
+
+-- tryPolymorphic :: Num a => a
+tryPolymorphic = (5 :: Float) + 4.2
+
+-- *Main> :t 5
+-- 5 :: Num p => p
+-- *Main> :t (5 :: Integer)
+-- (5 :: Integer) :: Integer
+-- *Main> :t (5 :: Float)
+-- (5 :: Float) :: Float
+
+
