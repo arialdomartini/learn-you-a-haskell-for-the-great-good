@@ -128,9 +128,12 @@ sorted (first:xs) = (sorted smaller) ++ [first] ++ (sorted bigger)
 sep :: (Ord a) => [a] -> a -> ([a], [a])
 sep xs pivot = seprec xs pivot [] []
   where
-    seprec :: (Ord a) =>[a] -> a -> [a] -> [a] -> ([a], [a]) 
+    seprec :: (Ord a) =>[a] -> a -> [a] -> [a] -> ([a], [a])
     seprec [] pivot smaller bigger = (smaller, bigger)
-    seprec (x:xs) pivot smaller bigger= if x < pivot then seprec xs pivot (x:smaller) bigger else seprec xs pivot smaller (x:bigger)
+    seprec (x:xs) pivot smaller bigger =
+      if x < pivot
+      then seprec xs pivot (x:smaller) bigger
+      else seprec xs pivot smaller (x:bigger)
 
 
 sorted' :: (Ord a) => [a] -> [a]
@@ -141,4 +144,3 @@ sorted' (first:xs) = (sorted' smaller) ++ [first] ++ (sorted' bigger)
   where smaller = fst separate
         bigger = snd separate
         separate = sep xs first
-        
