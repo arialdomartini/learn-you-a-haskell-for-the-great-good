@@ -30,3 +30,6 @@ myDivideByTenFlipped = flip' myDivide
 myDivideByTen a = myDivideByTenFlipped 10
 useMyDivideByTen = myDivideByTen 40 -- should be 4.0
 
+isAlphaNumeric :: String -> Bool
+isAlphaNumeric xs = all (\c -> c `elem` alphaNumericChars) xs
+  where alphaNumericChars = ' ' : ['a'..'z'] ++ ['A'..'Z']
