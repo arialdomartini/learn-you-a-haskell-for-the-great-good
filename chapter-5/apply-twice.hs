@@ -1,3 +1,8 @@
+applyNTimes :: (Eq n, Num n) => n -> (a -> a) -> (a -> a)
+applyNTimes 1 f x = f x
+applyNTimes n f x = applyNTimes (n-1) f (f x)
+
+
 applyTwice :: (a -> a) -> (a -> a)
 applyTwice f x = f ( f x)
 
