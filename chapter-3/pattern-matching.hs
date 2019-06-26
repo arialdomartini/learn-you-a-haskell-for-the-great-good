@@ -28,6 +28,54 @@ bmiCalculator weight height
 
 getInitials :: String -> String -> String
 getInitials firstname lastname = [f] ++ " " ++ [l]
-                                      where (f:_) = firstname
-                                            (l:_) = lastname
+  where (f:_) = firstname
+        (l:_) = lastname
   
+getInitials2 :: String -> String -> (Char, Char)
+getInitials2 a b = (ia, ib)
+  where (ia:_) = a
+        (ib:_) = b
+
+
+getInit :: String -> String -> (Char, Char)
+getInit a b = (ia, ib)
+  where (ia:_) = a
+        (ib:_) = b
+
+
+myMax :: (Ord a) => a -> a -> a
+myMax a b
+  | a > b = a
+  | a == b = a
+  | otherwise = b
+
+
+
+testLet = 2 + (let x = 5 in x * 2) -- this works
+-- testWhere = 2 + (x * 2 where x = 5) -- this doesn't
+
+
+headPatternMatching :: [a] -> a
+headPatternMatching [] = error "Empty list"
+headPatternMatching (x:_) = x
+
+headCaseExpression :: [a] -> a
+headCaseExpression xs = case xs of
+  [] -> error "Empty list"
+  (x:_) -> x
+
+  
+describeList :: [a] -> String
+describeList xs = "The list is " ++ case xs of
+  [] -> "empty"
+  (x:[]) -> "singleton"
+  (x1:x2:[]) -> "containing just 2 elements"
+  (x:rest) -> show (length xs) ++ " elements long"
+
+describeListWithWhere :: (Show a) => [a] -> String
+describeListWithWhere xs = "The list is " ++ description
+  where description = case xs of
+          [] -> "empty"
+          [a] -> "singleton"
+          [a, b] -> "containing just 2 elements"
+          (a:b:rest) -> show (length xs) ++ " elements long and the second element is " ++ show b
