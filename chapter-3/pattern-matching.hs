@@ -10,6 +10,7 @@ factorial n = n * factorial (n-1)
 addVectors :: (Double, Double) -> (Double, Double) -> (Double, Double)
 addVectors a b = (fst a + fst b, snd a + snd b)
 
+-- adding vectors with pattern matching
 addVectors' :: (Double, Double) -> (Double, Double) -> (Double, Double)
 addVectors' (x1, y1) (x2, y2) = (x1 + x2, y1 + y2)
 
@@ -79,3 +80,33 @@ describeListWithWhere xs = "The list is " ++ description
           [a] -> "singleton"
           [a, b] -> "containing just 2 elements"
           (a:b:rest) -> show (length xs) ++ " elements long and the second element is " ++ show b
+
+
+listMatch :: [Int] -> String
+listMatch [] = "Empty"
+listMatch (a:[]) = "Only 1 element"
+listMatch (a:b:[]) = "Only 2 elements"
+listMatch (a:b:xs) = show b
+
+countElements :: [a] -> Int
+countElements [] = 0
+countElements (x:xs) = 1 + countElements xs
+
+
+-- catch all
+getName :: Char -> String
+getName 'a' = "Antonio"
+getName 'b' = "Bob"
+getName _ = "Unknown"
+
+
+
+first :: (a, b, c) -> a
+second :: (a, b, c) -> b
+third :: (a, b, c) -> c
+first (a, _, _) = a
+second (_, b, _) = b
+third (_, _, c) = c
+
+sumFirstAndSecondElements :: (Num a) => [(a, a, c)] -> [(a, c)]
+sumFirstAndSecondElements ns = [(a+b, c) | (a, b, c) <= ns] 

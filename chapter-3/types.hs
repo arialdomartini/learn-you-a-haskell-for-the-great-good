@@ -84,4 +84,3 @@ tryPolymorphic = (5 :: Float) + 4.2
 -- *Main> :t (5 :: Float)
 -- (5 :: Float) :: Float
 
-
