@@ -97,3 +97,48 @@ quicksort' (x:xs) =
 quicksort'' :: (Ord a) => [a] -> [a]
 quicksort'' [] = []
 quicksort'' (x:xs) = quicksort'' (filter (\e -> e <= x) xs) ++ [x] ++ quicksort'' (filter (\e -> e > x) xs)
+
+
+
+newZip :: [a] -> [b] -> [(a, b)]
+newZip [] _ = []
+newZip _ [] = []
+newZip (a:as) (b:bs) = (a, b) : newZip as bs
+
+newElem :: (Eq a) => a -> [a] -> Bool
+newElem _ [] = False
+newElem a (x:xs) = a == x || newElem a xs
+
+elemWithGuards :: (Eq a) => a -> [a] -> Bool
+elemWithGuards _ [] = False
+elemWithGuards a (x:xs)
+  | a == x = True
+  | otherwise = a `elemWithGuards` xs
+
+sorted :: (Ord a) => [a] -> [a]
+sorted [] = []
+sorted [a] = [a]
+
+sorted (first:xs) = (sorted smaller) ++ [first] ++ (sorted bigger)
+  where smaller = [x | x <- xs, x < first]
+        bigger =  [x | x <- xs, x >= first]
+
+
+-- a more convoluted quick sort that visit xs only once
+sep :: (Ord a) => [a] -> a -> ([a], [a])
+sep xs pivot = seprec xs pivot [] []
+  where
+    seprec :: (Ord a) =>[a] -> a -> [a] -> [a] -> ([a], [a]) 
+    seprec [] pivot smaller bigger = (smaller, bigger)
+    seprec (x:xs) pivot smaller bigger= if x < pivot then seprec xs pivot (x:smaller) bigger else seprec xs pivot smaller (x:bigger)
+
+
+sorted' :: (Ord a) => [a] -> [a]
+sorted' [] = []
+sorted' [a] = [a]
+
+sorted' (first:xs) = (sorted' smaller) ++ [first] ++ (sorted' bigger)
+  where smaller = fst separate
+        bigger = snd separate
+        separate = sep xs first
+        
