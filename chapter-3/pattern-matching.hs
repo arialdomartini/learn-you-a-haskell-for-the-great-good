@@ -108,5 +108,5 @@ first (a, _, _) = a
 second (_, b, _) = b
 third (_, _, c) = c
 
-sumFirstAndSecondElements :: (Num a) => [(a, a, c)] -> [(a, c)]
-sumFirstAndSecondElements ns = [(a+b, c) | (a, b, c) <= ns] 
+--sumFirstAndSecondElements :: (Num a) => [(a, a, c)] -> [(a, c)]
+sumFirstAndSecondElements ns = [(a+b, c) | (a, b, c) <- ns] 
