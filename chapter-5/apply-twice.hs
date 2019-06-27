@@ -14,7 +14,19 @@ applyTwice' f = f . f
 example' = applyTwice' (\x -> 2 * x) 3
 
 
-zipWith' :: [a] -> [b] -> (a -> b -> c) -> [c]
-zipWith' [] _ _ = []
+zipWith' ::  (a -> b -> c) -> [a] -> [b] -> [c]
 zipWith' _ [] _ = []
-zipWith' (a:as) (b:bs) f = (f a b) : zipWith' as bs f
+zipWith' _ _ [] = []
+zipWith' f (a:as) (b:bs) = (f a b) : zipWith' f as bs
+
+zipInTuple :: [a] -> [b] -> [(a, b)]
+zipInTuple = zipWith' makeTuple
+  where makeTuple :: a -> b -> (a, b)
+        makeTuple a b = (a, b)
+
+zipSum :: (Num a) => [a] -> [a] -> [a]
+zipSum = zipWith' (+)
+
+zipRepeating :: [a] -> [Int] -> [[a]]
+zipRepeating = zipWith repeatElements
+  where repeatElements a b = take b (repeat a)
