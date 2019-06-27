@@ -55,4 +55,10 @@ mapIndex f xs = mapIndexRec f xs 0
 
 tryMapIndex = mapIndex (\e i -> (e, i)) ["ciao", "mamma", "guarda", "come", "mi", "diverto"]
 
+filter' :: (a -> Bool) -> [a] -> [a]
+filter' f xs = case xs of
+  [] -> []
+  (x:rest) -> if f x then include else theRest
+    where theRest = filter' f rest
+          include = x : theRest
 
