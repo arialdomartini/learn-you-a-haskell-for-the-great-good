@@ -41,3 +41,18 @@ flipArgs' f x y = f y x
 
 tryFlipArgs = zipWith (flipArgs (/)) [2, 3, 4] [10, 6, 20]
 
+map' :: (a -> b) -> [a] -> [b]
+map' f [] = []
+map' f (x:xs) = f x : map' f xs
+
+
+mapIndex :: (a -> Int -> b) -> [a] -> [b]
+mapIndex f [] = []
+mapIndex f xs = mapIndexRec f xs 0
+  where mapIndexRec :: (a -> Int -> b) -> [a] -> Int -> [b]
+        mapIndexRec f [] _ = []
+        mapIndexRec f (x:xs) index = f x index : mapIndexRec f xs (index + 1)
+
+tryMapIndex = mapIndex (\e i -> (e, i)) ["ciao", "mamma", "guarda", "come", "mi", "diverto"]
+
+
