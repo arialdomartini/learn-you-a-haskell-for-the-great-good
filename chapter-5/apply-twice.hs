@@ -30,3 +30,14 @@ zipSum = zipWith' (+)
 zipRepeating :: [a] -> [Int] -> [[a]]
 zipRepeating = zipWith repeatElements
   where repeatElements a b = take b (repeat a)
+
+
+flipArgs :: (a -> b -> c) -> (b -> a -> c)
+flipArgs f = \a b -> f b a
+
+-- since -> is right associative
+flipArgs' :: (a -> b -> c) -> b -> a -> c
+flipArgs' f x y = f y x
+
+tryFlipArgs = zipWith (flipArgs (/)) [2, 3, 4] [10, 6, 20]
+
