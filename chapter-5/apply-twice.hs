@@ -93,4 +93,16 @@ tryFoldl = foldl compose "x" "abcd"
 tryFoldr = foldr compose "x" "abcd"
   where compose :: Char -> String -> String
         compose element acc = element : acc
-  
+
+mapWithFoldl :: (a -> b) -> [a] -> [b]
+mapWithFoldl f xs = foldl (\acc elem -> acc ++ [f elem]) [] xs
+
+tryMapWithFoldl = mapWithFoldl (\x -> show(x)) [1,2,3,4] 
+
+mapWithFoldr :: (a -> b) -> [a] -> [b]
+mapWithFoldr f xs = foldr (\elem acc -> (f elem) : acc) [] xs
+
+tryMapWithFoldr = mapWithFoldr (\x -> show(x)) [1,2,3,4] 
+
+reverseList :: [a] -> [a]
+reverseList xs = foldl (\acc e -> e : acc) [] xs
