@@ -26,3 +26,27 @@ largestMultiple' d top = top - top `mod` d
 -- in this case, laziness doesn't help...
 largestMultipleReverse d top = head (multipleReversed d top)
   where multipleReversed d top = reverse [n | n <- [0..top], n `mod` d == 0]
+
+
+collatz 1 = [1]
+collatz n
+  | even n = n : collatz (n `div` 2)
+  | otherwise = n : collatz (n * 3 + 1)
+
+tryCollatz = collatz 68263682
+
+
+longestCollatz :: Int -> Int
+longestCollatz n = max' (map length (map collatz [1..n]))
+  where max' xs = foldl (\acc el -> max acc el) (-1) xs  
+
+
+
+
+maxInfo acc el = if snd el > snd acc then el else acc
+
+longestCollatzWithLength :: Int -> (Int,Int)
+longestCollatzWithLength n = max' (map lengthInfo (map collatzInfo [1..n]))
+  where collatzInfo n = (n, collatz n)
+        lengthInfo info= (fst info, length (snd info)) 
+        max' xs = foldl maxInfo (0,0) xs  
