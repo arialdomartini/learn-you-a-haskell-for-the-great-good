@@ -62,3 +62,35 @@ filter' f xs = case xs of
     where theRest = filter' f rest
           include = x : theRest
 
+addThree' a b c = a + b + c
+addThree'' = \a b c -> a + b + c
+addThree''' = \a -> \b -> \c -> a + b + c
+
+tryAddThrees :: (Int, Int, Int)
+tryAddThrees = (x, y, z)
+  where x = addThree' 1 2 3
+        y = addThree'' 1 2 3
+        z = addThree''' 1 2 3
+
+sum' :: (Num a) => [a] -> a
+sum' xs = foldl (\acc x -> acc + x) 0 xs
+
+sum'' = foldl (+) 0
+
+trySum = (sum xs, sum' xs, sum'' xs)
+  where xs = [1,2,3,4]
+
+
+elemWithFoldl :: (Eq a) => a -> [a] -> Bool
+elemWithFoldl el xs = foldl compare False xs
+  where compare acc element = if element == el then True else acc
+
+
+tryFoldl = foldl compose "x" "abcd"
+  where compose :: String -> Char -> String
+        compose acc element = acc ++ [element]
+  
+tryFoldr = foldr compose "x" "abcd"
+  where compose :: Char -> String -> String
+        compose element acc = element : acc
+  
