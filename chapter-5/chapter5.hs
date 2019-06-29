@@ -126,4 +126,4 @@ with =    sum $ filter (> 10) $ map (*2) [2..10]
 --            ^               ^                 ^^
 --                                              implicit closed parens
 
-
+mapFunctionApplication = map ($ 3) [(4+), (5+), (10+)]
