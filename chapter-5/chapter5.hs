@@ -93,3 +93,10 @@ reverseScan' xs = scanl (\a e -> (a !: e)) [] xs
   where (!:) = flip (:)
 reverseScan'' xs = scanl (flip (:)) [] xs
 reverseScan''' = scanl (flip (:)) []
+
+myScanr :: (a -> b -> b) -> b -> [a] -> [b]
+myScanr f acc xs = myScanr' f acc xs []
+  where myScanr' f acc [] history = history
+        myScanr' f acc (x:xs) history = myScanr' f newAcc xs newHistory
+          where newAcc = (f x acc)
+                newHistory = history ++ [(f x acc)]
