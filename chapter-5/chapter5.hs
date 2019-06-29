@@ -82,3 +82,14 @@ head' = foldr1 (\e a -> e)
 
 last' :: [a] -> a
 last' = foldl1 (\a e -> e)
+
+maximumScan :: (Ord a, Num a) => [a] -> [a]
+maximumScan xs = scanl (\a e -> if e > a then e else a) 0 xs
+
+-- This is pretty neat! Like it.
+--reverseScan :: [a] -> [[a]]
+reverseScan xs = scanl (\a e -> e : a) [] xs
+reverseScan' xs = scanl (\a e -> (a !: e)) [] xs
+  where (!:) = flip (:)
+reverseScan'' xs = scanl (flip (:)) [] xs
+reverseScan''' = scanl (flip (:)) []
