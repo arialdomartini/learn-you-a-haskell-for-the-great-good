@@ -127,3 +127,29 @@ with =    sum $ filter (> 10) $ map (*2) [2..10]
 --                                              implicit closed parens
 
 mapFunctionApplication = map ($ 3) [(4+), (5+), (10+)]
+
+
+-- function composition
+(>.) :: (b -> c) -> (a -> b) -> (a -> c)
+f >. g = \x -> f (g x)
+ 
+tryMakeNegative = map (negate . abs) [1,-10,10,-29, 0]
+
+
+-- point free style functions
+sum' :: (Num a) => [a] -> a
+sum' xs = foldl (+) 0 xs
+
+sumFreepoint :: (Num a) => [a] -> a
+sumFreepoint = foldl (+) 0
+
+
+oddSquareSum :: Integer
+oddSquareSum = sum (takeWhile (<10000) ( filter odd (map (^2) [1..])))
+
+oddSquareSum' = sum . takeWhile (<10000) $ oddSquares
+  where oddSquares = filter odd squares
+        squares = map (^2) [1..]
+
+
+oddSquareSum'' = sum . takeWhile (<10000) . filter odd . map (^2) $ [1..]
