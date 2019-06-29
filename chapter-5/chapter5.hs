@@ -80,4 +80,5 @@ filterFold' f xs = foldr (\e a -> if f e then e:a else a) [] xs
 head' :: [a] -> a
 head' = foldr1 (\e a -> e)
 
-
+last' :: [a] -> a
+last' = foldl1 (\a e -> e)
