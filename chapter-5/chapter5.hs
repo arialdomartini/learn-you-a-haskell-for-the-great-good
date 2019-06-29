@@ -100,3 +100,23 @@ myScanr f acc xs = myScanr' f acc xs []
         myScanr' f acc (x:xs) history = myScanr' f newAcc xs newHistory
           where newAcc = (f x acc)
                 newHistory = history ++ [(f x acc)]
+
+
+maxExceeds max = sumSqrt [1..]
+  where sumSqrt xs = length (takeWhile (<max) sums)
+          where sums = (scanl1 (+) (map sqrt xs))
+
+
+
+-- function application with a space is left associative, so
+-- f a b c = ((f a) b) c
+-- so
+-- f g z a = ((f g) z) a
+-- instead of
+-- f g z a = f (g (z a))
+-- 
+-- On the contrary, function application with $ is right associative
+-- f $ g $ z a = f (g (z a))
+
+($$) :: (a -> b) -> a -> b
+($$) f a = f a
