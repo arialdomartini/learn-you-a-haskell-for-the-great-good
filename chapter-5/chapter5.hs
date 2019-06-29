@@ -120,3 +120,10 @@ maxExceeds max = sumSqrt [1..]
 
 ($$) :: (a -> b) -> a -> b
 ($$) f a = f a
+
+without = sum ( filter (> 10) ( map (*2) [2..10]))
+with =    sum $ filter (> 10) $ map (*2) [2..10]
+--            ^               ^                 ^^
+--                                              implicit closed parens
+
+
