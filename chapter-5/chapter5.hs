@@ -50,3 +50,34 @@ longestCollatzWithLength n = max' (map lengthInfo (map collatzInfo [1..n]))
   where collatzInfo n = (n, collatz n)
         lengthInfo info= (fst info, length (snd info)) 
         max' xs = foldl maxInfo (0,0) xs  
+
+
+
+
+foldr' :: (a -> b -> b) -> b -> [a] -> b
+foldr' _ acc [] = acc
+foldr' f acc (x:xs) = f x (foldr' f acc xs)
+
+foldl' :: (b -> a -> b) -> b -> [a] -> b
+foldl' _ acc [] = acc
+foldl' f acc (x:xs) = foldl' f (f acc x) xs
+
+
+-- Implementing functions with foldr
+
+maximum' :: (Num a, Ord a) => [a] -> a
+maximum' xs = foldr (\e a -> max a e) 0 xs
+
+reverse' :: [a] -> [a]
+reverse' xs = foldr (\e a -> a ++ [e]) [] xs
+
+product' :: (Num a) => [a] -> a
+product' xs = foldr (\e a -> e * a) 1 xs
+
+filterFold' :: (a -> Bool) -> [a] -> [a]
+filterFold' f xs = foldr (\e a -> if f e then e:a else a) [] xs
+
+head' :: [a] -> a
+head' = foldr1 (\e a -> e)
+
+
