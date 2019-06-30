@@ -91,3 +91,9 @@ tryConcat2 = concat [ [1,2,3], [10,20,30], [100]] == [ 1,2,3,10,20,30,100]
 concatWithFold :: [String] -> String
 concatWithFold = foldr (++) ""
 
+
+tryConcatMap = concatMap (replicate 4)  [1..3] == [1,1,1,1, 2,2,2,2, 3,3,3,3]
+tryConcatMap' = concatMap' (replicate 4)  [1..3] == [1,1,1,1, 2,2,2,2, 3,3,3,3]
+
+concatMap' :: (a -> [b]) -> [a] -> [b]
+concatMap' f = concat . map f
