@@ -28,3 +28,11 @@ myIntersperse separator list = case list of
   [] -> []
   [a] -> [a]
   (x:xs) -> x : separator : (myIntersperse separator xs)
+
+tryIntercalate = intercalate " " ["hello", "cruel", "world"] == "hello cruel world"
+
+myIntercalate :: [a] -> [[a]] -> [a]
+myIntercalate separator lists = case lists of
+  [] -> []
+  [a] -> a
+  (x:xs) -> x ++ separator ++ myIntercalate separator xs
