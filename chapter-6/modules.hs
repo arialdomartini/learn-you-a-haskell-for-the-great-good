@@ -78,4 +78,16 @@ transpose' xs = foldr (\e a -> aggregate e a) [] xs
         aggregate (x:xs) (y:ys) = (x:y) : aggregate xs ys
 
 tryTranspose' = transpose' [ [1,2,3],    [10,20,30], [100,200,300] ] ==
-                           [ [1,10,100], [2,20,200], [3,30,300] ] 
+                           [ [1,10,100], [2,20,200], [3,30,300] ]
+
+
+concat' :: [String] -> String
+concat' [] = ""
+concat' (x:xs) = x ++ concat' xs
+
+tryConcat1 = concat ["hello", "happy", "world"] == "hellohappyworld"
+tryConcat2 = concat [ [1,2,3], [10,20,30], [100]] == [ 1,2,3,10,20,30,100]
+
+concatWithFold :: [String] -> String
+concatWithFold = foldr (++) ""
+
