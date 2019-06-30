@@ -164,3 +164,9 @@ dropWhile' :: (a -> Bool) -> [a] -> [a]
 dropWhile' _ [] = []
 dropWhile' f xx@(x:xs) = if f x then dropWhile' f xs else xx                        
 
+span' :: (a -> Bool) -> [a] -> ([a], [a])
+span' _ [] = ([], [])
+span' f xs = spanIter xs ([], [])
+  where spanIter xx@(x:xs) acc = if f x then spanIter xs ((fst acc) ++ [x], []) else (fst acc, xx)
+        spanIter [] acc = acc
+
