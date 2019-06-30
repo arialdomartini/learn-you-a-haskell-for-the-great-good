@@ -114,3 +114,8 @@ all' f = foldr (\e a -> f e && a) True
 any' f = foldr (\e a -> f e || a) False
 
 
+tryIterate = take 8 (iterate'' (*2) 1) == [1,2,4,8,16,32,64,128]
+
+iterate'' :: (a -> a) -> a -> [a]
+iterate'' f init = init : (iterate'' f (f init))
+
