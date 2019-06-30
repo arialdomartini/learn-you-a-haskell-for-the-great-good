@@ -119,3 +119,23 @@ tryIterate = take 8 (iterate'' (*2) 1) == [1,2,4,8,16,32,64,128]
 iterate'' :: (a -> a) -> a -> [a]
 iterate'' f init = init : (iterate'' f (f init))
 
+splitAt' :: Int -> [a] -> ([a], [a])
+splitAt' n xx@(x:xs) =
+  if n == 0
+  then ([], xx)
+  else addFst x (splitAt' (n-1) xs)
+    
+  where addFst x (f,s) = (x:f, s)
+
+splitAtFold n xs = fst $ foldr funcc accInit xs
+  where accInit = (([], []), length xs)
+        funcc:: a -> (([a], [a]), Int) -> (([a], [a]), Int)
+        funcc e a =
+          if idx > n
+          then
+            ( (fst pair, e:(snd pair)), idx - 1 )
+          else
+            ( (e:(fst pair), snd pair), idx - 1 )
+          where idx = snd a
+                pair = fst a
+                make a b i = (a b i)
