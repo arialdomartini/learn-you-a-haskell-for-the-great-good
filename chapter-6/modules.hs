@@ -127,15 +127,19 @@ splitAt' n xx@(x:xs) =
     
   where addFst x (f,s) = (x:f, s)
 
+-- very convoluted
 splitAtFold n xs = fst $ foldr funcc accInit xs
   where accInit = (([], []), length xs)
         funcc:: a -> (([a], [a]), Int) -> (([a], [a]), Int)
         funcc e a =
           if idx > n
           then
-            ( (fst pair, e:(snd pair)), idx - 1 )
+            make left (e:right) (idx-1)
           else
-            ( (e:(fst pair), snd pair), idx - 1 )
+            make (e:left) right (idx-1)
           where idx = snd a
                 pair = fst a
-                make a b i = (a b i)
+                make a b i = ((a, b), i)
+                left = fst pair
+                right = snd pair
+          
