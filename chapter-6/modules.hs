@@ -97,3 +97,20 @@ tryConcatMap' = concatMap' (replicate 4)  [1..3] == [1,1,1,1, 2,2,2,2, 3,3,3,3]
 
 concatMap' :: (a -> [b]) -> [a] -> [b]
 concatMap' f = concat . map f
+
+
+and' xs = case xs of
+  [] -> True
+  (x:xs) -> if x then and' xs else False
+
+tryAnd1 = and' [True,True,True,True] == True
+tryAnd2 = and' [True,False,True,True] == False
+
+-- and implemented with foldr
+andFold xs = foldr (&&) True xs
+tryAndFold = andFold [True,False,True,True] == False
+
+all' f = foldr (\e a -> f e && a) True
+any' f = foldr (\e a -> f e || a) False
+
+
