@@ -181,3 +181,11 @@ group' xs = groupIter xs [] []
         groupIter (x:xs) acc group = if x == head group
           then groupIter xs acc (x:group)
           else groupIter xs (acc ++ [group]) [x]
+
+
+inits' :: [a] -> [[a]]
+inits' xs = foldl append [[]] xs
+  where append :: [[a]] -> a -> [[a]]
+        append [] e = [[e]]
+        append acc e = acc ++ [last acc ++ [e]]
+
