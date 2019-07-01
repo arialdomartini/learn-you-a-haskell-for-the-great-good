@@ -170,3 +170,14 @@ span' f xs = spanIter xs ([], [])
   where spanIter xx@(x:xs) acc = if f x then spanIter xs ((fst acc) ++ [x], []) else (fst acc, xx)
         spanIter [] acc = acc
 
+break' p = span (not . p)
+
+group' :: (Eq a) => [a] -> [[a]]
+group' [] = []
+group' xs = groupIter xs [] []
+  where groupIter :: (Eq a) => [a] -> [[a]] -> [a] -> [[a]]
+        groupIter [] acc group = acc ++ [group]
+        groupIter (x:xs) acc [] = groupIter xs acc [x]
+        groupIter (x:xs) acc group = if x == head group
+          then groupIter xs acc (x:group)
+          else groupIter xs (acc ++ [group]) [x]
