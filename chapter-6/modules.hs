@@ -151,3 +151,14 @@ takeWhileFold :: (a -> Bool) -> [a] -> [a]
 takeWhileFold f xs = foldr getNext [] xs
   where getNext e a = if f e then e:a else []
 
+
+dropWhile' :: (a -> Bool) -> [a] -> [a]
+dropWhile' _ [] = []
+dropWhile' f (x:xs) = if f x then dropWhile' f xs else xs
+
+dropWhileFold :: (a -> Bool) -> [a] -> [a]
+
+dropWhileFold f = foldl dropNext []
+  where dropNext a e = case a of
+          [] -> if f e then [] else [e]
+          _ -> a ++ [e]
