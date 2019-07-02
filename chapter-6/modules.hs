@@ -143,3 +143,11 @@ splitAtFold n xs = fst $ foldr funcc accInit xs
                 left = fst pair
                 right = snd pair
           
+takeWhile' :: (a -> Bool) -> [a] -> [a]
+takeWhile' _ [] =[]
+takeWhile' f (x:xs) = if f x then x:(takeWhile' f xs) else []
+
+takeWhileFold :: (a -> Bool) -> [a] -> [a]
+takeWhileFold f xs = foldr getNext [] xs
+  where getNext e a = if f e then e:a else []
+
