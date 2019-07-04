@@ -190,8 +190,8 @@ inits' = foldl append [[]]
         append acc e = acc ++ [last acc ++ [e]]
 
 tails' :: [a] -> [[a]]
-tails' xs = foldr append [[]]
+tails' xs = foldr append [] xs
   where append :: a -> [[a]] -> [[a]]
         append e [] = [[e]]
-        append e acc = (e : head acc) : acc
+        append e acc = (e : (head acc)) : acc
 
