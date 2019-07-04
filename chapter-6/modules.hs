@@ -184,8 +184,14 @@ group' xs = groupIter xs [] []
 
 
 inits' :: [a] -> [[a]]
-inits' xs = foldl append [[]] xs
+inits' = foldl append [[]]
   where append :: [[a]] -> a -> [[a]]
         append [] e = [[e]]
         append acc e = acc ++ [last acc ++ [e]]
+
+tails' :: [a] -> [[a]]
+tails' xs = foldr append [[]]
+  where append :: a -> [[a]] -> [[a]]
+        append e [] = [[e]]
+        append e acc = (e : head acc) : acc
 
