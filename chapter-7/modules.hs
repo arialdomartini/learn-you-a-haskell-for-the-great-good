@@ -206,3 +206,7 @@ isPrefixOf' :: (Eq a) => [a] -> [a] -> Bool
 isPrefixOf' [] _ = True
 isPrefixOf' _ [] = False
 isPrefixOf' (x:xs) (a:as) = if x == a then isPrefixOf' xs as else False
+
+isPrefixOf'' xs as = foldl comp True pairs
+  where pairs = zip xs as
+        comp result (left,right) = result && left == right
