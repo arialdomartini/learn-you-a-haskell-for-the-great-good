@@ -213,3 +213,10 @@ isPrefixOf'' xs as = foldl comp True pairs
 
 isSuffixOf' :: (Eq a) => [a] -> [a] -> Bool
 isSuffixOf' a x = isPrefixOf'' (reverse a) (reverse x)
+
+partition' :: (a -> Bool) -> [a] -> ([a], [a])
+partition' f xs = partitionRec f xs ([],[])
+  where partitionRec _ [] acc = acc
+        partitionRec f (x:xs) (left, right) =
+          if f x then (x:left, right)
+          else (left, x:right)
