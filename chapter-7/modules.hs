@@ -202,3 +202,7 @@ group'' xs = reverse $ groupRec xs []
       where push' e [] = [[e]]
             push' e aa@(a:as) = if e == head a then (e:a):as else [e]:aa
 
+isPrefixOf' :: (Eq a) => [a] -> [a] -> Bool
+isPrefixOf' [] _ = True
+isPrefixOf' _ [] = False
+isPrefixOf' (x:xs) (a:as) = if x == a then isPrefixOf' xs as else False
