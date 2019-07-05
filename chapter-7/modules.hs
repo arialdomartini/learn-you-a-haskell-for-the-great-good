@@ -195,3 +195,10 @@ tails' xs = foldr append [] xs
         append e [] = [[e]]
         append e acc = (e : (head acc)) : acc
 
+group'' xs = reverse $ groupRec xs []
+  where
+    groupRec [] acc = acc
+    groupRec (x:xs) acc = groupRec xs (push' x acc)
+      where push' e [] = [[e]]
+            push' e aa@(a:as) = if e == head a then (e:a):as else [e]:aa
+
