@@ -220,3 +220,7 @@ partition' f xs = partitionRec f xs ([],[])
         partitionRec f (x:xs) (left, right) =
           if f x then (x:left, right)
           else (left, x:right)
+
+find' :: (a -> Bool) -> [a] -> Maybe a
+find' f = foldl comp Nothing
+  where comp result e = if f e then Just e else result
