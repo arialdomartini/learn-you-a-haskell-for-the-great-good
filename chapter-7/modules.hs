@@ -243,3 +243,7 @@ elemIndices'' :: (Eq a) => a -> [a] -> [Int]
 elemIndices'' e xs = snd $ foldr f (0, []) xs
   where f el (index, acc) = if e == el then (index+1, acc++[index]) else (index+1, acc)
 
+findIndex' :: (a -> Bool) -> [a] -> Maybe Int
+findIndex' f xs = recur f xs 0
+  where recur _ [] _ = Nothing
+        recur f (x:xs) index = if f x then Just index else recur f xs (index+1)
