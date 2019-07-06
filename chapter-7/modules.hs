@@ -232,3 +232,9 @@ elemIndex' el xs = elemIndexRec el xs 0
 
 elemIndex'' el xs = snd $ foldl comp (0, Nothing) xs
   where comp (index, result) e = if el == e then (index, Just index) else (index+1, result)
+
+elemIndices' :: (Eq a) => a -> [a] -> [Int]
+elemIndices' e xs = iter e xs 0
+  where iter e [] _ = []
+        iter e (x:xs) index = if e == x then index : rest else rest
+          where rest = iter e xs (index+1)
