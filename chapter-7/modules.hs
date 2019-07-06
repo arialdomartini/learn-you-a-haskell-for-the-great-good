@@ -258,3 +258,7 @@ findIndices' f xs = recur f xs 0
           [] -> []
           (x:xs) -> if f x then index : continue else continue
             where continue = recur f xs (index + 1)
+
+findIndices'' f xs = reverse $ snd $ foldr comp (0, []) xs
+  where comp e (index, acc) = if f e then (index+1, index:acc) else (index+1, acc)
+
