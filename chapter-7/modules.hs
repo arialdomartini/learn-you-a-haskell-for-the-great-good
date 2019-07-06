@@ -224,3 +224,8 @@ partition' f xs = partitionRec f xs ([],[])
 find' :: (a -> Bool) -> [a] -> Maybe a
 find' f = foldl comp Nothing
   where comp result e = if f e then Just e else result
+
+elemIndex' :: (Eq a) => a -> [a] -> Maybe Int
+elemIndex' el xs = elemIndexRec el xs 0
+  where elemIndexRec el [] _ = Nothing
+        elemIndexRec el (x:xs) index = if el == x then Just index else elemIndexRec el xs (index+1)
