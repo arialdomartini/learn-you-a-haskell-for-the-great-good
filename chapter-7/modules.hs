@@ -247,3 +247,14 @@ findIndex' :: (a -> Bool) -> [a] -> Maybe Int
 findIndex' f xs = recur f xs 0
   where recur _ [] _ = Nothing
         recur f (x:xs) index = if f x then Just index else recur f xs (index+1)
+
+findIndex'' :: (a -> Bool) -> [a] -> Maybe Int
+findIndex'' f xs = snd $ foldr comp (0, Nothing) xs
+  where comp e (index, acc) = if f e then (index+1, Just index) else (index+1, acc)
+
+findIndices' :: (a -> Bool) -> [a] -> [Int]
+findIndices' f xs = recur f xs 0
+  where recur f xs index = case xs of
+          [] -> []
+          (x:xs) -> if f x then index : continue else continue
+            where continue = recur f xs (index + 1)
