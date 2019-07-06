@@ -229,3 +229,6 @@ elemIndex' :: (Eq a) => a -> [a] -> Maybe Int
 elemIndex' el xs = elemIndexRec el xs 0
   where elemIndexRec el [] _ = Nothing
         elemIndexRec el (x:xs) index = if el == x then Just index else elemIndexRec el xs (index+1)
+
+elemIndex'' el xs = snd $ foldl comp (0, Nothing) xs
+  where comp (index, result) e = if el == e then (index, Just index) else (index+1, result)
