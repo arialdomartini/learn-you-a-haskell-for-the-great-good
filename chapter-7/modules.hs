@@ -262,3 +262,12 @@ findIndices' f xs = recur f xs 0
 findIndices'' f xs = reverse $ snd $ foldr comp (0, []) xs
   where comp e (index, acc) = if f e then (index+1, index:acc) else (index+1, acc)
 
+
+zipWith3' :: (a -> b -> c -> d) -> [a] -> [b] -> [c] -> [d]
+zipWith3' _ [] _ _ = []
+zipWith3' _ _ [] _ = []
+zipWith3' _ _ _ [] = []
+zipWith3' f (a:as) (b:bs) (c:cs) = (f a b c) : zipWith3' f as bs cs
+
+zipWith3'' f a b c = zipWith ($) funcs c
+  where funcs = (zipWith (\a b -> f a b) a b)
