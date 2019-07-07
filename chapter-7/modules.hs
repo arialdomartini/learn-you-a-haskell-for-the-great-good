@@ -304,3 +304,7 @@ merge'' sep ws = foldl comp "" ws
 delete' :: Char -> String -> String
 delete' c [] = []
 delete' c (x:xs) = if x == c then xs else x:(delete' c xs)
+
+delete'' c xs = snd $ foldl comp (False, "") xs
+  where comp (True, res) e = (True, res ++ [e])
+        comp (False, res) e = if e == c then (True, res) else (False, res ++ [e])
