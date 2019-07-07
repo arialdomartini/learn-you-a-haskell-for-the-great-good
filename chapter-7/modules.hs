@@ -280,3 +280,6 @@ split' sep xs = (snd rst) : (fst rst)
   where rst = foldr comp ([], []) xs
           where comp x (lines, next) = if x == sep then (next:lines, []) else (lines, x:next)
 
+unlines' :: [String] -> String
+unlines' = foldr comp ""
+  where comp e lines = e ++ "\n" ++ lines
