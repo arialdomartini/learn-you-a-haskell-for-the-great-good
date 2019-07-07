@@ -301,10 +301,18 @@ merge'' :: String -> [String] -> String
 merge'' sep ws = foldl comp "" ws
   where comp res e = if res == "" then e else res ++ " " ++ e
 
-delete' :: Char -> String -> String
+delete' :: (Eq a) => a -> [a] -> [a]
 delete' c [] = []
 delete' c (x:xs) = if x == c then xs else x:(delete' c xs)
 
 delete'' c xs = snd $ foldl comp (False, "") xs
   where comp (True, res) e = (True, res ++ [e])
         comp (False, res) e = if e == c then (True, res) else (False, res ++ [e])
+
+(\\-) :: (Eq a) => [a] -> [a] -> [a]
+(\\-) [] _ = []
+(\\-) as [] = as
+(\\-) (a:as) bs = if a `elem` bs then as \\- (delete' a bs) else a: (as \\- bs)
+
+(\\--) as bs = reverse $ fst $ foldl comp ([], bs) as
+  where comp (result, rest) e = if e `elem` rest then (result, delete' e rest) else (e:result, rest)
