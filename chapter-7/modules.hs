@@ -283,3 +283,6 @@ split' sep xs = (snd rst) : (fst rst)
 unlines' :: [String] -> String
 unlines' = foldr comp ""
   where comp e lines = e ++ "\n" ++ lines
+
+words' :: String -> [String]
+words' = split' ' '
