@@ -286,3 +286,18 @@ unlines' = foldr comp ""
 
 words' :: String -> [String]
 words' = split' ' '
+
+unwords' :: [String] -> String
+unwords' xs = merge' " " xs
+
+merge' :: String -> [String] -> String
+merge' sep [] = []
+merge' sep [w] = w
+merge' sep (w:ws) = w ++ " " ++ merge' sep ws 
+
+unwords'' = merge'' " "
+
+merge'' :: String -> [String] -> String
+merge'' sep ws = foldl comp "" ws
+  where comp res e = if res == "" then e else res ++ " " ++ e
+
