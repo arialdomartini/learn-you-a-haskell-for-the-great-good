@@ -330,3 +330,6 @@ intersect' _ [] = []
 intersect' (a:as) bs = if a `elem` bs then a : diminished else diminished
   where diminished = as `intersect` (a `delete'` bs)
 
+insert' :: (Ord a) => a -> [a] -> [a]
+insert' _ [] = []
+insert' a bb@(b:bs) = if b > a then a: bb else b : (insert' a bs)
