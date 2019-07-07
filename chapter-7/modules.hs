@@ -1,4 +1,7 @@
 import Data.List
+import Data.Function
+import Data.Char
+
 -- import Data.List (nub, sort)
 -- import Data.List hiding (sort)
 
@@ -333,3 +336,12 @@ intersect' (a:as) bs = if a `elem` bs then a : diminished else diminished
 insert' :: (Ord a) => a -> [a] -> [a]
 insert' _ [] = []
 insert' a bb@(b:bs) = if b > a then a: bb else b : (insert' a bs)
+
+
+on' compare g = \x y -> (g x) `compare` (g y) 
+
+tryOn = groupBy (<) [1,2,3,1,2,3,1,2,4,10,5,3,2]
+
+wordWithGroupBy xs = filter (not . all isSpace) items
+  where items = groupBy ((==) `on` (isSpace)) xs
+
