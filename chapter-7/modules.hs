@@ -271,3 +271,12 @@ zipWith3' f (a:as) (b:bs) (c:cs) = (f a b c) : zipWith3' f as bs cs
 
 zipWith3'' f a b c = zipWith ($) funcs c
   where funcs = (zipWith (\a b -> f a b) a b)
+
+
+lines' :: String -> [String]
+lines' xs = split' '\n' xs
+
+split' sep xs = (snd rst) : (fst rst)
+  where rst = foldr comp ([], []) xs
+          where comp x (lines, next) = if x == sep then (next:lines, []) else (lines, x:next)
+
