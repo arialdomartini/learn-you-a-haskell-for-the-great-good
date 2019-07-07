@@ -301,3 +301,6 @@ merge'' :: String -> [String] -> String
 merge'' sep ws = foldl comp "" ws
   where comp res e = if res == "" then e else res ++ " " ++ e
 
+delete' :: Char -> String -> String
+delete' c [] = []
+delete' c (x:xs) = if x == c then xs else x:(delete' c xs)
