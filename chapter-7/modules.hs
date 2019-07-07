@@ -321,5 +321,12 @@ union' :: [a] -> [a] -> [a]
 union' [] b = b
 union' (a:as) b = a: (union' as b)
 
-union'' as = foldr comp bs
+union'' as bs = foldr comp bs as
   where comp e x = e:x
+
+intersect' :: (Eq a) => [a] -> [a] -> [a]
+intersect' [] _ = []
+intersect' _ [] = []
+intersect' (a:as) bs = if a `elem` bs then a : diminished else diminished
+  where diminished = as `intersect` (a `delete'` bs)
+
