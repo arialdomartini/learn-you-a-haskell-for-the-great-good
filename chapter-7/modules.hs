@@ -316,3 +316,10 @@ delete'' c xs = snd $ foldl comp (False, "") xs
 
 (\\--) as bs = reverse $ fst $ foldl comp ([], bs) as
   where comp (result, rest) e = if e `elem` rest then (result, delete' e rest) else (e:result, rest)
+
+union' :: [a] -> [a] -> [a]
+union' [] b = b
+union' (a:as) b = a: (union' as b)
+
+union'' as = foldr comp bs
+  where comp e x = e:x
