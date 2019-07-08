@@ -1,4 +1,6 @@
 import qualified Data.Map as Map
+import Data.List
+import Data.Function
 
 phoneBook :: [(String,String)]
 phoneBook =
@@ -51,3 +53,7 @@ findEst' f xs = head $ filter (\x -> length x > 1) [left, right]
 findEst'' f xs = foldr ff [] xs
   where ff e [] = [e]
         ff e xx@(x:xs) = if f e == f x then e:xx else xx
+
+--findEnd''' :: (Ord a) => (a -> Bool) -> [a] -> [a]
+findEst''' f xs = maximumBy (compare `on` length) [fst s, snd s]
+  where s = partition f xs
