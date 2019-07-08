@@ -15,3 +15,7 @@ findKey k xs = case xs of
 findKey' :: (Eq k) => k -> [(k, v)] -> v
 --findKey' k = snd . head . filter (\x -> fst x == k)
 findKey' k = snd . head . filter (\x -> fst x == k)
+
+findKey'' :: (Eq k) => k -> [(k,v)] -> Maybe v
+findKey'' k = foldr ff Nothing
+  where ff (key,value) result = if key == k then Just value else result
