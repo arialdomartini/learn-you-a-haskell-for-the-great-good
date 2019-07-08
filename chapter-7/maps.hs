@@ -1,3 +1,5 @@
+import qualified Data.Map as Map
+
 phoneBook :: [(String,String)]
 phoneBook =
   [("charlie", "1234")
@@ -19,3 +21,11 @@ findKey' k = snd . head . filter (\x -> fst x == k)
 findKey'' :: (Eq k) => k -> [(k,v)] -> Maybe v
 findKey'' k = foldr ff Nothing
   where ff (key,value) result = if key == k then Just value else result
+
+
+tryFromList = Map.fromList someList == fromList' someList
+  where someList = [(1, "john"), (2, "jasmine")]
+
+fromList' :: (Eq k, Ord k) => [(k,v)] -> Map.Map k v
+fromList' xs = foldr appendItem Map.empty xs
+  where appendItem (key, value) map = Map.insert key value map
