@@ -36,3 +36,18 @@ singleton' k v = Map.insert k v Map.empty
 map' :: (Eq k) => (v -> v') -> [(k,v)] -> [(k,v')]
 map' f xs = map apply xs
   where apply (k,v) = (k, f v)
+
+findEst :: (a -> Bool) -> [a] -> [a]
+findEst f xs = getLongest separate
+  where getLongest (left,right) = if length left == 1 then right else left
+        separate = foldr checkCondition ([],[]) xs
+          where checkCondition e (yes,no) = if f e then (e:yes, no) else (yes, e:no)
+
+findEst' f xs = head $ filter (\x -> length x > 1) [left, right]
+  where left = filter f xs
+        right = filter (not . f) xs
+
+
+findEst'' f xs = foldr ff [] xs
+  where ff e [] = [e]
+        ff e xx@(x:xs) = if f e == f x then e:xx else xx
