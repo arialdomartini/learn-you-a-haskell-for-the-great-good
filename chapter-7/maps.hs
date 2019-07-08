@@ -29,3 +29,10 @@ tryFromList = Map.fromList someList == fromList' someList
 fromList' :: (Eq k, Ord k) => [(k,v)] -> Map.Map k v
 fromList' xs = foldr appendItem Map.empty xs
   where appendItem (key, value) map = Map.insert key value map
+
+singleton' :: (Ord k) => k -> v -> Map.Map k v
+singleton' k v = Map.insert k v Map.empty
+
+map' :: (Eq k) => (v -> v') -> [(k,v)] -> [(k,v')]
+map' f xs = map apply xs
+  where apply (k,v) = (k, f v)
