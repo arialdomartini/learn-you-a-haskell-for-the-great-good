@@ -1,1 +1,1 @@
-docker run -ti --rm -v $(pwd):/source -w /source haskell ghci
+docker run -ti --rm -v $(pwd):/source -w /source fpco/stack-build bash
