@@ -1,0 +1,20 @@
+/source/src/Lib.hs:
+  hash: 11d6d255cb397fa45980eb516ea685146565d9de2108c4eea356ea41db8364be
+  size: 88
+  modtime: 1562620810
+/source/package.yaml:
+  hash: 8202df57cb613ccdb1e62dc871085ca755a340e3605bd5bb3c2535fc9fe1fcc5
+  size: 1191
+  modtime: 1562650668
+/source/exercises.cabal:
+  hash: ced037c4c5dff6ef94be33652390fab53a220f42b00d485a608fe816a5e182fb
+  size: 1552
+  modtime: 1562654911
+/source/README.md:
+  hash: cb66405b5fa4f6db34f83b792d7be1ce79b4577f7b9e57532560fb7a56fe1128
+  size: 12
+  modtime: 1562620810
+/source/src/Chapter7/FindEst.hs:
+  hash: 544849f9fdccc4c7c215858253eb7198f25c378bd8b38a3b31573f9dfb4ebad0
+  size: 772
+  modtime: 1562654947
