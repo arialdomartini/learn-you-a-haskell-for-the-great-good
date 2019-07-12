@@ -1,7 +1,7 @@
 name:                exercises
 version:             0.1.0.0
-github:              "githubuser/exercises"
-license:             BSD3
+github:              "arialdomartini/learn-you-a-haskell-for-the-great-good"
+license:             LGPL3
 author:              "Arialdo Martini"
 maintainer:          "arialdo.martini@gmail.com"
 copyright:           "2019 Arialdo Martini"
@@ -20,7 +20,7 @@ description:         Please see the README on GitHub at <https://github.com/gith
 
 dependencies:
 - base >= 4.7 && < 5
-
+- containers  >= 0.6.0.1
 
 library:
   source-dirs: src

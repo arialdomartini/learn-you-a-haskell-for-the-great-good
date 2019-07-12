@@ -4,17 +4,17 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 752270eee2f1c48f875a84ec5977cf36563eaaad712ad95e0f5ed63aabec9272
+-- hash: 0d868c37887bc7c661963fc36ba464e97ca1b4609e175c58349f44107e5766d4
 
 name:           exercises
 version:        0.1.0.0
 description:    Please see the README on GitHub at <https://github.com/githubuser/exercises#readme>
-homepage:       https://github.com/githubuser/exercises#readme
-bug-reports:    https://github.com/githubuser/exercises/issues
+homepage:       https://github.com/arialdomartini/learn-you-a-haskell-for-the-great-good#readme
+bug-reports:    https://github.com/arialdomartini/learn-you-a-haskell-for-the-great-good/issues
 author:         Arialdo Martini
 maintainer:     arialdo.martini@gmail.com
 copyright:      2019 Arialdo Martini
-license:        BSD3
+license:        LGPL3
 license-file:   LICENSE
 build-type:     Simple
 extra-source-files:
@@ -22,11 +22,12 @@ extra-source-files:
 
 source-repository head
   type: git
-  location: https://github.com/githubuser/exercises
+  location: https://github.com/arialdomartini/learn-you-a-haskell-for-the-great-good
 
 library
   exposed-modules:
       Chapter7.FindEst
+      Chapter7.Geometry
       Lib
   other-modules:
       Paths_exercises
@@ -34,6 +35,7 @@ library
       src
   build-depends:
       base >=4.7 && <5
+    , containers >=0.6.0.1
   default-language: Haskell2010
 
 executable exercises-exe
@@ -45,6 +47,7 @@ executable exercises-exe
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       base >=4.7 && <5
+    , containers >=0.6.0.1
     , exercises
   default-language: Haskell2010
 
@@ -52,6 +55,8 @@ test-suite exercises-test
   type: exitcode-stdio-1.0
   main-is: Spec.hs
   other-modules:
+      Chapter7.GeometrySpec
+      Chapter7.SetSpec
       FindEstSpec
       Paths_exercises
   hs-source-dirs:
@@ -59,6 +64,7 @@ test-suite exercises-test
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       base >=4.7 && <5
+    , containers >=0.6.0.1
     , exercises
     , hspec
   default-language: Haskell2010

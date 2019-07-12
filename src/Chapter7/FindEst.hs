@@ -25,3 +25,5 @@ findEst'' f xs = foldr ff [] xs
 --findEnd''' :: (Ord a) => (a -> Bool) -> [a] -> [a]
 findEst''' f xs = maximumBy (compare `on` length) [fst s, snd s]
   where s = partition f xs
+
+
