@@ -13,6 +13,12 @@ spec = do
   it "partially applies a data constructor" $ do
     (surface getLast) `shouldBe` 25
 
+  it "should move a shape" $ do
+    (move point before) `shouldBe` after
+      where before = Rectangle (Point 0 0) (Point 10 10)
+            point =  Point 5 3
+            after =  Rectangle (Point 5 3) (Point 15 13)
+            
 -- Data constructors are functions, so they can be partially applied
 getLast = last $ map (Triangle 10) [1,2,3,4,5]
 
@@ -41,3 +47,12 @@ surface (Rectangle p1 p2) = base * height
 distX (Point x1 _) (Point x2 _) = x2 -! x1
 distY (Point _ y1) (Point _ y2) = y2 -! y1
 (-!) a b = abs $ b - a
+
+
+move :: Point -> Shape -> Shape
+move (Point x y) (Rectangle (Point x1 y1) (Point x2 y2)) = Rectangle (Point (x1 +x) (y1+y)) (Point (x2 +x) (y2+y))
+
+
+instance Eq Shape where
+  (Rectangle (Point x1a y1a) (Point x2a y2a)) == (Rectangle (Point x1b y1b) (Point x2b y2b)) =
+    (x1a == x1b) && (y1a == y1b) && (x2a == x2a) && (y2a == y2b)
