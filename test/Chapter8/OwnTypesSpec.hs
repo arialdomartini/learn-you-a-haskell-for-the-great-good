@@ -1,6 +1,7 @@
 module Chapter8.OwnTypesSpec
   where
 import Test.Hspec
+import Data.List
 
 main = hspec spec
 
@@ -9,8 +10,16 @@ spec = do
     surface (Rectangle 0 0 10 10) `shouldBe` 100
     surface (Triangle 10 5) `shouldBe` 25
 
+  it "partially applies a data constructor" $ do
+    (surface getLast) `shouldBe` 25
+
+-- Data constructors are functions, so they can be partially applied
+getLast = last $ map (Triangle 10) [1,2,3,4,5]
 
 data Shape = Triangle Float Float | Rectangle Float Float Float Float
+  deriving Show
+
+
 -- Shape is a Type Constructor
 -- Triangle and Rectangle are Data Constructors
 -- :t Triangle
