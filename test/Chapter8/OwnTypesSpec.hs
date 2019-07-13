@@ -13,19 +13,22 @@ spec = do
   it "partially applies a data constructor" $ do
     (surface getLast) `shouldBe` 25
 
+  it "should use pattern matching with the record syntax" $ do
+    surface' Triangle {base = 10, height = 10 } `shouldBe` 50
+
   it "should move a shape" $ do
     (move point before) `shouldBe` after
       where before = Rectangle (Point 0 0) (Point 10 10)
             point =  Point 5 3
             after =  Rectangle (Point 5 3) (Point 15 13)
-            
+
 -- Data constructors are functions, so they can be partially applied
 getLast = last $ map (Triangle 10) [1,2,3,4,5]
 
 type Base = Float
 type Height = Float
 data Point = Point Float Float deriving Show
-data Shape = Triangle Base Height | Rectangle Point Point deriving Show
+data Shape = Triangle {base :: Base, height :: Height } | Rectangle { topLeft :: Point, bottomRight :: Point } deriving Show
 
 
 -- Shape is a Type Constructor
@@ -43,6 +46,8 @@ surface (Rectangle p1 p2) = base * height
   where base = distX p1 p2
         height = distY p1 p2
 
+surface' Triangle {height = h, base = b} = b * h /2
+
 
 distX (Point x1 _) (Point x2 _) = x2 -! x1
 distY (Point _ y1) (Point _ y2) = y2 -! y1
@@ -56,3 +61,4 @@ move (Point x y) (Rectangle (Point x1 y1) (Point x2 y2)) = Rectangle (Point (x1 
 instance Eq Shape where
   (Rectangle (Point x1a y1a) (Point x2a y2a)) == (Rectangle (Point x1b y1b) (Point x2b y2b)) =
     (x1a == x1b) && (y1a == y1b) && (x2a == x2a) && (y2a == y2b)
+
