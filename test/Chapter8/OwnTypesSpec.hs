@@ -7,7 +7,7 @@ main = hspec spec
 
 spec = do
   it "should pass" $ do
-    surface (Rectangle 0 0 10 10) `shouldBe` 100
+    surface (Rectangle (Point 0 0) (Point 10 10)) `shouldBe` 100
     surface (Triangle 10 5) `shouldBe` 25
 
   it "partially applies a data constructor" $ do
@@ -16,8 +16,10 @@ spec = do
 -- Data constructors are functions, so they can be partially applied
 getLast = last $ map (Triangle 10) [1,2,3,4,5]
 
-data Shape = Triangle Float Float | Rectangle Float Float Float Float
-  deriving Show
+type Base = Float
+type Height = Float
+data Point = Point Float Float deriving Show
+data Shape = Triangle Base Height | Rectangle Point Point deriving Show
 
 
 -- Shape is a Type Constructor
@@ -31,5 +33,5 @@ data Shape = Triangle Float Float | Rectangle Float Float Float Float
 
 surface :: Shape -> Float
 surface (Triangle b h) = b * h / 2
-surface (Rectangle x1 y1 x2 y2) = (abs $ x2 - x1) * (abs $ y2 - y1)
+surface (Rectangle (Point x1 y1) (Point x2 y2)) = (abs $ x2 - x1) * (abs $ y2 - y1)
 
