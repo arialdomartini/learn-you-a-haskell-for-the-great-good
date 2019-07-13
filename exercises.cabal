@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 0d868c37887bc7c661963fc36ba464e97ca1b4609e175c58349f44107e5766d4
+-- hash: b5e30e57050d96afa2a4b97c99fdfb29c74cf81f9ee90553cdec1f3671a63bc6
 
 name:           exercises
 version:        0.1.0.0
@@ -57,6 +57,7 @@ test-suite exercises-test
   other-modules:
       Chapter7.GeometrySpec
       Chapter7.SetSpec
+      Chapter8.OwnTypesSpec
       FindEstSpec
       Paths_exercises
   hs-source-dirs:
