@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: e6b35bc2a9a11847570672f35c034ef7950996c6b5000db3715da4eab3082e1f
+-- hash: c307c3330748fb9856143ed185a9b1b9ddf43e5d8e3ed16eb306bf7c90f68b7b
 
 name:           exercises
 version:        0.1.0.0
@@ -49,6 +49,7 @@ executable exercises-exe
       base >=4.7 && <5
     , containers >=0.6.0.1
     , exercises
+    , hspec
   default-language: Haskell2010
 
 test-suite exercises-test
@@ -57,6 +58,7 @@ test-suite exercises-test
   other-modules:
       Chapter7.GeometrySpec
       Chapter7.SetSpec
+      Chapter8.BinaryTreeSpec
       Chapter8.OwnTypesSpec
       Chapter8.Recursive2
       Chapter8.RecursiveSpec
