@@ -16,6 +16,13 @@ spec = do
   it "should use pattern matching with the record syntax" $ do
     surface' Triangle {base = 10, height = 10 } `shouldBe` 50
 
+
+  it "Maybe, negative case" $ do
+    divide 3.0 0.0 `shouldBe` Nothing'
+
+  it "Maybe, positive case" $ do
+    divide 6.0 2.0 `shouldBe` Just' 3.0
+
   it "should move a shape" $ do
     (move point before) `shouldBe` after
       where before = Rectangle (Point 0 0) (Point 10 10)
@@ -62,3 +69,9 @@ instance Eq Shape where
   (Rectangle (Point x1a y1a) (Point x2a y2a)) == (Rectangle (Point x1b y1b) (Point x2b y2b)) =
     (x1a == x1b) && (y1a == y1b) && (x2a == x2a) && (y2a == y2b)
 
+
+
+divide :: (Fractional a, Eq a) => a -> a -> Maybe' a
+divide a b = if b == 0 then Nothing' else Just' (a / b)
+
+data Maybe' a = Nothing' | Just' a  deriving (Show, Eq)
