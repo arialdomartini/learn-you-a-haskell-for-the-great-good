@@ -7,6 +7,11 @@ spec = do
     Red ==. Green `shouldBe` False
     Red ==. Red `shouldBe` True
 
+  it "should show semaphore states" $ do
+    show Red `shouldBe` "Red light, stop"
+    show Green `shouldBe` "Green light, go!"
+    show Yellow `shouldBe` "Yellow light, wait..."
+    
 data Semaphore = Red | Green | Yellow
 
 class Eq' a where
@@ -20,3 +25,8 @@ instance Eq' Semaphore where
   Green ==. Green = True
   Yellow ==. Yellow = True
   _ ==. _ = False
+
+instance Show Semaphore where
+  show Red = "Red light, stop"
+  show Green = "Green light, go!"
+  show Yellow = "Yellow light, wait..."
