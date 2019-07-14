@@ -2,7 +2,7 @@ module Chapter8.OwnTypesSpec
   where
 import Test.Hspec
 import Data.List
-import Data.Map as Map
+import qualified Data.Map as Map
 
 main = hspec spec
 
@@ -35,6 +35,21 @@ spec = do
 
   it "can compare laptops" $ do
     (Laptop I7 1000) > (Laptop I5 2000) `shouldBe` True
+
+  it "should use type aliases" $ do
+    sum' [("foo", 10), ("bar", 20)] `shouldBe` 30
+
+  it "should not find any locker" $ do
+    accessLocker 10 (Map.fromList [(1, (Free, "100")), (2, (Taken, "234"))]) `shouldBe` Left "Locker number 10 does not exist"
+
+  it "should find a free locker" $ do
+    accessLocker 1 (Map.fromList [(1, (Free, "100")), (2, (Taken, "234"))]) `shouldBe` Right "100"
+
+  it "should find a taken locker" $ do
+    accessLocker 2 (Map.fromList [(1, (Free, "100")), (2, (Taken, "234"))]) `shouldBe` Left "Locker number 2 is taken"
+
+
+
 
   it "should move a shape" $ do
     (move point before) `shouldBe` after
@@ -118,3 +133,24 @@ instance Ord CPU where
 instance Ord Laptop where
   compare (Laptop cpu1 frequency1) (Laptop cpu2 frequency2) = if cpu1 == cpu2 then compare frequency1 frequency2 else compare cpu1 cpu2
   
+type MapList k v = [(k, v)]
+type MapStringList v = MapList String v
+
+sum' :: MapStringList Int -> Int
+sum' xs = foldr s 0 xs
+  where s :: (String, Int) -> Int -> Int
+        s (_,i) acc = acc + i
+
+
+
+type Code = String
+type Index = Int
+data LockerState = Free | Taken deriving (Ord, Eq, Show)
+type LockerMap = Map.Map Index (LockerState, Code)
+
+accessLocker :: Index -> LockerMap -> Either String Code
+accessLocker index map = case Map.lookup index map of
+  Nothing -> Left $ "Locker number " ++ show index ++ " does not exist"
+  Just (Free, code) -> Right code
+  Just (Taken, _) -> Left $ "Locker number " ++ show index ++ " is taken"
+
