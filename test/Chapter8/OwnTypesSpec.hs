@@ -23,6 +23,16 @@ spec = do
   it "Maybe, positive case" $ do
     divide 6.0 2.0 `shouldBe` Just' 3.0
 
+  it "sum of vectors" $ do
+    (Vector 1 1 1) +! (Vector 2 2 2) `shouldBe` (Vector 3 3 3)
+
+  it "vectorial multiplication of vector" $ do
+    6 *! (Vector 1 1 1) `shouldBe` (Vector 6 6 6)
+
+  it "scalar multiplication of vector" $ do
+    (Vector 1 2 3) *^ (Vector 3 4 5) `shouldBe` (Vector 3 8 15)
+
+
   it "should move a shape" $ do
     (move point before) `shouldBe` after
       where before = Rectangle (Point 0 0) (Point 10 10)
@@ -75,3 +85,15 @@ divide :: (Fractional a, Eq a) => a -> a -> Maybe' a
 divide a b = if b == 0 then Nothing' else Just' (a / b)
 
 data Maybe' a = Nothing' | Just' a  deriving (Show, Eq)
+
+
+data Vector a  = Vector a a a deriving (Show,Eq)
+
+(+!) :: (Num a) => Vector a -> Vector a -> Vector a
+(+!) (Vector x1 y1 z1) (Vector x2 y2 z2) = Vector (x1+x2) (y1+y2) (z1+z2)
+
+(*!) :: (Num a) => a -> Vector a -> Vector a
+(*!) n (Vector x y z) = Vector (x*n) (y*n) (z*n)
+
+(*^) :: (Num a) => Vector a -> Vector a -> Vector a
+(*^) (Vector x y z) (Vector a b c) = Vector (x*a) (y*b) (z*c)
