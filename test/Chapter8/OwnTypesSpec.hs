@@ -2,6 +2,7 @@ module Chapter8.OwnTypesSpec
   where
 import Test.Hspec
 import Data.List
+import Data.Map as Map
 
 main = hspec spec
 
@@ -32,6 +33,8 @@ spec = do
   it "scalar multiplication of vector" $ do
     (Vector 1 2 3) *^ (Vector 3 4 5) `shouldBe` (Vector 3 8 15)
 
+  it "can compare laptops" $ do
+    (Laptop I7 1000) > (Laptop I5 2000) `shouldBe` True
 
   it "should move a shape" $ do
     (move point before) `shouldBe` after
@@ -40,7 +43,7 @@ spec = do
             after =  Rectangle (Point 5 3) (Point 15 13)
 
 -- Data constructors are functions, so they can be partially applied
-getLast = last $ map (Triangle 10) [1,2,3,4,5]
+getLast = last $ Data.List.map (Triangle 10) [1,2,3,4,5]
 
 type Base = Float
 type Height = Float
@@ -97,3 +100,21 @@ data Vector a  = Vector a a a deriving (Show,Eq)
 
 (*^) :: (Num a) => Vector a -> Vector a -> Vector a
 (*^) (Vector x y z) (Vector a b c) = Vector (x*a) (y*b) (z*c)
+
+
+
+data CPU = I5 | I6 | I7 deriving (Eq,Show)
+data Laptop = Laptop CPU Int deriving Eq
+
+-- the following could be replaced by simply deriving CPU from Ord
+-- data CPU = I5 | I6 | I7 deriving (Eq,Show,Ord)
+instance Ord CPU where
+  compare a b = compare aa bb
+    where aa = find a
+          bb = find b
+          find y = snd $ head $ Data.List.filter (\x -> fst x==y) x
+          x = [ (I5, 1),  (I6, 2),  (I7, 3)]
+
+instance Ord Laptop where
+  compare (Laptop cpu1 frequency1) (Laptop cpu2 frequency2) = if cpu1 == cpu2 then compare frequency1 frequency2 else compare cpu1 cpu2
+  
