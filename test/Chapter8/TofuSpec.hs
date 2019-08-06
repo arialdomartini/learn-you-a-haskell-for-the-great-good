@@ -19,3 +19,13 @@ class Tofu t where
 
 instance Tofu Foo where
   tofu c = Foo c
+
+
+getFrank :: Frank Int Maybe
+getFrank = Frank { frankField = Just 5 }
+
+-- Frank is of kind * -> (* -> *) -> *
+data Frank a b = Frank {frankField :: b a} deriving Show
+
+instance Tofu Frank where
+  tofu c = Frank {frankField = c}
