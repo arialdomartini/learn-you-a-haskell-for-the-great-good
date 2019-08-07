@@ -5,4 +5,8 @@ main :: IO ()
 main = do
   putStrLn "What's your name?"
   name <- getLine
-  putStrLn ("Hi, " ++ name)
+  let greet = compose name
+  putStrLn greet
+
+compose :: String -> String
+compose name = "Hi, " ++ name
