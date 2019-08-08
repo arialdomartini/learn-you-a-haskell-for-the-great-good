@@ -1,13 +1,13 @@
 module Chapter9.Reverse where
 
+import Control.Monad
+
 main :: IO ()
 main = do
   word <- getLine
-  if null word
-    then return ()
-    else do let rev = reverse' word 
-            putStrLn $ rev
-            main
+  when (not $ null word) $ do
+    putStrLn $ reverse' word
+    main
 
 reverse' :: String -> String
 reverse' = foldl f []
