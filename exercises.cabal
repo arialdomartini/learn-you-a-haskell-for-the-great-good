@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: f6ac2847a86240001734863a26efbd09b7e67b2f26901e23a1895177f83244fe
+-- hash: 3086bc37985aaab3ab79730930f5906a162eddb6084b39913b8edb77dbcb0d8e
 
 name:           exercises
 version:        0.1.0.0
@@ -31,6 +31,7 @@ library
       Chapter9.HelloWorld
       Chapter9.PutChr
       Chapter9.Reverse
+      Chapter9.Sequence
       Lib
   other-modules:
       Paths_exercises
