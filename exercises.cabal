@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: af2346be29bbe2a8a3c56d3de3adc48aa42c1c98f55997f98a2312683f7ce0ac
+-- hash: ff8f204e46529d65bf610bb926d82948888aed966eb4e55fbeac84b64ccf2f0d
 
 name:           exercises
 version:        0.1.0.0
@@ -29,6 +29,7 @@ library
       Chapter7.FindEst
       Chapter7.Geometry
       Chapter9.Capslocker
+      Chapter9.ConvertToCaps
       Chapter9.Forever
       Chapter9.ForM
       Chapter9.HelloWorld
@@ -76,6 +77,7 @@ test-suite exercises-test
       Chapter8.RecursiveSpec
       Chapter8.TofuSpec
       Chapter8.YesNoSpec
+      Chapter9.ConvertToCapsSpec
       Chapter9.ReverseSpec
       FindEstSpec
       Paths_exercises
