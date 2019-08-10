@@ -14,3 +14,16 @@ main = do
     ReadMode (\handle -> do
                  content <- hGetContents handle
                  putStrLn content)
+
+  -- using a custom implementation of withFile
+  withFile' "src/Chapter9/ReadFile.hs"
+    ReadMode (\handle -> do
+                 content <- hGetContents handle
+                 putStrLn content)
+
+withFile' :: FilePath -> IOMode -> (Handle -> IO ()) -> IO ()
+withFile' filePath fileMode f = do
+  handle <- openFile filePath fileMode
+  result <- f handle
+  hClose handle
+  return result
