@@ -21,6 +21,10 @@ main = do
                  content <- hGetContents handle
                  putStrLn content)
 
+  -- using readFile
+  content <- readFile "src/Chapter9/ReadFile.hs"
+  putStrLn content
+
 withFile' :: FilePath -> IOMode -> (Handle -> IO ()) -> IO ()
 withFile' filePath fileMode f = do
   handle <- openFile filePath fileMode
