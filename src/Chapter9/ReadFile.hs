@@ -21,11 +21,11 @@ main = do
                  content <- hGetContents handle
                  putStrLn content)
 
-  putStrLn "-- using readFile (this gives an error in GHCI, and maybe also when compiled"
+  putStrLn "-- using readFile"
   content <- readFile "src/Chapter9/ReadFile.hs"
   putStrLn content
 
-  putStrLn "-- using a custom implementation of readFile"
+  putStrLn "-- using a custom implementation of readFile  (this gives an error in GHCI, and also when compiled)"
   content <- readFile' "src/Chapter9/ReadFile.hs"
   putStrLn content
 
@@ -40,6 +40,6 @@ readFile' :: FilePath -> IO String
 readFile' filePath = do
   handle <- openFile filePath ReadMode
   content <- hGetContents handle
-  hFlush handle
+--  hFlush handle
   hClose handle
   return content

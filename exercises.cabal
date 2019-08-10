@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 071f43b3cd6e993fbcb984ab5aff42edf673238ec0f26785bde312ca356bea0f
+-- hash: 2f2678d262f17d9b4333075ee11af5cea99cef57b907fd58ddf98c8905a2b9aa
 
 name:           exercises
 version:        0.1.0.0
@@ -47,6 +47,18 @@ library
   build-depends:
       base >=4.7 && <5
     , containers >=0.6.0.1
+  default-language: Haskell2010
+
+executable another-one
+  main-is: Main.hs
+  other-modules:
+      Paths_exercises
+  hs-source-dirs:
+      another-one
+  build-depends:
+      base >=4.7 && <5
+    , containers >=0.6.0.1
+    , exercises
   default-language: Haskell2010
 
 executable exercises-exe
