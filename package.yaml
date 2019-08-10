@@ -36,7 +36,6 @@ executables:
     dependencies:
     - exercises
     - hspec
-    
 
 tests:
   exercises-test:

@@ -9,20 +9,24 @@ main = do
   putStrLn content
   hClose handle
 
-  -- using withFile
+  putStrLn "-- using withFile"
   withFile "src/Chapter9/ReadFile.hs"
     ReadMode (\handle -> do
                  content <- hGetContents handle
                  putStrLn content)
 
-  -- using a custom implementation of withFile
+  putStrLn "-- using a custom implementation of withFile"
   withFile' "src/Chapter9/ReadFile.hs"
     ReadMode (\handle -> do
                  content <- hGetContents handle
                  putStrLn content)
 
-  -- using readFile
+  putStrLn "-- using readFile (this gives an error in GHCI, and maybe also when compiled"
   content <- readFile "src/Chapter9/ReadFile.hs"
+  putStrLn content
+
+  putStrLn "-- using a custom implementation of readFile"
+  content <- readFile' "src/Chapter9/ReadFile.hs"
   putStrLn content
 
 withFile' :: FilePath -> IOMode -> (Handle -> IO ()) -> IO ()
@@ -31,3 +35,11 @@ withFile' filePath fileMode f = do
   result <- f handle
   hClose handle
   return result
+
+readFile' :: FilePath -> IO String
+readFile' filePath = do
+  handle <- openFile filePath ReadMode
+  content <- hGetContents handle
+  hFlush handle
+  hClose handle
+  return content
