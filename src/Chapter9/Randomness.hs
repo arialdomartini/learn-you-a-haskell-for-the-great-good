@@ -12,3 +12,11 @@ threeCoins gen1 = (first, second, third) where
 
 infiniteCoins :: StdGen -> [Bool]
 infiniteCoins gen = randoms gen
+
+infiniteCustomCoins :: StdGen -> [Bool]
+infiniteCustomCoins gen = randoms' gen
+
+randoms' :: StdGen -> [Bool]
+randoms' gen =
+  let (rnd, newGen) = random gen
+  in rnd : (randoms' newGen)

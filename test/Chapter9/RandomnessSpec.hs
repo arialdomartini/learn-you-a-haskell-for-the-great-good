@@ -10,3 +10,6 @@ spec = do
 
   it "tosses a coins infinite times" $ do
     take 7 (infiniteCoins  (mkStdGen 100)) `shouldBe` [True, False, False, False, False, True, True]
+
+  it "infinite coins with a custom implementation of randoms" $ do
+    take 7 (infiniteCustomCoins  (mkStdGen 100)) `shouldBe` [True, False, False, False, False, True, True]
