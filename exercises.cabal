@@ -37,6 +37,7 @@ library
       Chapter9.PutChr
       Chapter9.ReadFile
       Chapter9.Reverse
+      Chapter9.Randomness
       Chapter9.Sequence
       Chapter9.ShorterLines
       Lib
@@ -47,19 +48,9 @@ library
   build-depends:
       base >=4.7 && <5
     , containers >=0.6.0.1
+    , random
   default-language: Haskell2010
 
-executable another-one
-  main-is: Main.hs
-  other-modules:
-      Paths_exercises
-  hs-source-dirs:
-      another-one
-  build-depends:
-      base >=4.7 && <5
-    , containers >=0.6.0.1
-    , exercises
-  default-language: Haskell2010
 
 executable exercises-exe
   main-is: Main.hs
@@ -90,6 +81,7 @@ test-suite exercises-test
       Chapter8.TofuSpec
       Chapter8.YesNoSpec
       Chapter9.ReverseSpec
+      Chapter9.RandomnessSpec
       FindEstSpec
       Paths_exercises
   hs-source-dirs:
@@ -100,4 +92,5 @@ test-suite exercises-test
     , containers >=0.6.0.1
     , exercises
     , hspec
+    , random
   default-language: Haskell2010
