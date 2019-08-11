@@ -1,2 +1,7 @@
-mkdir -p .stack-work
-docker run -ti --rm -v $(pwd)/.stack-cache:/root/.stack/ -v $(pwd):/source -w /source fpco/stack-build bash
+mkdir -p .stack-work &&
+./build.sh &&
+docker run -ti --rm \
+       -v $(pwd)/.stack-cache:/root/.stack/ \
+       -v $(pwd):/source \
+       -w /source \
+       arialdomartini/haskell-stack bash
