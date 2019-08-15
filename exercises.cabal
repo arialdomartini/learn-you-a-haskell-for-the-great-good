@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 2f2678d262f17d9b4333075ee11af5cea99cef57b907fd58ddf98c8905a2b9aa
+-- hash: edaad868395fd93f835728657dde1e9f67965348d3d54ff47783f926e6d7adf8
 
 name:           exercises
 version:        0.1.0.0
@@ -26,6 +26,7 @@ source-repository head
 
 library
   exposed-modules:
+      Chapter10.ReversePolishNotationCalculator
       Chapter7.FindEst
       Chapter7.Geometry
       Chapter9.Capslocker
@@ -35,9 +36,9 @@ library
       Chapter9.HelloWorld
       Chapter9.IsPalindrome
       Chapter9.PutChr
+      Chapter9.Randomness
       Chapter9.ReadFile
       Chapter9.Reverse
-      Chapter9.Randomness
       Chapter9.Sequence
       Chapter9.ShorterLines
       Lib
@@ -51,7 +52,6 @@ library
     , random
   default-language: Haskell2010
 
-
 executable exercises-exe
   main-is: Main.hs
   other-modules:
@@ -64,12 +64,14 @@ executable exercises-exe
     , containers >=0.6.0.1
     , exercises
     , hspec
+    , random
   default-language: Haskell2010
 
 test-suite exercises-test
   type: exitcode-stdio-1.0
   main-is: Spec.hs
   other-modules:
+      Chapter10.ReversePolishNotationCalculatorSpec
       Chapter7.GeometrySpec
       Chapter7.SetSpec
       Chapter8.BinaryTreeSpec
@@ -80,8 +82,10 @@ test-suite exercises-test
       Chapter8.RecursiveSpec
       Chapter8.TofuSpec
       Chapter8.YesNoSpec
-      Chapter9.ReverseSpec
+      Chapter9.Exceptions
+      Chapter9.ExceptionsSpec
       Chapter9.RandomnessSpec
+      Chapter9.ReverseSpec
       FindEstSpec
       Paths_exercises
   hs-source-dirs:

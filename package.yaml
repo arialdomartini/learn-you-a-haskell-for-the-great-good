@@ -21,6 +21,7 @@ description:         Please see the README on GitHub at <https://github.com/gith
 dependencies:
 - base >= 4.7 && < 5
 - containers  >= 0.6.0.1
+- random
 
 library:
   source-dirs: src
@@ -37,6 +38,7 @@ executables:
     - exercises
     - hspec
 
+
 tests:
   exercises-test:
     main:                Spec.hs
@@ -48,3 +50,4 @@ tests:
     dependencies:
     - exercises
     - hspec
+
