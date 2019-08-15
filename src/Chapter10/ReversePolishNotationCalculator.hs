@@ -3,10 +3,15 @@ module Chapter10.ReversePolishNotationCalculator where
 --data Operazione = Plus | Minus
 data Item = Numero Int | Plus
 
+rpn :: String -> Int
+rpn = calculate . tokenize
 
-calculate :: [Item] -> Int
+tokenize = words
+
+calculate :: [String] -> Int
 calculate = head . foldl accumulate []
 
-accumulate acc (Numero n) = n : acc
-accumulate (f:s:as) Plus = (f + s):as
-
+accumulate :: [Int] -> String -> [Int]
+accumulate (a:b:as) "+" = (a + b) : as
+accumulate (a:b:as) "*" = (a * b) : as
+accumulate acc n = (read n):acc
