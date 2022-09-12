@@ -7,3 +7,4 @@
 
 * [Setup](docs/setup.md)
 * [Introduction](docs/introduction.md)
+* [Starting Out](docs/starting-out.md)
