@@ -6,3 +6,4 @@
 ## Index
 
 * [Setup](docs/setup.md)
+* [Introduction](docs/introduction.md)
