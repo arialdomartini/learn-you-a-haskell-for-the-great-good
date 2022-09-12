@@ -56,6 +56,7 @@ test-suite spec
   other-modules:
     DummySpec
     BooleanSpec
+    LibSpec
   build-tool-depends: hspec-discover:hspec-discover == 2.*
 
 source-repository head
