@@ -30,3 +30,9 @@ spec = do
     let xs = [1,2,3,4,5] :: [Int]
 
     (head xs) : (tail xs) `shouldBe` (init xs) ++ [last xs]
+
+
+  it "has length and null" $ do
+    let xs = [1,2,3,4] :: [Int]
+    (length (take 0 xs)) `shouldBe` 0
+    (null (take 0 xs)) `shouldBe` True
