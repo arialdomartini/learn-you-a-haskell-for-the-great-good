@@ -36,3 +36,20 @@ spec = do
     let xs = [1,2,3,4] :: [Int]
     (length (take 0 xs)) `shouldBe` 0
     (null (take 0 xs)) `shouldBe` True
+
+
+
+  it "calculates the maximum element of a list" $ do
+    let xs = [4,5,3,6,7,7,2,12,2]
+
+    (maximum xs) `shouldBe` (maxList xs)
+
+maxList' :: [Int] -> Int -> Int
+maxList' [] m = m
+maxList' (h : t) m =
+  if h > m then (maxList' t h)
+  else (maxList' t m)
+
+maxList :: [Int] -> Int
+maxList xs =
+  maxList' xs (minBound :: Int)
