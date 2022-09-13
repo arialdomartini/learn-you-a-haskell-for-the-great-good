@@ -25,3 +25,8 @@ spec = do
 
   it "has a list syntax that is just syntactic sugar or cons" $ do
     (1 : 2 : 3 : []) `shouldBe` ([1,2,3] :: [Int])
+
+  it "has head, tail, init and last" $ do
+    let xs = [1,2,3,4,5] :: [Int]
+
+    (head xs) : (tail xs) `shouldBe` (init xs) ++ [last xs]
