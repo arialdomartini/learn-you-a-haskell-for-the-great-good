@@ -19,3 +19,10 @@ spec = do
     let numbers = [1..] :: [Int]
     let with0 = 0 : numbers
     take 10 with0 `shouldBe` [0,1,2,3,4,5,6,7,8,9]
+
+
+  it "concatenating elements to infite lists; it works because Haskell is lazy" $ do
+    let numbers = [1..] :: [Int]
+    let concatenated = numbers ++ [100,99]
+
+    take 10 concatenated `shouldBe` [1,2,3,4,5,6,7,8,9,10]
