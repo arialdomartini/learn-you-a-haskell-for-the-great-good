@@ -54,7 +54,10 @@ test-suite spec
                        -rtsopts
                        -with-rtsopts=-N
   build-tool-depends: hspec-discover:hspec-discover == 2.*
-
+  other-modules:
+    DummySpec
+    BooleanSpec
+    LibSpec
 source-repository head
   type:     git
   location: https://github.com/githubuser/learn-you-a-haskell
