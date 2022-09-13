@@ -26,3 +26,7 @@ spec = do
     let concatenated = numbers ++ [100,99]
 
     take 10 concatenated `shouldBe` [1,2,3,4,5,6,7,8,9,10]
+
+  it "has a list syntax that is just syntactic sugar or cons" $ do
+
+    (1 : 2 : 3 : []) `shouldBe` ([1,2,3] :: [Int])
