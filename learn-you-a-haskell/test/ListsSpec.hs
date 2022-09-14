@@ -38,12 +38,6 @@ spec = do
     (null (take 0 xs)) `shouldBe` True
 
 
-  it "can use list comprehensions" $ do
-    let lc =     [(x * 2, y) | x <- [1..10], y <- [1..10], y `mod` 2 == 0] :: [(Int, Int)]
-    let manual = buildList
-    lc `shouldBe` manual
-
-
   it "calculates the maximum element of a list" $ do
     let xs = [4,5,3,6,7,7,2,12,2] :: [Int]
 
@@ -59,20 +53,3 @@ spec = do
         if h > m then (maxList' t h)
         else (maxList' t m)
 
-
-
-buildList :: [(Int, Int)]
-buildList = build' 1 1 []
-
-
-build' :: Int -> Int -> [(Int, Int)] -> [(Int, Int)]
-build' x y acc =
-  case (x, y) of
-  (10, 10) -> maybeAdd acc x y
-  (_,  10) -> build'(x+1) (1)     ( maybeAdd acc x y)
-  (_, _)   -> build' (x)   (y+1)   ( maybeAdd acc x y)
-  where
-    maybeAdd acc' x' y' =
-      if y' `mod` 2 == 0
-      then acc' ++ [(x'*2, y')]
-      else acc'
