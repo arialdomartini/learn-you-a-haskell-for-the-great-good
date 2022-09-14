@@ -21,6 +21,29 @@ spec = do
     let fb = [ fzbz_foldl x | x <- [1..10]]
     fb `shouldBe` ["1", "fizz", "buzz", "fizz", "5", "fizzbuzz", "7", "fizz", "buzz", "fizz"]
 
+
+  it "introduce people" $ do
+    let people = ["Harry", "Sally", "John", "Sally"]
+        ns = [0..(length people -1)]
+        np = zip ns people
+        greetings = [a ++ ", this is " ++ b | (n, a) <- np, (m, b) <- np, n /= m]
+    greetings `shouldBe` [
+      "Harry, this is Sally",
+      "Harry, this is John",
+      "Harry, this is Sally",
+
+      "Sally, this is Harry",
+      "Sally, this is John",
+      "Sally, this is Sally",
+
+      "John, this is Harry",
+      "John, this is Sally",
+      "John, this is Sally",
+
+      "Sally, this is Harry",
+      "Sally, this is Sally",
+      "Sally, this is John"]
+
 fzbz :: Int -> String
 fzbz x =
   case x of
