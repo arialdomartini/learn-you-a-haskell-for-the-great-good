@@ -44,12 +44,12 @@ spec = do
 
     (maximum xs) `shouldBe` (maxList xs)
 
-maxList' :: (Ord a) => [a] -> a -> a
-maxList' [] m = m
-maxList' (h : t) m =
-  if h > m then (maxList' t h)
-  else (maxList' t m)
+    where
+      maxList :: (Bounded a, Ord a) => [a] -> a
+      maxList xs = maxList' xs minBound
 
-maxList :: (Bounded a, Ord a) => [a] -> a
-maxList xs =
-  maxList' xs minBound
+      maxList' :: (Ord a) => [a] -> a -> a
+      maxList' [] m = m
+      maxList' (h : t) m =
+        if h > m then (maxList' t h)
+        else (maxList' t m)
