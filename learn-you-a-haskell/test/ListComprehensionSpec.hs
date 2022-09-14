@@ -16,6 +16,11 @@ spec = do
     let fb = [ fzbz x | x <- [1..10]]
     fb `shouldBe` ["1", "fizz", "buzz", "fizz", "5", "fizzbuzz", "7", "fizz", "buzz", "fizz"]
 
+
+  it "calculate fizz buzz with foldl" $ do
+    let fb = [ fzbz_foldl x | x <- [1..10]]
+    fb `shouldBe` ["1", "fizz", "buzz", "fizz", "5", "fizzbuzz", "7", "fizz", "buzz", "fizz"]
+
 fzbz :: Int -> String
 fzbz x =
   case x of
@@ -23,6 +28,14 @@ fzbz x =
   x' | (x' `mod` 2) == 0                       -> "fizz"
   x' | (x' `mod` 3) == 0                       -> "buzz"
   _                                            -> show x
+
+fzbz_foldl :: Int -> String
+fzbz_foldl x =
+  let mul = [(2, "fizz"), (3, "buzz")]
+      r = foldl ff "" mul in
+  if r == "" then (show x) else r
+  where
+    ff acc (d, f) = if (x `mod` d == 0) then acc ++ f else acc
 
 buildList :: [(Int, Int)]
 buildList = build' 1 1 []
