@@ -12,6 +12,17 @@ spec = do
     lc `shouldBe` manual
 
 
+  it "calculate fizz buzz" $ do
+    let fb = [ fzbz x | x <- [1..10]]
+    fb `shouldBe` ["1", "fizz", "buzz", "fizz", "5", "fizzbuzz", "7", "fizz", "buzz", "fizz"]
+
+fzbz :: Int -> String
+fzbz x =
+  case x of
+  x' | (x' `mod` 2) == 0 && (x' `mod` 3) == 0  -> "fizzbuzz"
+  x' | (x' `mod` 2) == 0                       -> "fizz"
+  x' | (x' `mod` 3) == 0                       -> "buzz"
+  _                                            -> show x
 
 buildList :: [(Int, Int)]
 buildList = build' 1 1 []
