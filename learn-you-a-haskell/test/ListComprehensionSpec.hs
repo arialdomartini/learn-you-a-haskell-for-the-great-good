@@ -44,6 +44,17 @@ spec = do
       "Sally, this is Sally",
       "Sally, this is John"]
 
+
+  it "calculates length with list comprehension" $ do
+    let xs = take 100 (repeat 'a')
+    (len xs) `shouldBe` (length xs)
+
+
+len :: [a] -> Int
+--len xs = foldl (\a i -> a + i) 0 [1 | _ <- xs]
+len xs = foldl1 (+) [1 | _ <- xs]
+
+
 fzbz :: Int -> String
 fzbz x =
   case x of
