@@ -19,6 +19,13 @@ buy expense
   where insult = "you are Scrooge"
         anotherInsult = "ordinary. So boring"
 
+initials :: String -> String -> String
+initials name surname =
+  [n] ++ "." ++ [s] ++ "."
+  where
+    (n:_) = name
+    (s:_) = surname
+
 spec :: Spec
 spec = do
   it "implements length with recursion and pattern matching" $ do
@@ -33,3 +40,6 @@ spec = do
     (buy 100) `shouldBe` "you are Scrooge"
     (buy 200) `shouldBe` "ordinary. So boring"
     (buy 1000) `shouldBe` "you are a spendthrift"
+
+  it "uses pattern matches in where clauses" $ do
+    (initials "Pippo" "Franco") `shouldBe` "P.F."
