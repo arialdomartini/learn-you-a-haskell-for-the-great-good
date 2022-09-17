@@ -12,10 +12,12 @@ firstLetter s@(f:_) = "The first letter of " ++ s ++ " is " ++ [f]
 
 buy :: Double -> String
 buy expense
-  | expense <= 100 = "you are Scrooge"
-  | expense <= 200 = "ordinary. So boring"
+  | expense <= 100 = insult
+  | expense <= 200 = anotherInsult
   | expense >= 1000 = "you are a spendthrift"
   | otherwise = error "Undefined"
+  where insult = "you are Scrooge"
+        anotherInsult = "ordinary. So boring"
 
 spec :: Spec
 spec = do
