@@ -61,6 +61,7 @@ test-suite spec
     ListsSpec
     ListComprehensionSpec
     TuplesSpec
+    PatternMatchingSpec
 source-repository head
   type:     git
   location: https://github.com/githubuser/learn-you-a-haskell
