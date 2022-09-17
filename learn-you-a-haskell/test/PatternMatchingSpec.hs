@@ -10,6 +10,13 @@ firstLetter :: String -> String
 firstLetter [] = error "Empty string!"
 firstLetter s@(f:_) = "The first letter of " ++ s ++ " is " ++ [f]
 
+buy :: Double -> String
+buy expense
+  | expense <= 100 = "you are Scrooge"
+  | expense <= 200 = "ordinary. So boring"
+  | expense >= 1000 = "you are a spendthrift"
+  | otherwise = error "Undefined"
+
 spec :: Spec
 spec = do
   it "implements length with recursion and pattern matching" $ do
@@ -18,3 +25,9 @@ spec = do
 
   it "provides as-pattern" $ do
     (firstLetter "Hello") `shouldBe` "The first letter of Hello is H"
+
+
+  it "uses guards" $ do
+    (buy 100) `shouldBe` "you are Scrooge"
+    (buy 200) `shouldBe` "ordinary. So boring"
+    (buy 1000) `shouldBe` "you are a spendthrift"
