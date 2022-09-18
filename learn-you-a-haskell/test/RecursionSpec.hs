@@ -32,6 +32,10 @@ take' 0 _ = []
 take' _ [] = []
 take' n (h:t) = h : take' (n-1) t
 
+reverse' :: [a] -> [a]
+reverse' [] = []
+reverse' (h:t) = (reverse' t) ++ [h]
+
 spec :: Spec
 spec = do
   it "calculates the fibonacci series" $ do
@@ -50,3 +54,6 @@ spec = do
 
   it "implements take as a recursive function" $ do
     (take' 5 [1,2,3,4,5,6,7,8] :: [Int]) `shouldBe` (take 5 [1,2,3,4,5,6,7,8])
+
+  it "implements reverse as a recursive function" $ do
+    (reverse' [1,2,3,4] :: [Int]) `shouldBe` reverse [1,2,3,4]
