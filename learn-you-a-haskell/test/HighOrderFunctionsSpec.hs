@@ -22,6 +22,13 @@ zipWith' f (a:as) (b:bs) = (f a b) : zipWith' f as bs
 flip' :: (a -> b -> c) -> (b -> a -> c)
 flip' f a b = f b a
 
+(|>) :: a -> (a -> b) -> b
+a |> f = f a
+
+map' :: (a -> b) -> [a] -> [b]
+map' _ [] = []
+map' f (h:t) = f h : map' f t
+
 spec :: Spec
 spec = do
   it "implicitly curries functions" $ do
@@ -49,3 +56,10 @@ spec = do
     let nameSurname n s = n ++ " " ++ s
     let surnameName  = flip' nameSurname
     (surnameName "Mario" "Cioni") `shouldBe` "Cioni Mario"
+
+  it "F#'s pipe'" $ do
+    (12::Int) |> (1 +) `shouldBe` 13
+
+
+  it "maps a function to a list" $ do
+    (map' (*2) ([1,2,3] :: [Int])) `shouldBe` [2,4,6]
