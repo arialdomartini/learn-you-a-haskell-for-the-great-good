@@ -39,6 +39,11 @@ reverse' (h:t) = (reverse' t) ++ [h]
 repeat' :: a -> [a]
 repeat' x = x : repeat' x
 
+zip' :: [a] -> [b] -> [(a,b)]
+zip' _ [] = []
+zip' [] _ = []
+zip' (a:as) (b:bs) = (a,b): zip' as bs
+
 spec :: Spec
 spec = do
   it "calculates the fibonacci series" $ do
@@ -63,3 +68,6 @@ spec = do
 
   it "implements repeat as a recursive function" $ do
     (take 5 (repeat' 'a')) `shouldBe` (take 5 (repeat 'a'))
+
+  it "implements zip as a recursive function" $ do
+    (zip' ['a', 'b', 'c'] ([1,2,3]::[Int])) `shouldBe` (zip ['a', 'b', 'c'] [1,2,3])
