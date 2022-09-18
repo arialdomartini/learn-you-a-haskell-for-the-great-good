@@ -80,3 +80,9 @@ spec = do
 
   it "list filter" $ do
     (filter (\i -> length i > 5) ["hey", "123456"]) `shouldBe` ["123456"]
+
+  it "composes filters" $ do
+    let f1 = (>(10::Int))
+    let f2 = (<(50 :: Int))
+    let fx ^+ fy = \v -> (fx v) && (fy v)
+    (filter (f1 ^+ f2) ([1, 12, 49, 51] :: [Int])) `shouldBe` ([12, 49] :: [Int])
