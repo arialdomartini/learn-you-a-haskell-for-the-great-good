@@ -29,6 +29,10 @@ map' :: (a -> b) -> [a] -> [b]
 map' _ [] = []
 map' f (h:t) = f h : map' f t
 
+filter' :: (a -> Bool) -> [a] -> [a]
+filter' _ [] = []
+filter' p (x:xs) = if p x then x : filter' p xs else filter' p xs
+
 spec :: Spec
 spec = do
   it "implicitly curries functions" $ do
@@ -65,8 +69,11 @@ spec = do
     (map' (*2) ([1,2,3] :: [Int])) `shouldBe` [2,4,6]
 
   it "maps to lists of lists" $ do
-    (map (map (++"!") ) [["hey", "Joe"], ["Stop"]]) `shouldBe` [["hey!", "Joe!"], ["Stop!"]]
+    (map' (map' (++"!") ) [["hey", "Joe"], ["Stop"]]) `shouldBe` [["hey!", "Joe!"], ["Stop!"]]
 
   it "bimap" $ do
     let bimap f = map (map f)
     (bimap (++"!")  [["hey", "Joe"], ["Stop"]]) `shouldBe` [["hey!", "Joe!"], ["Stop!"]]
+
+  it "list filter" $ do
+    (filter (\i -> length i > 5) ["hey", "123456"]) `shouldBe` ["123456"]
