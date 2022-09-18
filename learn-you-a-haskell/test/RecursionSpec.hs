@@ -24,6 +24,9 @@ myMax' (x:t) =
   greatestBetween x (myMax' t)
   where greatestBetween a b = if a > b then a else b
 
+replicate' :: Int -> a -> [a]
+replicate' n e = e : replicate (n - 1) e
+
 spec :: Spec
 spec = do
   it "calculates the fibonacci series" $ do
@@ -36,3 +39,6 @@ spec = do
   it "calculates the maximum of a list using a simplified recursion" $ do
     let xs = [1,6,2,66,66,12,54] :: [Int]
       in (myMax' xs) `shouldBe` (maximum xs)
+
+  it "implement replicate as a recursive function" $ do
+    replicate' 3 (5::Int) `shouldBe` replicate 3 5
