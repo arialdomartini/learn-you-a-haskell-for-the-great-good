@@ -44,6 +44,10 @@ zip' _ [] = []
 zip' [] _ = []
 zip' (a:as) (b:bs) = (a,b): zip' as bs
 
+elem' :: Eq a => a -> [a] -> Bool
+elem' _ [] = False
+elem' e (h : t) = if e == h then True else elem' e t
+
 spec :: Spec
 spec = do
   it "calculates the fibonacci series" $ do
@@ -71,3 +75,8 @@ spec = do
 
   it "implements zip as a recursive function" $ do
     (zip' ['a', 'b', 'c'] ([1,2,3]::[Int])) `shouldBe` (zip ['a', 'b', 'c'] [1,2,3])
+
+  it "implements elem as a recursive function" $ do
+    let xs = ["bar", "foo", "baz"]
+    (elem' "foo" xs) `shouldBe` (elem "foo" xs)
+    (elem' "zop" xs) `shouldBe` (elem "zop" xs)
