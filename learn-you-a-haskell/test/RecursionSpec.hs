@@ -1,6 +1,7 @@
 module RecursionSpec where
 
 import Test.Hspec
+import Data.List(sort)
 
 fibn :: Int -> Int
 fibn 0 = 1
@@ -48,6 +49,15 @@ elem' :: Eq a => a -> [a] -> Bool
 elem' _ [] = False
 elem' e (h : t) = if e == h then True else elem' e t
 
+quicksort :: Ord a => [a] -> [a]
+quicksort [] = []
+quicksort (h:t) =
+  (sorted smaller) ++ [h] ++ (sorted larger)
+  where
+    smaller = [x | x <- t, x < h]
+    larger = [x | x <- t, x >= h]
+    sorted = quicksort
+
 spec :: Spec
 spec = do
   it "calculates the fibonacci series" $ do
@@ -80,3 +90,7 @@ spec = do
     let xs = ["bar", "foo", "baz"]
     (elem' "foo" xs) `shouldBe` (elem "foo" xs)
     (elem' "zop" xs) `shouldBe` (elem "zop" xs)
+
+  it "implements Quick Sort as a recursive function" $ do
+    let xs = ["bar", "foo", "baz"]
+    (quicksort xs) `shouldBe` (sort xs)
