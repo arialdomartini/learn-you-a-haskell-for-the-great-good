@@ -63,6 +63,7 @@ test-suite spec
     TuplesSpec
     PatternMatchingSpec
     RecursionSpec
+    HighOrderFunctionsSpec
 source-repository head
   type:     git
   location: https://github.com/githubuser/learn-you-a-haskell
