@@ -36,6 +36,19 @@ filter' p (x:xs)
   | otherwise =     recurse
   where recurse = filter' p xs
 
+collatz :: Int -> [Int]
+collatz n =
+  let r = (step n) in
+  case r of
+    1         -> [1]
+    _         -> r : (collatz r)
+  where
+    step i
+     | even i    = i `div` 2
+     | True      = 3 * i + 1
+
+
+
 spec :: Spec
 spec = do
   it "implicitly curries functions" $ do
@@ -86,3 +99,6 @@ spec = do
     let f2 = (<(50 :: Int))
     let fx ^+ fy = \v -> (fx v) && (fy v)
     (filter (f1 ^+ f2) ([1, 12, 49, 51] :: [Int])) `shouldBe` ([12, 49] :: [Int])
+
+  it "generates a collatz series" $ do
+    (last (collatz 100)) `shouldBe` 1
