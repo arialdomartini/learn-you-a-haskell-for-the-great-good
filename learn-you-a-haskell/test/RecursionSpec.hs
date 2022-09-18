@@ -36,6 +36,9 @@ reverse' :: [a] -> [a]
 reverse' [] = []
 reverse' (h:t) = (reverse' t) ++ [h]
 
+repeat' :: a -> [a]
+repeat' x = x : repeat' x
+
 spec :: Spec
 spec = do
   it "calculates the fibonacci series" $ do
@@ -57,3 +60,6 @@ spec = do
 
   it "implements reverse as a recursive function" $ do
     (reverse' [1,2,3,4] :: [Int]) `shouldBe` reverse [1,2,3,4]
+
+  it "implements repeat as a recursive function" $ do
+    (take 5 (repeat' 'a')) `shouldBe` (take 5 (repeat 'a'))
