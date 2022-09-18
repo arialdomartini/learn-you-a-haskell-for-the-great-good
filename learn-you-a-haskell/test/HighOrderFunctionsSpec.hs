@@ -19,6 +19,9 @@ zipWith' _ [] _ = []
 zipWith' _ _ [] = []
 zipWith' f (a:as) (b:bs) = (f a b) : zipWith' f as bs
 
+flip' :: (a -> b -> c) -> (b -> a -> c)
+flip' f a b = f b a
+
 spec :: Spec
 spec = do
   it "implicitly curries functions" $ do
@@ -41,3 +44,8 @@ spec = do
     let as = [1,2,3] :: [Int]
     let bs = [2,3,4]
     (zipWith' (+) as bs) `shouldBe` (zipWith (+) as bs)
+
+  it "flips parameters of a function" $ do
+    let nameSurname n s = n ++ " " ++ s
+    let surnameName  = flip' nameSurname
+    (surnameName "Mario" "Cioni") `shouldBe` "Cioni Mario"
