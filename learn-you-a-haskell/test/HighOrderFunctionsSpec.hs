@@ -31,7 +31,9 @@ map' f (h:t) = f h : map' f t
 
 filter' :: (a -> Bool) -> [a] -> [a]
 filter' _ [] = []
-filter' p (x:xs) = if p x then x : filter' p xs else filter' p xs
+filter' p (x:xs)
+  | p x       = x : filter' p xs
+  | otherwise = filter' p xs
 
 spec :: Spec
 spec = do
