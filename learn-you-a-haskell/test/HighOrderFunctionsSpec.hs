@@ -11,6 +11,9 @@ divideBy10 = (/10)
 isAlpha :: Char -> Bool
 isAlpha = (`elem` ['a'..'z'])
 
+twice :: (a -> a) -> (a -> a)
+twice f a = f (f a)
+
 spec :: Spec
 spec = do
   it "implicitly curries functions" $ do
@@ -22,3 +25,9 @@ spec = do
   it "support sections for prefix functions" $ do
     (isAlpha 'a') `shouldBe` True
     (isAlpha '.') `shouldBe` False
+
+  it "applies a function twice" $ do
+    let f x = x ++ "!"
+        ff = twice f
+    (ff "hey") `shouldBe` "hey!!"
+    ((twice (*2)) 3) `shouldBe` (3 * 2 * 2 :: Int)
