@@ -32,8 +32,9 @@ map' f (h:t) = f h : map' f t
 filter' :: (a -> Bool) -> [a] -> [a]
 filter' _ [] = []
 filter' p (x:xs)
-  | p x       = x : filter' p xs
-  | otherwise = filter' p xs
+  | p x       = x : recurse
+  | otherwise =     recurse
+  where recurse = filter' p xs
 
 spec :: Spec
 spec = do
