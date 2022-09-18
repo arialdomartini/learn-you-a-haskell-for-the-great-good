@@ -27,6 +27,11 @@ myMax' (x:t) =
 replicate' :: Int -> a -> [a]
 replicate' n e = e : replicate (n - 1) e
 
+take' :: Int -> [a] -> [a]
+take' 0 _ = []
+take' _ [] = []
+take' n (h:t) = h : take' (n-1) t
+
 spec :: Spec
 spec = do
   it "calculates the fibonacci series" $ do
@@ -40,5 +45,8 @@ spec = do
     let xs = [1,6,2,66,66,12,54] :: [Int]
       in (myMax' xs) `shouldBe` (maximum xs)
 
-  it "implement replicate as a recursive function" $ do
+  it "implements replicate as a recursive function" $ do
     replicate' 3 (5::Int) `shouldBe` replicate 3 5
+
+  it "implements take as a recursive function" $ do
+    (take' 5 [1,2,3,4,5,6,7,8] :: [Int]) `shouldBe` (take 5 [1,2,3,4,5,6,7,8])
