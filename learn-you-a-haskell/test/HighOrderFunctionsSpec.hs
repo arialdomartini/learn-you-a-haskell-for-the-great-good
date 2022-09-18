@@ -66,3 +66,7 @@ spec = do
 
   it "maps to lists of lists" $ do
     (map (map (++"!") ) [["hey", "Joe"], ["Stop"]]) `shouldBe` [["hey!", "Joe!"], ["Stop!"]]
+
+  it "bimap" $ do
+    let bimap f = map (map f)
+    (bimap (++"!")  [["hey", "Joe"], ["Stop"]]) `shouldBe` [["hey!", "Joe!"], ["Stop!"]]
