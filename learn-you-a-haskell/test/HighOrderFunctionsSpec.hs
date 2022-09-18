@@ -63,3 +63,6 @@ spec = do
 
   it "maps a function to a list" $ do
     (map' (*2) ([1,2,3] :: [Int])) `shouldBe` [2,4,6]
+
+  it "maps to lists of lists" $ do
+    (map (map (++"!") ) [["hey", "Joe"], ["Stop"]]) `shouldBe` [["hey!", "Joe!"], ["Stop!"]]
