@@ -20,6 +20,16 @@ filter' f = foldr (\x a -> if f x then x : a else a) []
 last' :: [a] -> a
 last' = foldl1 (\_ x -> x)
 
+reverse'' :: [a] -> [a]
+reverse'' = foldl (flip (:)) []
+
+
+-- foldr
+-- f 1 (f 2 (f 3 (f 4)))
+
+-- foldr
+-- f (f (f 1 2) 3 4)
+
 spec :: Spec
 spec = do
   it "sums elements in a list" $ do
@@ -40,3 +50,6 @@ spec = do
 
   it "last implemented with foldl" $ do
     (last' ['a', 'b', 'c']) `shouldBe` 'c'
+
+  it "implement reverse with flip (:)" $ do
+    (reverse'' ['a', 'b', 'c']) `shouldBe` ['c', 'b', 'a']
