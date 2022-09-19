@@ -49,6 +49,9 @@ collatz n =
 
 
 
+deconstruct :: [(a,a)] -> [a]
+deconstruct xs = foldr (\(x, y) a -> x: y : a) [] xs
+
 spec :: Spec
 spec = do
   it "implicitly curries functions" $ do
@@ -102,3 +105,6 @@ spec = do
 
   it "generates a collatz series" $ do
     (last (collatz 100)) `shouldBe` 1
+
+  it "deconstruts lists of tuples" $ do
+    (deconstruct [(1,2), (3,4), (5,6)]) `shouldBe` ([1,2,3,4,5,6]::[Int])
