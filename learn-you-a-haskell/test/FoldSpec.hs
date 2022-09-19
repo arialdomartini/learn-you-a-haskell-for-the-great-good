@@ -17,6 +17,9 @@ product' = foldl1 (*)
 filter' :: (a -> Bool) -> [a] -> [a]
 filter' f = foldr (\x a -> if f x then x : a else a) []
 
+last' :: [a] -> a
+last' = foldl1 (\_ x -> x)
+
 spec :: Spec
 spec = do
   it "sums elements in a list" $ do
@@ -34,3 +37,6 @@ spec = do
 
   it "filter implemeted with foldr" $ do
     (filter' even [1,2,3,4]) `shouldBe` ([2,4] :: [Int])
+
+  it "last implemented with foldl" $ do
+    (last' ['a', 'b', 'c']) `shouldBe` 'c'
