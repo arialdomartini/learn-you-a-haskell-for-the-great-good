@@ -14,6 +14,9 @@ reverse' = foldl (\a x -> x : a) []
 product' :: Num a => [a] -> a
 product' = foldl1 (*)
 
+filter' :: (a -> Bool) -> [a] -> [a]
+filter' f = foldr (\x a -> if f x then x : a else a) []
+
 spec :: Spec
 spec = do
   it "sums elements in a list" $ do
@@ -28,3 +31,6 @@ spec = do
 
   it "product implemented with foldl" $ do
     (product' [1,2,3,4]) `shouldBe` ((1 * 2 * 3 * 4) :: Int)
+
+  it "filter implemeted with foldr" $ do
+    (filter' even [1,2,3,4]) `shouldBe` ([2,4] :: [Int])
