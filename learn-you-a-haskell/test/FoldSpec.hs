@@ -11,6 +11,9 @@ maximum' = foldl1 (max) -- does not work with empty lists!
 reverse' :: [a] -> [a]
 reverse' = foldl (\a x -> x : a) []
 
+product' :: Num a => [a] -> a
+product' = foldl1 (*)
+
 spec :: Spec
 spec = do
   it "sums elements in a list" $ do
@@ -22,3 +25,6 @@ spec = do
 
   it "reverse implemented with foldl" $ do
     (reverse' ['a', 'b', 'c']) `shouldBe` ['c', 'b', 'a']
+
+  it "product implemented with foldl" $ do
+    (product' [1,2,3,4]) `shouldBe` ((1 * 2 * 3 * 4) :: Int)
