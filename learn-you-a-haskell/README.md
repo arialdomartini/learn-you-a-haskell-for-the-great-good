@@ -1,1 +1,0 @@
-# learn-you-a-haskell

@@ -1,4 +1,3 @@
 *.hi
 *.o
-**/.stack-cache/**
-**/.stack-work/**
+dist-newstyle/**
