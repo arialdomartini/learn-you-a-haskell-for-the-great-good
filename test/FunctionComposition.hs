@@ -19,3 +19,13 @@ spec = do
   it "returns all negative numbers with function composition" $ do
     let allNegative xs = fmap (negate . abs) xs
       in allNegative [1, -2, 3, -4] `shouldBe` ([-1,-2,-3,-4] :: [Int])
+
+  it "composes functions with multiple parameters" $ do
+    let
+      withFuncInvocation :: Int
+      withFuncInvocation = sum (replicate 5 (max 6 8))
+
+      withFuncComposition :: Int
+      withFuncComposition = (sum . replicate 5) $ max 6 8
+
+      in withFuncInvocation `shouldBe` withFuncComposition
