@@ -29,3 +29,12 @@ spec = do
       withFuncComposition = (sum . replicate 5) $ max 6 8
 
       in withFuncInvocation `shouldBe` withFuncComposition
+
+  it "another example of composition with multiple parameters" $ do
+    let
+      invocation :: [Int]
+      invocation = replicate 2 (product (map (*3) (zipWith max [1,2] [4,5])))
+
+      composition :: [Int]
+      composition = replicate 2 . product . map (*3) $ zipWith max [1,2] [4,5]
+      in invocation `shouldBe` composition
