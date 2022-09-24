@@ -10,7 +10,12 @@ import Test.Hspec
 spec :: Spec
 spec = do
   it "composes functions" $ do
-    (f /. g) 12 `shouldBe` f ( g 12 )
-    where
+    let
       f = (* 2)
-      g = (+ 12)
+      g = (+ 12) in
+      (f /. g) 12 `shouldBe` f ( g 12 )
+
+
+  it "returns all negative numbers with function composition" $ do
+    let allNegative xs = fmap (negate . abs) xs
+      in allNegative [1, -2, 3, -4] `shouldBe` ([-1,-2,-3,-4] :: [Int])
