@@ -65,7 +65,8 @@ test-suite spec
     RecursionSpec
     HighOrderFunctionsSpec
     FoldSpec
-    FunctionComposition
+    FunctionCompositionSpec
+    ModuleSpec
 source-repository head
   type:     git
   location: https://github.com/githubuser/learn-you-a-haskell

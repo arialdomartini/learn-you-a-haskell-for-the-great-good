@@ -1,7 +1,7 @@
 {-# OPTIONS_GHC -Wno-type-defaults #-}
 {-# OPTIONS_GHC -Wno-unrecognised-pragmas #-}
 {-# HLINT ignore "Redundant bracket" #-}
-module FunctionComposition where
+module FunctionCompositionSpec where
 
 import Test.Hspec
 
