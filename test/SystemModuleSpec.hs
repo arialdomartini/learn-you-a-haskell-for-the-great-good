@@ -57,3 +57,15 @@ spec = do
       countWords' :: String -> [(String, Int)]
       countWords' = fmap (\g -> (head g, length g)) . group' . sort . words'
       in countWords' "ciao mamma come stai mamma ciao ciao" `shouldBe` [("ciao", 3 :: Int), ("come", 1), ("mamma", 2), ("stai", 1)]
+
+  it "tells if a list is contained in another one" $ do
+    let
+        find' :: Eq a => [a] -> [a] -> Bool
+        find' _ [] = False
+        find' ns ss@(s:st) =
+          let len = length ns
+              next = take len ss
+          in  (next == ns) || find' ns st
+        stack = [9, 9, 1,2 , 9, 9] :: [Int]
+        in do find' [1,2] stack `shouldBe` True
+              find' [9,2] stack `shouldBe` False
