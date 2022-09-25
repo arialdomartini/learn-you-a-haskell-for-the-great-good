@@ -3,6 +3,13 @@
 ## Link to book
 [Learn You a Haskell for Great Good!](http://learnyouahaskell.com)
 
+## Run
+Run tests with:
+
+``` sh
+make test
+```
+
 ## Index
 
 * [Setup](docs/setup.md)
