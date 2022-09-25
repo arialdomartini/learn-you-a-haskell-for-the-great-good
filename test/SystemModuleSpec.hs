@@ -3,6 +3,7 @@ module SystemModuleSpec where
 
 import Test.Hspec
 import Data.List (nub)
+import GHC.OldList (group)
 
 spec :: Spec
 spec = do
@@ -36,3 +37,14 @@ spec = do
 
       sentence = "nel mezzo del cammin di nostra vita"
       in words' sentence `shouldBe` words sentence
+
+  it "groups elements in a list" $ do
+    let
+      group' :: Eq a => [a] -> [[a]]
+      group' [] = []
+      group' xs@(x:_) =
+        let (e, ne) = span (==x) xs
+        in e : group' ne
+
+      ns = [1,1,1,1,2,2,2,2,3,3,2,2,2,5,6,7, 1, 1, 1] :: [Int]
+      in group ns `shouldBe` group' ns
