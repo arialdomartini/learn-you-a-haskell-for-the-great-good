@@ -2,9 +2,9 @@
 module SystemModuleSpec where
 
 import Test.Hspec
-import Data.List (nub)
+import Data.List ( nub, sort, isPrefixOf, tails )
 import GHC.OldList (group)
-import Data.List (sort)
+
 
 group' :: Eq a => [a] -> [[a]]
 group' [] = []
@@ -66,6 +66,14 @@ spec = do
           let len = length ns
               next = take len ss
           in  (next == ns) || find' ns st
+        stack = [9, 9, 1,2 , 9, 9] :: [Int]
+        in do find' [1,2] stack `shouldBe` True
+              find' [9,2] stack `shouldBe` False
+
+  it "another approach to tell if a list is contained in another one" $ do
+    let
+        find' :: Eq a => [a] -> [a] -> Bool
+        find' n = any (isPrefixOf n) . tails
         stack = [9, 9, 1,2 , 9, 9] :: [Int]
         in do find' [1,2] stack `shouldBe` True
               find' [9,2] stack `shouldBe` False
