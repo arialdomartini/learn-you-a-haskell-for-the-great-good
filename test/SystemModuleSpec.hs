@@ -1,10 +1,12 @@
-{-# OPTIONS_GHC -Wno-unused-matches #-}
+{-# OPTIONS_GHC -Wno-unrecognised-pragmas #-}
+{-# HLINT ignore "Redundant bracket" #-}
 module SystemModuleSpec where
 
 import qualified Data.Char   as Char
 import           Data.List   (isPrefixOf, nub, sort, tails)
 import           GHC.OldList (group)
 import           Test.Hspec
+import Data.Char (digitToInt)
 
 
 group' :: Eq a => [a] -> [[a]]
@@ -63,7 +65,7 @@ spec = do
     let
         find' :: Eq a => [a] -> [a] -> Bool
         find' _ [] = False
-        find' ns ss@(s:st) =
+        find' ns ss@(_:st) =
           let len = length ns
               next = take len ss
           in  (next == ns) || find' ns st
@@ -90,3 +92,9 @@ spec = do
       upto = 1000000 :: Int
       result = foldl (+) 0 (replicate 1 upto)
       in result `shouldBe` upto
+
+  it "finds the first number whose digits sums up to 40" $ do
+    let
+      sumDigits :: Int -> Int
+      sumDigits d = sum (map digitToInt (show d ))
+      in head ((dropWhile (\d -> sumDigits d /=40)) [1..]) `shouldBe` 49999
