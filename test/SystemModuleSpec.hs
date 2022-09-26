@@ -4,6 +4,7 @@ module SystemModuleSpec where
 import Test.Hspec
 import Data.List ( nub, sort, isPrefixOf, tails )
 import GHC.OldList (group)
+import qualified Data.Char as Char
 
 
 group' :: Eq a => [a] -> [[a]]
@@ -77,3 +78,9 @@ spec = do
         stack = [9, 9, 1,2 , 9, 9] :: [Int]
         in do find' [1,2] stack `shouldBe` True
               find' [9,2] stack `shouldBe` False
+
+  it "ciphers a string" $ do
+    let
+      cipher :: String -> String
+      cipher s = [(Char.chr . (+1) . Char.ord) c | c <- s]
+      in cipher "abcdef" `shouldBe` "bcdefg"
