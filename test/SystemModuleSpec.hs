@@ -1,10 +1,10 @@
 {-# OPTIONS_GHC -Wno-unused-matches #-}
 module SystemModuleSpec where
 
-import Test.Hspec
-import Data.List ( nub, sort, isPrefixOf, tails )
-import GHC.OldList (group)
-import qualified Data.Char as Char
+import qualified Data.Char   as Char
+import           Data.List   (isPrefixOf, nub, sort, tails)
+import           GHC.OldList (group)
+import           Test.Hspec
 
 
 group' :: Eq a => [a] -> [[a]]
@@ -38,7 +38,7 @@ spec = do
 
       deduped x = filter (/= x)
       nub' :: Eq a => [a] -> [a]
-      nub' [] = []
+      nub' []     = []
       nub' (x:xs) = x : nub'  (deduped x xs)
 
       in nub' cs `shouldBe` nub cs
@@ -84,3 +84,9 @@ spec = do
       cipher :: String -> String
       cipher s = [(Char.chr . (+1) . Char.ord) c | c <- s]
       in cipher "abcdef" `shouldBe` "bcdefg"
+
+  it "uses foldl for summing 1_000_000 ones" $ do
+    let
+      upto = 1000000 :: Int
+      result = foldl (+) 0 (replicate 1 upto)
+      in result `shouldBe` upto
