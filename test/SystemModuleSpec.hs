@@ -6,8 +6,7 @@ import qualified Data.Char   as Char
 import           Data.List   (isPrefixOf, nub, sort, tails)
 import           GHC.OldList (group)
 import           Test.Hspec
-import Data.Char (digitToInt)
-
+import           Data.Char (digitToInt)
 
 group' :: Eq a => [a] -> [[a]]
 group' [] = []
@@ -98,3 +97,20 @@ spec = do
       sumDigits :: Int -> Int
       sumDigits d = sum (map digitToInt (show d ))
       in head ((dropWhile (\d -> sumDigits d /=40)) [1..]) `shouldBe` 49999
+
+  it "find keys in association lists" $ do
+    let
+      findKey' :: Eq k => k -> [(k, a)] -> Maybe a
+      findKey' _ [] = Nothing
+      findKey' key ((k,a):r) = if key == k then Just a else findKey' key r
+      assoc = [("foo", 42), ("bar", 28), ("baz", -9)] :: [(String, Int)]
+      in do (findKey' "foo" assoc) `shouldBe` Just 42
+            (findKey' "not-existing" assoc) `shouldBe` Nothing
+
+
+  it "find keys in association lists, alternative implementation" $ do
+    let
+      findKey' :: Eq k => k -> [(k, a)] -> a
+      findKey' key xs = snd . head . filter (\(k,_) -> k == key) $ xs
+      assoc = [("foo", 42), ("bar", 28), ("baz", -9)] :: [(String, Int)]
+      in (findKey' "foo" assoc) `shouldBe` 42
