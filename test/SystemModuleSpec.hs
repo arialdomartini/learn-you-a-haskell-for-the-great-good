@@ -130,3 +130,12 @@ spec = do
         map' = Map.fromList assoc
         in do Map.lookup "foo" map' `shouldBe` Just 42
               Map.lookup "not-existing" map' `shouldBe` Nothing
+
+  it "creates Maps using Map.inser" $ do
+    let
+      map' = Map.empty :: Map.Map String Int
+      map'' = Map.insert "foo" 42 map'
+      map''' = Map.insert "bar" 28 map''
+      map'''' = Map.insert "baz" (-9) map'''
+      in do Map.lookup "foo" map'''' `shouldBe` Just 42
+            Map.lookup "not-existing" map''' `shouldBe` Nothing
