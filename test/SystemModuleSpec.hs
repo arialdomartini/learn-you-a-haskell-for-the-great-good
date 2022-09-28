@@ -7,6 +7,7 @@ import           Data.List   (isPrefixOf, nub, sort, tails)
 import           GHC.OldList (group)
 import           Test.Hspec
 import           Data.Char (digitToInt)
+import qualified Data.Map as Map
 
 group' :: Eq a => [a] -> [[a]]
 group' [] = []
@@ -121,3 +122,11 @@ spec = do
       assoc = [("foo", 42), ("bar", 28), ("baz", -9)] :: [(String, Int)]
       in do (lookup' "foo" assoc) `shouldBe` lookup "foo" assoc
             (lookup' "not-existing" assoc) `shouldBe` lookup "not-existing" assoc
+
+
+  it "looks up in Maps" $ do
+    let
+        assoc = [("foo", 42), ("bar", 28), ("baz", -9)] :: [(String, Int)]
+        map' = Map.fromList assoc
+        in do Map.lookup "foo" map' `shouldBe` Just 42
+              Map.lookup "not-existing" map' `shouldBe` Nothing

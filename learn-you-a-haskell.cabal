@@ -41,6 +41,7 @@ test-suite spec
   build-depends:       base
                      , hspec==2.*
                      , learn-you-a-haskell
+                     , containers
   default-language:    Haskell2010
   ghc-options:         -Wall
                        -Wcompat
