@@ -131,11 +131,16 @@ spec = do
         in do Map.lookup "foo" map' `shouldBe` Just 42
               Map.lookup "not-existing" map' `shouldBe` Nothing
 
+  -- Map k  a
+  -- k -> a -> Map k a -> Map k a
+
   it "creates Maps using Map.inser" $ do
     let
-      map' = Map.empty :: Map.Map String Int
-      map'' = Map.insert "foo" 42 map'
-      map''' = Map.insert "bar" 28 map''
-      map'''' = Map.insert "baz" (-9) map'''
-      in do Map.lookup "foo" map'''' `shouldBe` Just 42
-            Map.lookup "not-existing" map''' `shouldBe` Nothing
+      map' =
+        (Map.insert "foo" 42 ) .
+        (Map.insert "bar" 28) .
+        Map.insert "baz" (-9) $
+        Map.empty
+
+      in do Map.lookup "foo" map' `shouldBe` ((Just 42) :: Maybe Int)
+            Map.lookup "not-existing" map' `shouldBe` Nothing
