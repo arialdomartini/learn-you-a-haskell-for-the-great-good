@@ -9,6 +9,7 @@ import           Test.Hspec
 import           Data.Char (digitToInt)
 import qualified Data.Map as Map
 import GHC.Unicode (isDigit)
+import           Data.Function((&))
 
 group' :: Eq a => [a] -> [[a]]
 group' [] = []
@@ -152,3 +153,12 @@ spec = do
       convertToNumbers :: String -> [Int]
       convertToNumbers s = map digitToInt . filter isDigit $ s
       in convertToNumbers phoneNumber `shouldBe` [0,0,3,9,0,5,7,3,2,8,0,2,1]
+
+
+  it "creates a phone book" $ do
+    let
+      list =  [("mario", "1"), ("mary", "2"), ("mario", "3")]
+      assoc = list & Map.fromList
+      phoneBookToMap :: [(String, String)] -> Map.Map String String
+      phoneBookToMap m = Map.fromListWith (\n1 n2 -> n1 ++ ", " ++ n2) list
+      in phoneBookToMap list `shouldBe` ([("mario", "3, 1"), ("mary", "2")] & Map.fromList)
