@@ -2,21 +2,23 @@ module OwnTypesSpec where
 
 import Test.Hspec
 
-data Shape = Circle Float Float Float | Rectangle Float Float
+data Point = Point Float Float deriving (Show, Eq)
+data Shape = Circle Point Float | Rectangle Point Point
                deriving (Show, Eq)
 
 area :: Shape -> Float
-area (Circle _ _ r) = pi * r ^ (2:: Int)
-area (Rectangle b h) = b * h
+area (Circle _ r) = pi * r ^ (2:: Int)
+area (Rectangle (Point x y) (Point x2 y2)) = abs (x2-x) * abs (y2 -y)
 
 spec :: Spec
 spec = do
   it "uses a custom type" $ do
-     (area (Circle 1 2 3)) `shouldBe` 3 * 3 * pi
-     (area (Rectangle 8 9)) `shouldBe` 8 * 9
+     (area (Circle (Point 1 2) 3)) `shouldBe` 3 * 3 * pi
+     (area (Rectangle (Point 0 8) (Point 9 0))) `shouldBe` 8 * 9
 
   it "partially applied type constructors" $ do
     let rays = [1,2,3,4] :: [Float]
-        ctr = Circle 0 0
-        expected = [(Circle 0 0 1), (Circle 0 0 2), (Circle 0 0 3), (Circle 0 0 4)] :: [Shape]
+        p0 = (Point 0 0)
+        ctr = Circle p0
+        expected = [(Circle p0 1), (Circle p0 2), (Circle p0 3), (Circle p0 4)] :: [Shape]
         in (fmap ctr rays) `shouldBe` expected
