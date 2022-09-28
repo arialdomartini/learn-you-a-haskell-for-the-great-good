@@ -104,9 +104,8 @@ spec = do
       findKey' _ [] = Nothing
       findKey' key ((k,a):r) = if key == k then Just a else findKey' key r
       assoc = [("foo", 42), ("bar", 28), ("baz", -9)] :: [(String, Int)]
-      in do (findKey' "foo" assoc) `shouldBe` Just 42
-            (findKey' "not-existing" assoc) `shouldBe` Nothing
-
+      in do (findKey' "foo" assoc) `shouldBe` lookup "foo" assoc
+            (findKey' "not-existing" assoc) `shouldBe` lookup "not-existing" assoc
 
   it "find keys in association lists, alternative implementation" $ do
     let
