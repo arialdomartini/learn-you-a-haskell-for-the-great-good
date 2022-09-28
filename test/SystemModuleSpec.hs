@@ -8,6 +8,7 @@ import           GHC.OldList (group)
 import           Test.Hspec
 import           Data.Char (digitToInt)
 import qualified Data.Map as Map
+import GHC.Unicode (isDigit)
 
 group' :: Eq a => [a] -> [[a]]
 group' [] = []
@@ -144,3 +145,10 @@ spec = do
 
       in do Map.lookup "foo" map' `shouldBe` ((Just 42) :: Maybe Int)
             Map.lookup "not-existing" map' `shouldBe` Nothing
+
+  it "converts a string with phone number to list of numbers" $ do
+    let
+      phoneNumber = "0039-0573/28.0.21"
+      convertToNumbers :: String -> [Int]
+      convertToNumbers s = map digitToInt . filter isDigit $ s
+      in convertToNumbers phoneNumber `shouldBe` [0,0,3,9,0,5,7,3,2,8,0,2,1]
