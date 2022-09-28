@@ -113,3 +113,11 @@ spec = do
       findKey' key xs = snd . head . filter (\(k,_) -> k == key) $ xs
       assoc = [("foo", 42), ("bar", 28), ("baz", -9)] :: [(String, Int)]
       in (findKey' "foo" assoc) `shouldBe` 42
+
+  it "implements lookup with foldr" $ do
+    let
+      lookup' :: Eq k => k -> [(k, a)] -> Maybe a
+      lookup' key xs = foldr (\(k,v) acc -> if k == key then Just v else acc) Nothing xs
+      assoc = [("foo", 42), ("bar", 28), ("baz", -9)] :: [(String, Int)]
+      in do (lookup' "foo" assoc) `shouldBe` lookup "foo" assoc
+            (lookup' "not-existing" assoc) `shouldBe` lookup "not-existing" assoc
