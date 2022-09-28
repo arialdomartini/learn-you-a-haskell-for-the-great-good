@@ -158,7 +158,6 @@ spec = do
   it "creates a phone book" $ do
     let
       list =  [("mario", "1"), ("mary", "2"), ("mario", "3")]
-      assoc = list & Map.fromList
       phoneBookToMap :: [(String, String)] -> Map.Map String String
-      phoneBookToMap m = Map.fromListWith (\n1 n2 -> n1 ++ ", " ++ n2) list
+      phoneBookToMap m = Map.fromListWith (\n1 n2 -> n1 ++ ", " ++ n2) m
       in phoneBookToMap list `shouldBe` ([("mario", "3, 1"), ("mary", "2")] & Map.fromList)
