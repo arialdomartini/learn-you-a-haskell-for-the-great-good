@@ -136,7 +136,7 @@ spec = do
   -- Map k  a
   -- k -> a -> Map k a -> Map k a
 
-  it "creates Maps using Map.inser" $ do
+  it "creates Maps using Map.insert" $ do
     let
       map' =
         (Map.insert "foo" 42 ) .
