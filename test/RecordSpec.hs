@@ -12,5 +12,6 @@ data Person =
 spec :: Spec
 spec = do
   it "can use records" $ do
-    let john = Person { firstName = "John", secondName = "Doh", height = 182 } in
+    -- fields are not positional
+    let john = Person { secondName = "Doh", firstName = "John", height = 182 } in
       firstName john `shouldBe` "John"
