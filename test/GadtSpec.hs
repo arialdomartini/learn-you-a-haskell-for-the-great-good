@@ -1,56 +1,57 @@
 {-# OPTIONS_GHC -Wno-unrecognised-pragmas #-}
 {-# HLINT ignore "Redundant bracket" #-}
+{-# LANGUAGE GADTs #-}
 module GadtSpec where
 
 -- Reading https://en.m.wikibooks.org/wiki/Haskell/GADT
 
 import Test.Hspec
 
-data Exp =
-   I Int
- | B Bool
- | Exp `Add` Exp
- | Exp `Mul` Exp
- | Exp `Eq` Exp
- deriving (Eq)
+-- Interstingly, (Eq a) must be added here, not in eval
+-- data Exp a where
+data Exp a where
+  I :: Int -> Exp Int
+  B :: Bool -> Exp Bool
+  Add :: Exp Int -> Exp Int -> Exp Int
+  Mul :: Exp Int -> Exp Int -> Exp Int
+  Eq :: (Eq a) =>Exp a -> Exp a -> Exp Bool
 
-data BoolInt = Bool Bool | Int Int deriving (Show, Eq)
 
-eval :: Exp -> Maybe BoolInt
-eval (I i) = Just $ Int i
-eval (B b) = Just $ Bool b
-eval (e1 `Eq` e2) =
-  let re1 = (eval e1)
-      re2 = (eval e2) in
-      case (re1, re2) of
-        (Just (Bool b1),  Just (Bool b2))  -> Just (Bool  (b1 == b2))
-        (Just (Int i1), Just (Int i2)) -> Just (Bool (i1 == i2))
-        (_,_) -> Nothing
+add :: Exp Int -> Exp Int -> Exp Int
+add = Add
 
-eval (e1 `Add` e2) =
-  ops e1 e2 (+)
+mul :: Exp Int -> Exp Int -> Exp Int
+mul = Mul
 
-eval (e1 `Mul` e2) =
-  ops e1 e2 (*)
+i :: Int -> Exp Int
+i = I
 
--- (Maybe (Either Bool Int) -> Maybe (Either Bool Int) -> Maybe a)
-ops :: Exp -> Exp -> (Int -> Int -> Int) -> Maybe BoolInt
-ops e1 e2 op =
-  let re1 = (eval e1)
-      re2 = (eval e2) in
-      case (re1, re2) of
-        (Just (Int i1), Just (Int i2) ) -> Just (Int (i1 `op` i2))
-        --(Just es1, Just es2) -> ops re1 re2 op
-        (_,_) -> Nothing
+b :: Bool -> Exp Bool
+b = B
 
+
+eval :: Exp a -> a
+eval (I iv) = iv
+eval (B bv) = bv
+eval (Add i1 i2) = eval i1 + eval i2
+eval (Mul i1 i2) = eval i1 * eval i2
+
+eval (Eq  e1 e2) = (eval e1) == (eval e2)
 
 spec :: Spec
 spec = do
   it "evaluates expressions" $ do
-    (eval ((I 10) `Add` (I 25))) `shouldBe` Just (Int 35)
+    (eval ((I 10) `Add` (I 25))) `shouldBe` 35
+
+  it "evaluates nested expression" $ do
+    let e35 =  (I 10) `Add` (I 25)
+        e35' = (I 15) `Add` (I 20)
+    eval (Eq e35 e35') `shouldBe` True
+
 
   it "compares booleans" $ do
-    eval (B True) `shouldBe` Just (Bool True)
+    eval (B True) `shouldBe` True
 
-  it "cannot mix Int and Booleans" $ do
-    eval ((I 10) `Add` (B True)) `shouldBe` Nothing
+  -- does not even compile!
+  -- it "cannot mix Int and Booleans" $ do
+  --   eval ((I 10) `Add` (B True)) `shouldBe` Nothing
