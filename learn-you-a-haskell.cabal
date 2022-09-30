@@ -77,6 +77,8 @@ test-suite spec
     GeometrySpec
     OwnTypesSpec
     RecordSpec
+    Record2
+    TypeParametersSpec
 source-repository head
   type:     git
   location: https://github.com/githubuser/learn-you-a-haskell
