@@ -80,7 +80,7 @@ test-suite spec
     Record2
     TypeParametersSpec
     GadtSpec
-    TypeAliasSpec
+    TypeSynonymsSpec
 source-repository head
   type:     git
   location: https://github.com/githubuser/learn-you-a-haskell

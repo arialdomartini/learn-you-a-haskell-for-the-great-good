@@ -1,4 +1,4 @@
-module TypeAliasSpec where
+module TypeSynonymsSpec where
 
 import Test.Hspec
 import qualified Data.Map as Map
@@ -21,9 +21,13 @@ call p name =
 
 spec :: Spec
 spec = do
-  it "uses type aliases" $ do
+  it "uses type synonyms" $ do
     let pula = "Pula" :: Name
         pope = "The Pope" :: String in do
 
         phoneBook `call` pula `shouldBe` "I've called 113"
         phoneBook `call` pope `shouldBe` "I don't know the number!"
+
+  it "type aliases can be mixed" $ do
+    let pula = "Pula" :: PhoneNumber in
+        phoneBook `call` pula `shouldBe` "I've called 113"
