@@ -28,6 +28,8 @@ spec = do
         phoneBook `call` pula `shouldBe` "I've called 113"
         phoneBook `call` pope `shouldBe` "I don't know the number!"
 
+  -- Values of different synonyms of the same type are entirely compatible
+  -- See https://wiki.haskell.org/Type_synonym
   it "type aliases can be mixed" $ do
     let pula = "Pula" :: PhoneNumber in
         phoneBook `call` pula `shouldBe` "I've called 113"
