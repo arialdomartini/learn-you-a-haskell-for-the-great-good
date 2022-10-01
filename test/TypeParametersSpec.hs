@@ -16,6 +16,9 @@ vecProd' (Vector x1 y1 z1) (Vector x2 y2 z2) = Vector (x1*x2) (y1*y2) (z1*z2)
 -- deriving Show is requested by `shouldBe`
 data Person = Person {firstName:: String, secondName:: String, age:: Int} deriving (Eq, Show, Read)
 
+data Days = Monday | Tuesday | Wednesday | Thursday | Friday | Saturday | Sunday
+            deriving (Bounded, Show, Ord, Eq, Enum)
+
 spec :: Spec
 spec = do
   it "uses a vector" $ do
@@ -48,3 +51,14 @@ spec = do
   it "can build a record with Read from its Show output" $ do
     let person = Person {firstName="John", secondName="Doe", age=66} :: Person in
       (read . show) person `shouldBe` person
+
+  it "uses Bounded, and compares using Eq" $ do
+    (minBound :: Days) `shouldBe` Monday
+    (maxBound :: Days) `shouldBe` Sunday
+
+  it "uses Ord with syntactic order" $ do
+    Monday < Tuesday `shouldBe` True
+    Monday `compare` Tuesday `shouldBe` LT
+
+  it "uses Enum" $ do
+    succ Monday `shouldBe` Tuesday
