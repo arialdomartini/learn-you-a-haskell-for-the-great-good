@@ -13,6 +13,9 @@ dotProd' (Vector x1 y1 z1) (Vector x2 y2 z2) = (x1*x2) + (y1*y2) + (z1*z2)
 vecProd' :: (Num a) => Vector a -> Vector a-> Vector a
 vecProd' (Vector x1 y1 z1) (Vector x2 y2 z2) = Vector (x1*x2) (y1*y2) (z1*z2)
 
+-- deriving Show is requested by `shouldBe`
+data Person = Person {firstName:: String, secondName:: String, age:: Int} deriving (Eq, Show)
+
 spec :: Spec
 spec = do
   it "uses a vector" $ do
@@ -36,3 +39,8 @@ spec = do
     let v = Vector 1 1 1 :: Vector Int
         w = Vector 2 0 2 :: Vector Int
         in (v `vecProd'` w) `shouldBe` Vector (1*2) (1*0) (1*2)
+
+  it "compares Eq instances" $ do
+    let person1 = Person {firstName="John", secondName="Doe", age=66} :: Person
+        person2 = Person {firstName="John", secondName="Doe", age=66} :: Person  in
+      person1 `shouldBe` person2
