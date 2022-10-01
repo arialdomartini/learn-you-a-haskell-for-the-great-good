@@ -22,5 +22,8 @@ call p name =
 spec :: Spec
 spec = do
   it "uses type aliases" $ do
-    phoneBook `call` "Pula" `shouldBe` "I've called 113"
-    phoneBook `call` "The Pope" `shouldBe` "I don't know the number!"
+    let pula = "Pula" :: Name
+        pope = "The Pope" :: String in do
+
+        phoneBook `call` pula `shouldBe` "I've called 113"
+        phoneBook `call` pope `shouldBe` "I don't know the number!"
