@@ -17,7 +17,7 @@ vecProd' (Vector x1 y1 z1) (Vector x2 y2 z2) = Vector (x1*x2) (y1*y2) (z1*z2)
 data Person = Person {firstName:: String, secondName:: String, age:: Int} deriving (Eq, Show, Read)
 
 data Days = Monday | Tuesday | Wednesday | Thursday | Friday | Saturday | Sunday
-            deriving (Bounded, Show, Ord, Eq, Enum)
+            deriving (Bounded, Show, Eq, Enum, Ord)
 
 spec :: Spec
 spec = do
@@ -62,3 +62,7 @@ spec = do
 
   it "uses Enum" $ do
     succ Monday `shouldBe` Tuesday
+
+
+  it "generates full list combining Bounded, Enum (Ord is not needed)" $ do
+    ([minBound .. maxBound] :: [Days]) `shouldBe` [Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday]
