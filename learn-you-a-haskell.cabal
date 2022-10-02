@@ -38,7 +38,6 @@ library
                        -Wpartial-fields
                        -Wredundant-constraints
 
-
 test-suite spec
   type:                exitcode-stdio-1.0
   hs-source-dirs:      test, app
@@ -59,6 +58,7 @@ test-suite spec
                        -threaded
                        -rtsopts
                        -with-rtsopts=-N
+                        -XStandaloneDeriving
   build-tool-depends: hspec-discover:hspec-discover == 2.*
   other-modules:
     DummySpec
@@ -81,6 +81,7 @@ test-suite spec
     TypeParametersSpec
     GadtSpec
     TypeSynonymsSpec
+    Types.LockerSpec
 source-repository head
   type:     git
   location: https://github.com/githubuser/learn-you-a-haskell
