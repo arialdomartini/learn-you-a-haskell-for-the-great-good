@@ -1,4 +1,4 @@
-module Geometry.Sizes where
+module Geometry.Sizes(Radius, Volume, Area, Edge) where
 
 type Radius = Float
 type Volume = Float
