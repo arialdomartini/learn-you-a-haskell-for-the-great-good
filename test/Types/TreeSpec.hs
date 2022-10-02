@@ -66,3 +66,10 @@ spec = do
   it "inserts a value on the left branch of a tree" $ do
     let t = insert (Node (100 :: Int) (Node 90 Empty Empty) Empty) 80 in
       t `shouldBe` Node (100 :: Int) (Node 90 (Node 80 Empty Empty) Empty) Empty
+
+  it "creates a binary tree with foldl" $ do
+    let t = foldl insert Empty ([1,2,4,6,8,42, 100, 200] :: [Int]) in
+      do find' t 1 `shouldBe` True
+         find' t 42 `shouldBe` True
+         find' t 200 `shouldBe` True
+         find' t 10 `shouldBe` False
