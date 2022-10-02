@@ -83,6 +83,7 @@ test-suite spec
     TypeSynonymsSpec
     Types.LockerSpec
     Types.ListSpec
+    Types.TreeSpec
 source-repository head
   type:     git
   location: https://github.com/githubuser/learn-you-a-haskell
