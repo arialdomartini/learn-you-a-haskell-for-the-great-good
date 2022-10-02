@@ -3,6 +3,7 @@ module Types.ListSpec where
 
 import Test.Hspec
 
+-- Infix constructors must begin with a colon
 data List a  = Empty | a :+ (List a)
 
 
