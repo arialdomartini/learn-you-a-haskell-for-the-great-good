@@ -13,11 +13,10 @@ find' :: (Ord a) => Tree a -- ^
   -> a -- ^
   -> Bool
 find' Empty _ = False
-find' (Node a left right) v =
-  case v of
-    x | x > a -> find' right x
-    x | x < a -> find' left x
-    _ -> True
+find' (Node a left right) v
+    | v > a  = find' right v
+    | v < a  = find' left v
+    | v == a = True
 
 singleton :: a -> Tree a
 singleton v = Node v Empty Empty
