@@ -19,13 +19,16 @@ find' (Node a left right) v =
     x | x < a -> find' left x
     _ -> True
 
+singleton :: a -> Tree a
+singleton v = Node v Empty Empty
+
 insert :: (Ord a) => Tree a -> a -> Tree a
 insert Empty a = Node a Empty Empty
 insert node@(Node v left right) a =
   case (v, left, right) of
     (x, _,     _    ) | a == x -> node
-    (x, Empty, _    ) | a < x -> Node v (Node a Empty Empty) right
-    (x, _,     Empty) | a > x -> Node v left (Node a Empty Empty)
+    (x, Empty, _    ) | a < x -> Node v (singleton a) right
+    (x, _,     Empty) | a > x -> Node v left (singleton a)
     (x, _,     _    ) | a < x -> Node v (insert left a) right
     (x, _,     _    ) | a > x -> Node v left (insert right a)
 
