@@ -7,11 +7,16 @@ data TrafficLight = Red | Yellow | Green
 
 instance Eq TrafficLight where
   (==) :: TrafficLight -> TrafficLight -> Bool
-  Red == Red = True
-  Yellow == Yellow  = True
-  Green == Green = True
-  _ == _ = False
-
+  (==) l r =
+    case (l,r) of
+      (Red, Red) -> True
+      (Yellow, Yellow) -> True
+      (Green, Green) -> True
+      (_,_) -> False
+--  Red == Red = True
+--  Yellow == Yellow  = True
+--  Green == Green = True
+--  _ == _ = False
 
 spec :: Spec
 spec = do
