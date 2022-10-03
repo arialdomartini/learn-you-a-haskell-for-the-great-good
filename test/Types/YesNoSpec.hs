@@ -16,6 +16,10 @@ instance YesNo String where
 instance YesNo Bool where
   if' = id
 
+instance YesNo (Maybe a) where
+  if' Nothing = False
+  if' (Just _) = True
+
 spec :: Spec
 spec = do
   it "converts integers to Bool" $ do
@@ -29,3 +33,7 @@ spec = do
   it "works with ordinary Bool values" $ do
     if' True `shouldBe` True
     if' False `shouldBe` False
+
+  it "works with Maybe" $ do
+    if' Nothing `shouldBe` False
+    if' (Just "hey") `shouldBe` True
