@@ -13,10 +13,11 @@ instance Eq TrafficLight where
       (Yellow, Yellow) -> True
       (Green, Green) -> True
       (_,_) -> False
---  Red == Red = True
---  Yellow == Yellow  = True
---  Green == Green = True
---  _ == _ = False
+
+instance Show TrafficLight where
+    show Red = "Red light"
+    show Yellow  = "Yellow light"
+    show Green = "Green light"
 
 spec :: Spec
 spec = do
@@ -32,3 +33,8 @@ spec = do
     Yellow == Green `shouldBe` False
     Green == Red `shouldBe` False
     Green == Yellow `shouldBe` False
+
+  it "implements Show" $ do
+    show Red `shouldBe` "Red light"
+    show Yellow `shouldBe` "Yellow light"
+    show Green `shouldBe` "Green light"
