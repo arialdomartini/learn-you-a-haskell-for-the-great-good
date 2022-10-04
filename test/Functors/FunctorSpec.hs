@@ -1,3 +1,4 @@
+{-# LANGUAGE GADTs #-}
 module Functors.FunctorSpec where
 
 import Test.Hspec
@@ -12,6 +13,11 @@ instance Functor' [] where
 
 data Maybe' a = Nothing' | Just' a deriving (Show, Eq)
 
+data Either' a b where
+  Left' :: a -> Either' a b
+  Right' :: b -> Either' a b
+  deriving (Eq, Show)
+
 instance Functor' Maybe' where
   fmap' _ Nothing' = Nothing'
   fmap' f (Just' a) = Just' (f a)
@@ -19,6 +25,10 @@ instance Functor' Maybe' where
 instance Functor' Tree where
   fmap' _ Empty = Empty
   fmap' f (Node v l r) = Node (f v) (fmap' f l) (fmap' f r)
+
+instance Functor' (Either' a) where
+  fmap' _ (Left' l) = Left' l
+  fmap' f (Right' r) = Right' (f r)
 
 spec :: Spec
 spec = do
@@ -34,3 +44,7 @@ spec = do
     let tree = Node (100 :: Int) (Node 90 (Node 80 Empty Empty) Empty) Empty
         expected = Node (200 :: Int) (Node 180 (Node 160 Empty Empty) Empty) Empty
     fmap' (*2) tree `shouldBe` expected
+
+  it "Either can be made an instance of Functor" $ do
+    (fmap length  (Left' "error")) `shouldBe` Left' "error"
+    (fmap length  (Right' "success")) `shouldBe` Right' 7
