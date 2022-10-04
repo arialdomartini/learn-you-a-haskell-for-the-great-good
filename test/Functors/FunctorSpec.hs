@@ -1,4 +1,5 @@
 {-# LANGUAGE GADTs #-}
+
 module Functors.FunctorSpec where
 
 import Test.Hspec
@@ -45,6 +46,9 @@ spec = do
         expected = Node (200 :: Int) (Node 180 (Node 160 Empty Empty) Empty) Empty
     fmap' (*2) tree `shouldBe` expected
 
-  it "Either can be made an instance of Functor" $ do
-    (fmap length  (Left' "error")) `shouldBe` Left' "error"
-    (fmap length  (Right' "success")) `shouldBe` Right' 7
+  it "Either can be made an instance of Functor, Left case" $ do
+    let l = length :: (String -> Int)
+      in fmap' l  (Left' "error") `shouldBe` Left' "error"
+
+  it "Either can be made an instance of Functor, Right case" $ do
+    (fmap' length  (Right' "success") :: (Either' String Int)) `shouldBe` Right' 7
