@@ -19,6 +19,10 @@ data Either' a b where
   Right' :: b -> Either' a b
   deriving (Eq, Show)
 
+data Map' k v where
+  Map' :: [(k, v)] -> Map' k v
+  deriving (Show, Eq)
+
 instance Functor' Maybe' where
   fmap' _ Nothing' = Nothing'
   fmap' f (Just' a) = Just' (f a)
@@ -30,6 +34,13 @@ instance Functor' Tree where
 instance Functor' (Either' a) where
   fmap' _ (Left' l) = Left' l
   fmap' f (Right' r) = Right' (f r)
+
+add' :: (k, v) -> Map' k v -> Map' k v
+add' p (Map' l) = Map' (p : l)
+
+instance Functor' (Map' k) where
+  fmap' _ (Map' []) = Map' []
+  fmap' f (Map' ((k,v):t)) = (k, f v) `add'` fmap' f (Map' t)
 
 spec :: Spec
 spec = do
@@ -52,3 +63,8 @@ spec = do
 
   it "Either can be made an instance of Functor, Right case" $ do
     (fmap' length  (Right' "success") :: (Either' String Int)) `shouldBe` Right' 7
+
+  it "Map' can be made an instance of Functor" $ do
+    let map' = Map' [(1, "Joe"), (2, "Mary")]
+        expected = Map' [(1, 3), (2, 4)] :: Map' Int Int
+        in fmap' length map' `shouldBe` expected
