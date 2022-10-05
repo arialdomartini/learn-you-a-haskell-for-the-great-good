@@ -19,9 +19,14 @@ spec = do
     result <- f
     result `shouldBe` "mario"
 
-  it "tests putStrLn" $ do
+  -- this replaces putStrLn with a stub
+  it "mocks putStrLn" $ do
     let pr s = do
           s `shouldBe` "Hello, side-effectful world!"
           return () -- putStrLn is mocked
     result <- printHello pr
     result `shouldBe` ()
+
+  -- this executes the side effect
+  it "test putStrLn" $ do
+    printHello putStrLn `shouldReturn` ()
