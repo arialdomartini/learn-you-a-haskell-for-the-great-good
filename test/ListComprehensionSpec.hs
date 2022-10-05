@@ -53,8 +53,18 @@ spec = do
   it "calculates the largest palindrome given by the product of 2 3-digit numbers" $ do
     palindrome `shouldBe` (906609::Int)
 
+
+  it "calculates the largest palindrome given by the product of 2 3-digit numbers, including base numbers" $ do
+    palindromeBase `shouldBe` (906609,993,913)
+
+
 palindrome :: Int
 palindrome = maximum [n | x <- [111..999], y <- [111..999], let n = x * y, let s = show n, s == reverse s]
+
+palindromeBase :: (Int, Int, Int)
+palindromeBase =
+  let xs = [(n, x, y) | x <- [111..999], y <- [111..999], let n = x * y, let s = show n, s == reverse s] in
+    foldr (\(n, x, y) (gn, gx, gy) -> if n > gn then (n,x,y) else (gn, gx, gy)) (head xs) xs
 
 len :: [a] -> Int
 --len xs = foldl (\a i -> a + i) 0 [1 | _ <- xs]
