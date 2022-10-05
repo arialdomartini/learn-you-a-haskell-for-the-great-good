@@ -2,17 +2,18 @@ module Main(main) where
 
 main :: IO ()
 main = do
-  forEverPrint
+  sequence forEverPrint
   salute
 
 
 
-forEverPrint :: IO ()
-forEverPrint =
-  do
+forEverPrint :: [IO ()]
+forEverPrint = repeat singlePrint
+
+singlePrint :: IO ()
+singlePrint = do
     line <- getLine
     putStrLn $ reverse line
-    forEverPrint
 
 
 salute :: IO ()
