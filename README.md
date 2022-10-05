@@ -10,6 +10,18 @@ Run tests with:
 make test
 ```
 
+Execute the app with
+
+``` sh
+cabal run learn-you-a-haskell
+```
+
+or 
+
+``` sh
+make run
+```
+
 ## Index
 
 * [Setup](docs/setup.md)

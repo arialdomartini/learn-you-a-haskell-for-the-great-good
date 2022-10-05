@@ -18,6 +18,11 @@ cabal-version:       >=1.10
 -- common to point users to the README.md file.
 description:         Please see the README on Github at <https://github.com/githubuser/learn-you-a-haskell#readme>
 
+executable learn-you-a-haskell
+  main-is:             Main.hs
+  hs-source-dirs:      app
+  build-depends:       base >= 4.7 && < 5
+
 library
   hs-source-dirs:      src
   exposed-modules:
