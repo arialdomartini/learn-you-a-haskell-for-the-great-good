@@ -2,7 +2,17 @@ module Main(main) where
 
 main :: IO ()
 main = do
-   salute
+  forEverPrint
+  salute
+
+
+
+forEverPrint :: IO ()
+forEverPrint =
+  do
+    line <- getLine
+    putStrLn $ reverse line
+    forEverPrint
 
 
 salute :: IO ()
