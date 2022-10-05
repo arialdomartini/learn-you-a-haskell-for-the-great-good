@@ -3,6 +3,8 @@ module IO.IOSpec where
 
 import Test.Hspec
 import Data.Char (toUpper)
+import GHC.IORef (IORef(IORef), newIORef, writeIORef)
+import Data.IORef (readIORef)
 
 -- A function returning IO
 f :: IO String
@@ -34,15 +36,31 @@ salute input = do
     ++ bigLastName
     ++ ", how are you?"
 
+putStub :: IORef String -> String -> IO ()
+putStub ref s = do
+  writeIORef ref s
+  return ()
+getStub s = return s
+
+createForTest :: IORef String -> IO Input
+createForTest ioR = do
+  v <- readIORef ioR
+  return (Input {put = putStub ioR, get= getStub v})
+
+ioR :: IO (IORef String)
+ioR = newIORef "Mario"
+
+
 spec :: Spec
 spec = do
 
   it "stubs IO using a Data Type" $ do
-    let putStub s = return ()
-    let getStub = return "Mario"
-    let saluteTest = salute (Input {put = putStub, get= getStub})
-    result <- saluteTest
-    result `shouldBe` ()
+    ioRv <- ioR
+    inputStub <- createForTest ioRv
+    let saluteTest = salute inputStub
+    saluteTest
+    v <- readIORef ioRv
+    v `shouldBe` "hey MARIO MARIO, how are you?"
 
 
   -- asserting an IO
