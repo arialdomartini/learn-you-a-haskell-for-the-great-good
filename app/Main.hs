@@ -9,14 +9,19 @@ choices = Map.fromList [
   (1, ("forEverPrint", sequenceForEverPrint)),
   (2, ("salute", salute)),
   (3, ("read input", readInput)),  -- run it with (echo 3 && cat README.md) | make run
-  (4, ("read input with getContents", readInputWithGetContents))]
+  (4, ("read input with getContents", readInputWithGetContents)),
+  (5, ("only short lines", shortLines))]
 
 readInputWithGetContents :: IO ()
 readInputWithGetContents = forever $ do
   v <- getContents
   putStrLn $ fmap toUpper v
 
+shortLines :: IO ()
+shortLines = interact $ onlyTakeShortLines
 
+onlyTakeShortLines :: String -> String
+onlyTakeShortLines = unlines . fmap (\s -> if length s > 10 then "too long" else s) . lines
 
 main :: IO ()
 main = forever menu
