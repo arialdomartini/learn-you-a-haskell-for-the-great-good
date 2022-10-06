@@ -3,7 +3,7 @@ module IO.IOSpec where
 
 import Test.Hspec
 import Data.Char (toUpper)
-import GHC.IORef (IORef(IORef), newIORef, writeIORef)
+import GHC.IORef (IORef, newIORef, writeIORef)
 import Data.IORef (readIORef)
 
 -- A function returning IO
@@ -40,12 +40,13 @@ putStub :: IORef String -> String -> IO ()
 putStub ref s = do
   writeIORef ref s
   return ()
-getStub s = return s
+getStub :: a -> IO a
+getStub = return
 
 createForTest :: IORef String -> IO Input
-createForTest ioR = do
-  v <- readIORef ioR
-  return (Input {put = putStub ioR, get= getStub v})
+createForTest ioR' = do
+  v <- readIORef ioR'
+  return (Input {put = putStub ioR', get= getStub v})
 
 ioR :: IO (IORef String)
 ioR = newIORef "Mario"
