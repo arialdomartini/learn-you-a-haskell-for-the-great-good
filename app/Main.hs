@@ -14,7 +14,17 @@ choices = Map.fromList [
   (3, ("read input", readInput)),  -- run it with (echo 3 && cat README.md) | make run
   (4, ("read input with getContents", readInputWithGetContents)),
   (5, ("only short lines", shortLines)),
-  (6, ("read a file", readAFile))]
+  (6, ("read a file", readAFile)),
+  (7, ("copy a file", copyFile))]
+
+copyFile :: IO ()
+copyFile = do
+  from <- getLine
+  to <- getLine
+  putStrLn $ from ++ " -> " ++ to
+  content <- readFile from
+  writeFile to content
+  return ()
 
 readAFile :: IO ()
 readAFile = do
