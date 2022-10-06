@@ -8,7 +8,13 @@ choices :: Map.Map Int (String, IO ())
 choices = Map.fromList [
   (1, ("forEverPrint", sequenceForEverPrint)),
   (2, ("salute", salute)),
-  (3, ("read input", readInput))]  -- run it with (echo 3 && cat README.md) | make run
+  (3, ("read input", readInput)),  -- run it with (echo 3 && cat README.md) | make run
+  (4, ("read input with getContents", readInputWithGetContents))]
+
+readInputWithGetContents :: IO ()
+readInputWithGetContents = forever $ do
+  v <- getContents
+  putStrLn $ fmap toUpper v
 
 
 
