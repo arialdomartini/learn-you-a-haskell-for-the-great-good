@@ -50,6 +50,17 @@ createForTest ioR = do
 ioR :: IO (IORef String)
 ioR = newIORef "Mario"
 
+someAction :: IO (String)
+someAction = do return "Hello"
+
+sequence' :: [ IO a ] -> IO [a]
+sequence' [] = do return []
+sequence' (x:xs) =
+  do
+    r <- x
+    rest <- sequence' xs
+    return (r : rest)
+
 
 spec :: Spec
 spec = do
@@ -79,3 +90,11 @@ spec = do
   -- this executes the side effect
   it "test putStrLn" $ do
     printHello putStrLn `shouldReturn` ()
+
+  it "implements sequence t (m a) -> m (t a)" $ do
+    let action1 = someAction
+    let action2 = someAction
+    let action3 = someAction
+    let tma = [action1, action2, action3]
+    s <- sequence' tma
+    s `shouldBe` ["Hello", "Hello", "Hello"]
