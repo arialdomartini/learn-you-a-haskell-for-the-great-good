@@ -2,19 +2,28 @@ module Main(main) where
 
 import qualified Data.Map as Map
 import Control.Monad(forever)
+import Data.Char (toUpper)
 
+choices :: Map.Map Int (String, IO ())
 choices = Map.fromList [
   (1, ("forEverPrint", sequenceForEverPrint)),
-  (2, ("salute", salute))] :: Map.Map Int (String, IO ())
+  (2, ("salute", salute)),
+  (3, ("read input", readInput))]  -- run it with (echo 3 && cat README.md) | make run
+
+
 
 main :: IO ()
 main = forever menu
 
+readInput :: IO()
+readInput =
+  forever $ do
+    line <- getLine
+    putStrLn $ map toUpper line
 
 menu :: IO ()
 menu = do
-  putStrLn "1 forEverPrint"
-  putStrLn "2 salute"
+  _ <- sequence $ Map.mapWithKey execCommand choices
   choice <- getLine
   let choiceN = (read choice) :: Int
   let f = Map.lookup choiceN choices
@@ -23,6 +32,9 @@ menu = do
     Just f -> do
       snd f
       putStrLn "================"
+
+execCommand :: Int -> (String, IO ()) -> IO ()
+execCommand k (s, c) = putStrLn $ show k ++ ")" ++ " " ++ s
 
 
 sequenceForEverPrint :: IO ()
