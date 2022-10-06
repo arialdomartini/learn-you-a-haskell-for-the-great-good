@@ -53,6 +53,12 @@ ioR = newIORef "Mario"
 someAction :: IO (String)
 someAction = do return "Hello"
 
+someActionI :: IO (Int)
+someActionI = do return 42
+
+
+-- this is implement in GHC.Base as
+-- sequence = mapM id
 sequence' :: [ IO a ] -> IO [a]
 sequence' [] = do return []
 sequence' (x:xs) =
@@ -60,6 +66,23 @@ sequence' (x:xs) =
     r <- x
     rest <- sequence' xs
     return (r : rest)
+
+-- mapM :: (Traversable t, Monad m) => (a -> m b) -> t a -> m (t b)
+
+mapM' :: (a-> IO b) -> [a] -> IO [b]
+mapM' _ [] = do return []
+mapM' f' (m:ms) = do
+      m' <- f' m
+      rest <- mapM' f' ms
+      return (m' : rest)
+
+mapM'' :: (a-> IO b) -> [a] -> IO [b]
+mapM'' = undefined
+
+
+print' :: Int -> IO Int
+print' x = do
+  return (x * 2)
 
 
 spec :: Spec
@@ -98,3 +121,10 @@ spec = do
     let tma = [action1, action2, action3]
     s <- sequence' tma
     s `shouldBe` ["Hello", "Hello", "Hello"]
+
+
+  it "implements mapM" $ do
+    let ns = [1,2,3]
+    s <- mapM  print' ns
+    s'<- mapM' print' ns
+    s `shouldBe` s'
