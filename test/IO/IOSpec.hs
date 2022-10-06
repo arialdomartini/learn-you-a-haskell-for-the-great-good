@@ -78,7 +78,7 @@ mapM' f' (m:ms) = do
       return (m' : rest)
 
 mapM'' :: (a-> IO b) -> [a] -> IO [b]
-mapM'' = undefined
+mapM'' fu = sequence . fmap fu
 
 
 print' :: Int -> IO Int
@@ -123,9 +123,16 @@ spec = do
     s <- sequence' tma
     s `shouldBe` ["Hello", "Hello", "Hello"]
 
-
   it "implements mapM" $ do
     let ns = [1,2,3]
     s <- mapM  print' ns
     s'<- mapM' print' ns
+    s `shouldBe` s'
+
+
+
+  it "implements mapM with function composition" $ do
+    let ns = [1,2,3]
+    s <- mapM  print' ns
+    s'<- mapM'' print' ns
     s `shouldBe` s'
