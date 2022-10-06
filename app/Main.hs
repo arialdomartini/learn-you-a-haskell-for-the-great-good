@@ -3,6 +3,9 @@ module Main(main) where
 import qualified Data.Map as Map
 import Control.Monad(forever)
 import Data.Char (toUpper)
+import Control.Exception (handle)
+import System.IO (openFile, IOMode (ReadMode))
+import GHC.IO.Handle
 
 choices :: Map.Map Int (String, IO ())
 choices = Map.fromList [
@@ -10,7 +13,15 @@ choices = Map.fromList [
   (2, ("salute", salute)),
   (3, ("read input", readInput)),  -- run it with (echo 3 && cat README.md) | make run
   (4, ("read input with getContents", readInputWithGetContents)),
-  (5, ("only short lines", shortLines))]
+  (5, ("only short lines", shortLines)),
+  (6, ("read a file", readAFile))]
+
+readAFile :: IO ()
+readAFile = do
+  handle <- openFile "README.md" ReadMode
+  content <- hGetContents handle
+  putStr content
+  hClose handle
 
 readInputWithGetContents :: IO ()
 readInputWithGetContents = forever $ do
