@@ -4,7 +4,7 @@ import qualified Data.Map as Map
 import Control.Monad(forever)
 import Data.Char (toUpper)
 import Control.Exception (handle)
-import System.IO (openFile, IOMode (ReadMode))
+import System.IO (withFile, IOMode (ReadMode))
 import GHC.IO.Handle
 
 choices :: Map.Map Int (String, IO ())
@@ -18,10 +18,10 @@ choices = Map.fromList [
 
 readAFile :: IO ()
 readAFile = do
-  handle <- openFile "README.md" ReadMode
-  content <- hGetContents handle
-  putStr content
-  hClose handle
+  withFile "README.md" ReadMode $
+    \h -> do
+       content <- hGetContents h
+       putStr content
 
 readInputWithGetContents :: IO ()
 readInputWithGetContents = forever $ do
