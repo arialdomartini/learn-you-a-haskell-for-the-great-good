@@ -15,7 +15,22 @@ choices = Map.fromList [
   (4, ("read input with getContents", readInputWithGetContents)),
   (5, ("only short lines", shortLines)),
   (6, ("read a file", readAFile)),
-  (7, ("copy a file", copyFile))]
+  (7, ("copy a file", copyFile)),
+  (8, ("delete line from file", deleteLine))]
+
+deleteLine :: IO ()
+deleteLine = do
+  let fileName = "README.md"
+  content <- readFile fileName
+  let numberedLines = (zipWith (,) (fmap show [1..]). lines) content
+  let contentLines = unlines $ fmap (\(i,c) -> (show i) ++ ") " ++ c) numberedLines
+  putStrLn contentLines
+  lineToDelete <-getLine
+  let lineNumber = (read lineToDelete) :: Int
+  let filtered = filter (\(i,_) -> i /= lineToDelete) numberedLines
+  let outFileName = "deleted_" ++ fileName
+  writeFile outFileName (unlines (fmap snd filtered))
+  putStrLn $ "Have a look to " ++ outFileName
 
 copyFile :: IO ()
 copyFile = do
