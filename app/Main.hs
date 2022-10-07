@@ -6,6 +6,8 @@ import Data.Char (toUpper)
 import Control.Exception (handle)
 import System.IO (withFile, IOMode (ReadMode))
 import GHC.IO.Handle
+import GHC.Show (intToDigit)
+import System.Environment (getArgs)
 
 choices :: Map.Map Int (String, IO ())
 choices = Map.fromList [
@@ -16,7 +18,14 @@ choices = Map.fromList [
   (5, ("only short lines", shortLines)),
   (6, ("read a file", readAFile)),
   (7, ("copy a file", copyFile)),
-  (8, ("delete line from file", deleteLine))]
+  (8, ("delete line from file", deleteLine)),
+  (9, ("print args", printArgs))
+  ]
+
+printArgs :: IO ()
+printArgs = do
+  args <- getArgs
+  print args
 
 deleteLine :: IO ()
 deleteLine = do
