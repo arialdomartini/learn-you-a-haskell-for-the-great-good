@@ -9,7 +9,7 @@ import Test.Hspec
 import System.Random (StdGen, Random (random), newStdGen)
 import System.Random.Stateful (mkStdGen)
 
-data MyRand v = MyRand (StdGen -> (v, StdGen))
+newtype MyRand v = MyRand (StdGen -> (v, StdGen))
 
 
 instance Functor MyRand where
