@@ -23,6 +23,7 @@ executable learn-you-a-haskell
   hs-source-dirs:      app
   build-depends:       base >= 4.7 && < 5
                      , containers
+                     , learn-you-a-haskell
   default-language:    Haskell2010
 
 library
@@ -33,6 +34,7 @@ library
      Geometry.Cube
      Geometry.Sizes
      Geometry.Shapes
+     FastCopy
   build-depends:       base >= 4.7 && < 5
   default-language:    Haskell2010
   ghc-options:         -Wall

@@ -8,9 +8,11 @@ import System.IO (withFile, IOMode (ReadMode))
 import GHC.IO.Handle
 import GHC.Show (intToDigit)
 import System.Environment (getArgs)
+import qualified FastCopy as Fast(copyFile)
 
 choices :: Map.Map String (IO ())
 choices = Map.fromList [
+  ("help", printHelp),
   ("for-ever-print", sequenceForEverPrint),
   ("salute", salute),
   ("read-input", readInput),  -- run it with (echo 3 && cat README.md) | make run
@@ -18,6 +20,7 @@ choices = Map.fromList [
   ("only-short-lines", shortLines),
   ("read-a-file", readAFile),
   ("copy-a-file", copyFile),
+  ("fast-cp", Fast.copyFile),
   ("delete-line-from-file", deleteLine),
   ("print-args", printArgs)]
 

@@ -12,6 +12,13 @@ make test
 
 Execute the app with
 
+
+```sh
+./run.sh [command]
+```
+
+or
+
 ``` sh
 cabal run learn-you-a-haskell
 ```
@@ -21,6 +28,7 @@ or
 ``` sh
 make run
 ```
+
 
 ## Index
 
