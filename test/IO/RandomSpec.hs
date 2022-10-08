@@ -6,7 +6,7 @@
 module IO.RandomSpec where
 
 import Test.Hspec
-import System.Random (StdGen, Random (random))
+import System.Random (StdGen, Random (random), newStdGen)
 import System.Random.Stateful (mkStdGen)
 
 data MyRand v = MyRand (StdGen -> (v, StdGen))
@@ -51,6 +51,11 @@ randoms' gen =
     (r, gen') = random gen :: (Int, StdGen)
     rest = randoms' gen'
 
+rnd :: IO Int
+rnd = do
+    gen1 <- newStdGen
+    let r1 = random gen1 :: (Int, StdGen)
+    return $ fst r1
 
 spec :: Spec
 spec = do
@@ -76,3 +81,8 @@ spec = do
 
   it "generates an infinite list of random number with a recursive function" $ do
     take 4 (randoms' (mkStdGen 100)) `shouldBe` [9216477508314497915, -6917749724426303066, -2348976503111297336, -716157807093485800]
+
+  it "generates random numbers without providing a manually generated StdGen" $ do
+    r1 <- rnd
+    r2 <- rnd
+    r1 `shouldNotBe` r2
