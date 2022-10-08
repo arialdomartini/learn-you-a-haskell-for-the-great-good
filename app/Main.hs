@@ -10,7 +10,7 @@ import GHC.Show (intToDigit)
 import System.Environment (getArgs)
 import qualified FastCopy as Fast(copyFile)
 
-choices :: Map.Map String (IO ())
+choices :: Map.Map String ([String] -> IO ())
 choices = Map.fromList [
   ("help", printHelp),
   ("for-ever-print", sequenceForEverPrint),
@@ -28,8 +28,8 @@ choices = Map.fromList [
 main :: IO ()
 main = do
   args <- getArgs
-  if args == []
-    then printHelp
+  if null args
+    then printHelp args
     else do let (command : t) = args
             dispatch command t
 
@@ -38,22 +38,22 @@ dispatch k args = do
   let choice = Map.lookup k choices
   case choice of
     Nothing -> putStrLn "No command found"
-    Just command -> command
+    Just command -> command args
 
-printHelp :: IO ()
-printHelp = do sequence_ $ Map.mapWithKey printCommand choices
+printHelp :: [a] -> IO ()
+printHelp _ = do sequence_ $ Map.mapWithKey printCommand choices
 
-printCommand :: String ->  IO () -> IO ()
+printCommand :: String ->  ([String] -> IO ()) -> IO ()
 printCommand s c = putStrLn s
 
 
-printArgs :: IO ()
-printArgs = do
+printArgs :: [a] -> IO ()
+printArgs _ = do
   args <- getArgs
   print args
 
-deleteLine :: IO ()
-deleteLine = do
+deleteLine :: [a] -> IO ()
+deleteLine _ = do
   let fileName = "README.md"
   content <- readFile fileName
   let numberedLines = (zipWith (,) (fmap show [1..]). lines) content
@@ -66,8 +66,8 @@ deleteLine = do
   writeFile outFileName (unlines (fmap snd filtered))
   putStrLn $ "Have a look to " ++ outFileName
 
-copyFile :: IO ()
-copyFile = do
+copyFile :: [a] -> IO ()
+copyFile _ = do
   from <- getLine
   to <- getLine
   putStrLn $ from ++ " -> " ++ to
@@ -75,33 +75,33 @@ copyFile = do
   writeFile to content
   return ()
 
-readAFile :: IO ()
-readAFile = do
+readAFile :: [a] -> IO ()
+readAFile _ = do
   withFile "README.md" ReadMode $
     \h -> do
        content <- hGetContents h
        putStr content
 
-readInputWithGetContents :: IO ()
-readInputWithGetContents = forever $ do
+readInputWithGetContents :: [a] -> IO ()
+readInputWithGetContents _ = forever $ do
   v <- getContents
   putStrLn $ fmap toUpper v
 
-shortLines :: IO ()
-shortLines = interact $ onlyTakeShortLines
+shortLines :: [a] -> IO ()
+shortLines _ = interact $ onlyTakeShortLines
 
 onlyTakeShortLines :: String -> String
 onlyTakeShortLines = unlines . fmap (\s -> if length s > 10 then "too long" else s) . lines
 
-readInput :: IO()
-readInput =
+readInput :: [a] -> IO()
+readInput _ =
   forever $ do
     line <- getLine
     putStrLn $ map toUpper line
 
 
-sequenceForEverPrint :: IO ()
-sequenceForEverPrint = do
+sequenceForEverPrint :: [a] -> IO ()
+sequenceForEverPrint _ = do
   sequence_ forEverPrint
 
 
@@ -114,8 +114,8 @@ singlePrint = do
     putStrLn $ reverse line
 
 
-salute :: IO ()
-salute =
+salute :: [a] -> IO ()
+salute _ =
   do putStrLn "Hello World"
      putStrLn "Hello World. What's your name?"
      name <- getLine
