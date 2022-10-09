@@ -2,13 +2,14 @@ module RPNSpec where
 
 import Test.Hspec
 
-type Tokens = [String]
+type Token = String
+type Tokens = [Token]
 type RawInput = String
-newtype Stack = Stack [String]
+newtype Stack = Stack Tokens
 type Operation = Double -> Double -> Double
 
 solve :: RawInput -> Double
-solve = evaluate empty . tokenize
+solve = evaluate . tokenize
 
 tokenize :: RawInput -> Tokens
 tokenize = words
@@ -17,23 +18,26 @@ empty :: Stack
 empty = Stack []
 
 -- Pop
-pop :: Stack -> (String, Stack)
-pop (Stack [v]) = (v, Stack [])
+pop :: Stack -> (Token, Stack)
+pop (Stack [v]) = (v, empty)
 pop (Stack (h : t))  = (h, Stack t)
 
 -- Push
-(>>>) :: String -> Stack -> Stack
+(>>>) :: Token -> Stack -> Stack
 (>>>) v (Stack vs) = Stack (v : vs)
 
 
--- is this an implementation of a Lisp?
-evaluate :: Stack -> Tokens -> Double
-evaluate (Stack [v]) [] = read v
-evaluate (Stack []) [value] = read value
-evaluate stack ("+":t) = evaluate (doSum stack) t
-evaluate stack ("*":t) = evaluate (doProduct stack) t
-evaluate stack (h : t)   = evaluate (h >>> stack) t
+-- (b -> a -> b) -> b -> t a -> b
+consume :: Stack -> Token -> Stack
+consume stack "+" = doSum stack
+consume stack "*" = doProduct stack
+consume stack h   = h >>> stack
 
+-- is this an implementation of a Lisp?
+evaluate :: Tokens -> Double
+evaluate tokens =
+  let (Stack v) = foldl consume (Stack []) tokens
+    in (read . head) v
 
 -- adding new operations is just as simple as this.
 doSum :: Stack -> Stack
