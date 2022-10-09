@@ -5,10 +5,12 @@ import Test.Hspec
 type Token = String
 type Tokens = [Token]
 type RawInput = String
-newtype Stack = Stack Tokens
-type Operation = Double -> Double -> Double
+type Value = Double
+type Values = [Value]
+newtype Stack = Stack Values
+type Operation = Value -> Value -> Value
 
-solve :: RawInput -> Double
+solve :: RawInput -> Value
 solve = evaluate . tokenize
 
 tokenize :: RawInput -> Tokens
@@ -18,12 +20,12 @@ empty :: Stack
 empty = Stack []
 
 -- Pop
-pop :: Stack -> (Token, Stack)
+pop :: Stack -> (Value, Stack)
 pop (Stack [v]) = (v, empty)
 pop (Stack (h : t))  = (h, Stack t)
 
 -- Push
-(>>>) :: Token -> Stack -> Stack
+(>>>) :: Value -> Stack -> Stack
 (>>>) v (Stack vs) = Stack (v : vs)
 
 
@@ -31,13 +33,13 @@ pop (Stack (h : t))  = (h, Stack t)
 consume :: Stack -> Token -> Stack
 consume stack "+" = doSum stack
 consume stack "*" = doProduct stack
-consume stack h   = h >>> stack
+consume stack h   = (read h) >>> stack
 
 -- is this an implementation of a Lisp?
-evaluate :: Tokens -> Double
+evaluate :: Tokens -> Value
 evaluate tokens =
   let (Stack v) = foldl consume (Stack []) tokens
-    in (read . head) v
+    in head v
 
 -- adding new operations is just as simple as this.
 doSum :: Stack -> Stack
@@ -49,8 +51,8 @@ doProduct = doOperation (*)
 doOperation :: Operation -> Stack -> Stack
 doOperation operation (Stack s) =
   let (v1:v2:t) = s
-      result = read v1 `operation` read v2
-      in Stack ((show result) : t)
+      result = v1 `operation` v2
+      in Stack (result : t)
 
 
 spec :: Spec
