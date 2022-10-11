@@ -57,7 +57,7 @@ instance Functor' IO where
     return $ f res
 
 instance Functor' ((->)a) where
-  fmap' f g = f . g
+  fmap' = (.)
 
 
 
