@@ -38,9 +38,28 @@ instance Functor' (Either' a) where
 add' :: (k, v) -> Map' k v -> Map' k v
 add' p (Map' l) = Map' (p : l)
 
+
+foo :: IO String
+foo = do
+  return "Hey"
+
+
 instance Functor' (Map' k) where
   fmap' _ (Map' []) = Map' []
   fmap' f (Map' ((k,v):t)) = (k, f v) `add'` fmap' f (Map' t)
+
+
+instance Functor' IO where
+  -- Linter suggests to replace this with
+  -- f <$> m
+  fmap' f m = do
+    res <- m
+    return $ f res
+
+instance Functor' ((->)a) where
+  fmap' f g = f . g
+
+
 
 spec :: Spec
 spec = do
@@ -68,3 +87,11 @@ spec = do
     let map' = Map' [(1, "Joe"), (2, "Mary")]
         expected = Map' [(1, 3), (2, 4)] :: Map' Int Int
         in fmap' length map' `shouldBe` expected
+
+  it "fmap a function to IO" $ do
+    r2 <- fmap' length foo
+    r2 `shouldBe` 3
+
+  it "fmap a function to funtions" $ do
+    let f i = i + 3 :: Int
+      in (fmap' (*2) f) 5 `shouldBe` 16
