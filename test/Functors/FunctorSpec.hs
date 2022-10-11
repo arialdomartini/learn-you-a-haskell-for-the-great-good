@@ -44,6 +44,9 @@ foo = do
   return "Hey"
 
 
+
+
+
 instance Functor' (Map' k) where
   fmap' _ (Map' []) = Map' []
   fmap' f (Map' ((k,v):t)) = (k, f v) `add'` fmap' f (Map' t)
@@ -60,6 +63,11 @@ instance Functor' ((->)a) where
   fmap' = (.)
 
 
+data NotFunctor a = Nothing'' | NotFunctor'' Int a deriving (Show, Eq)
+
+instance Functor' NotFunctor where
+  fmap' _ Nothing'' = Nothing''
+  fmap' f (NotFunctor'' i v) = NotFunctor'' (i+1) (f v)
 
 spec :: Spec
 spec = do
@@ -95,3 +103,9 @@ spec = do
   it "fmap a function to funtions" $ do
     let f i = i + 3 :: Int
       in (fmap' (*2) f) 5 `shouldBe` 16
+
+
+  it "breaks the law" $ do
+    let f = NotFunctor'' 1 "Hey"
+    (fmap' length . fmap' (++"!")) f `shouldNotBe` fmap' (length . (++"!")) f
+ -- NotFunctor'' 3 4                               NotFunctor'' 2 4
