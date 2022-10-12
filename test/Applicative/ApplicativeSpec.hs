@@ -4,9 +4,11 @@ module Applicative.ApplicativeSpec where
 import Test.Hspec
 
 class Applicative' f where
+  pure' :: a -> f a
   (<**>) :: f (a -> b) -> f a -> f b
 
 instance Applicative' Maybe where
+  pure' = Just
   Nothing <**> _ = Nothing
   -- more concisely:
   -- Just f <**> v = fmap f v
