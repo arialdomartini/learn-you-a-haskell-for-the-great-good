@@ -59,11 +59,11 @@ spec = do
 
 
 palindrome :: Int
-palindrome = maximum [n | x <- [111..999], y <- [111..999], let n = x * y, let s = show n, s == reverse s]
+palindrome = maximum [n | x <- [100..999], y <- [100..999], let n = x * y, show n == reverse (show n)]
 
 palindromeBase :: (Int, Int, Int)
 palindromeBase =
-  let xs = [(n, x, y) | x <- [111..999], y <- [111..999], let n = x * y, let s = show n, s == reverse s] in
+  let xs = [(n, x, y) | x <- [100..999], y <- [100..999], let n = x * y, let s = show n, s == reverse s] in
     foldr (\(n, x, y) (gn, gx, gy) -> if n > gn then (n,x,y) else (gn, gx, gy)) (head xs) xs
 
 len :: [a] -> Int
