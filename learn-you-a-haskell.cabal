@@ -103,6 +103,7 @@ test-suite spec
     IO.RandomSpec
     RPNSpec
     Applicative.ApplicativeSpec
+    PalindromeSpec
 source-repository head
   type:     git
   location: https://github.com/githubuser/learn-you-a-haskell
