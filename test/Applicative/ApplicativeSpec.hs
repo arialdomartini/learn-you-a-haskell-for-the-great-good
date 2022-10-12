@@ -1,8 +1,26 @@
+{-# OPTIONS_GHC -Wno-type-defaults #-}
 module Applicative.ApplicativeSpec where
 
 import Test.Hspec
 
+class Applicative' f where
+  (<**>) :: f (a -> b) -> f a -> f b
+
+instance Applicative' Maybe where
+  Nothing <**> _ = Nothing
+  Just f <**> Just v = Just (f v)
+  Just _ <**> Nothing = Nothing
+
 spec :: Spec
 spec = do
-  it "should pass" $ do
-    "friends" `shouldBe` "friends"
+  it "implements applicative for Maybe" $ do
+    let m = Just 10 :: (Maybe Int)
+        f = (*)
+        a = fmap f m -- Just (10*)
+        in a <**> Just 2 `shouldBe` Just 20
+
+  it "implements applicative for Maybe" $ do
+    ((*) <$> Just 10) <**> Just 2 `shouldBe` Just 20
+    ((*) <$> Just 10) <**> Nothing `shouldBe` Nothing
+    ((*) <$> Nothing) <**> Just 2 `shouldBe` Nothing
+    ((*) <$> Nothing) <**> Nothing `shouldBe` Nothing
