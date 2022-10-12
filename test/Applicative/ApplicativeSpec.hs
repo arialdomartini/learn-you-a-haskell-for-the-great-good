@@ -28,3 +28,6 @@ spec = do
   it "can apply the internal function using fmap" $ do
     let a = fmap (*) (Just 10)
         in fmap (\f -> f 2) a `shouldBe` Just 20
+
+  it "uses pure" $ do
+     pure ("hey " ++) <*> pure "Joe"  `shouldBe` Just "hey Joe"
