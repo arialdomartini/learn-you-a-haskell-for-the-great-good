@@ -34,4 +34,4 @@ spec = do
         in fmap (\f -> f 2) a `shouldBe` Just 20
 
   it "uses pure" $ do
-     pure ("hey " ++) <*> pure "Joe"  `shouldBe` Just "hey Joe"
+     pure ("hey " ++) <*> pure "Joe"  `shouldBe` (pure "hey Joe" :: Maybe String)
