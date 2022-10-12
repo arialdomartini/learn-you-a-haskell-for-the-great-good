@@ -32,7 +32,22 @@ spec = do
     isPalindrome 100012   `shouldBe` False
     isPalindrome 2113     `shouldBe` False
 
+  it "bigger palindrome product of 2 3-digit numbers" $ do
+    calculateLargest `shouldBe` 906609
 
+calculateLargest :: Int
+calculateLargest = largest (100,100) 0
+
+next :: (Int, Int) -> (Int, Int)
+next (x, 999) = (x+1, 100)
+next (x, y) =   (x, y+1)
+
+largest :: (Int, Int) -> Int -> Int
+largest (1000, _) champion = champion
+largest counter@(x,y) champion =
+  let candidate = x * y
+      nextChampion = if isPalindrome candidate && candidate > champion then candidate else champion in
+    largest (next counter) nextChampion
 
 isPalindrome :: Int -> Bool
 isPalindrome n =
@@ -44,7 +59,6 @@ isPalindrome n =
 
 numberOfDigits :: Int -> Int
 numberOfDigits n = floor $ logBase 10 (int2Float n) + 1
-
 
 digit :: Int -> Int -> Int
 digit i n = floor (int2Float  n / (10^i)) `mod` 10
