@@ -24,3 +24,7 @@ spec = do
     ((*) <$> Just 10) <**> Nothing `shouldBe` Nothing
     ((*) <$> Nothing) <**> Just 2 `shouldBe` Nothing
     ((*) <$> Nothing) <**> Nothing `shouldBe` Nothing
+
+  it "can apply the internal function using fmap" $ do
+    let a = fmap (*) (Just 10)
+        in fmap (\f -> f 2) a `shouldBe` Just 20
