@@ -8,6 +8,8 @@ class Applicative' f where
 
 instance Applicative' Maybe where
   Nothing <**> _ = Nothing
+  -- more concisely:
+  -- Just f <**> v = fmap f v
   Just f <**> Just v = Just (f v)
   Just _ <**> Nothing = Nothing
 
