@@ -36,6 +36,24 @@ instance Applicative' ((->)a) where
     f' <- f
     fmap f' v
 
+data ZipList' a = ZipList' [a] deriving (Eq, Show)
+
+
+instance Functor ZipList' where
+  fmap _ (ZipList' []) = ZipList' []
+  fmap f (ZipList' (h:t)) =
+    let v1 = f h
+        (ZipList' rest) = fmap f (ZipList' t) in
+      ZipList' (v1 : rest)
+
+instance Applicative' ZipList' where
+  pure' v = ZipList' [v]
+  (ZipList' []) <**> (ZipList' []) = ZipList' []
+  (ZipList' (f:fs)) <**> (ZipList' (v:vs)) =
+    let h = f v
+        (ZipList' rest) = ZipList' fs <**> ZipList' vs -- ZipList rest
+      in ZipList' (h : rest)
+
 spec :: Spec
 spec = do
   it "implements applicative for Maybe" $ do
@@ -88,3 +106,8 @@ spec = do
         r1 = f1 "Hey "
         r2 = f2 "Hey " in
       r1 `shouldBe` r2
+
+  it "implements Applicative for ZipLists" $ do
+    let z1 = ZipList' [1,2,3] :: ZipList' Int
+        z2 = ZipList' ["a", "b", "c"] :: ZipList' String
+        in fmap (,) z1 <**> z2 `shouldBe` ZipList' [(1, "a"), (2, "b"), (3, "c")]
