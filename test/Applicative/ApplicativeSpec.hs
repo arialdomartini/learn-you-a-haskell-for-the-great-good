@@ -19,6 +19,18 @@ instance Applicative' [] where
   pure' a = [a]
   (<**>) fs vs = [f v | f <- fs, v <- vs]
 
+instance Applicative' IO where
+  pure' a = do return a
+  (<**>) fio vio = do
+    f <- fio
+    v <- vio
+    return (f v)
+    -- otherwise
+    --  (<**>) fio vio = do
+    --   f <- fio
+    --   fmap f vio
+
+
 spec :: Spec
 spec = do
   it "implements applicative for Maybe" $ do
@@ -57,3 +69,10 @@ spec = do
     let f a b = (a,b) in
       pure' f <**> [1,2,3] <**> ["a"] `shouldBe`
       pure' f <*> [1,2,3] <*> ["a"]
+
+  it "implements Applicative for IO" $ do
+    let f a b = (a,b)
+        fIO = pure f :: IO (String -> String -> (String, String))
+    res1 <- fIO  <*> pure "Hey" <*> pure "Joe"
+    res2 <- pure f <**> pure "Hey" <**> pure "Joe"
+    res1 `shouldBe` res2
