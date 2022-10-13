@@ -30,6 +30,11 @@ instance Applicative' IO where
     --   f <- fio
     --   fmap f vio
 
+instance Applicative' ((->)a) where
+  pure' = const
+  (<**>) f v = do
+    f' <- f
+    fmap f' v
 
 spec :: Spec
 spec = do
@@ -76,3 +81,10 @@ spec = do
     res1 <- fIO  <*> pure "Hey" <*> pure "Joe"
     res2 <- pure f <**> pure "Hey" <**> pure "Joe"
     res1 `shouldBe` res2
+
+  it "implements Applicative for functions" $ do
+    let f1 = pure (++"!") <**> (++"Joe")
+        f2 = (++"Joe!")
+        r1 = f1 "Hey "
+        r2 = f2 "Hey " in
+      r1 `shouldBe` r2
