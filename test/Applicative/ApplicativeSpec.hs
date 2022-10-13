@@ -3,7 +3,7 @@ module Applicative.ApplicativeSpec where
 
 import Test.Hspec
 
-class Applicative' f where
+class Functor f => Applicative' f where
   pure' :: a -> f a
   (<**>) :: f (a -> b) -> f a -> f b
 
@@ -14,6 +14,10 @@ instance Applicative' Maybe where
   -- Just f <**> v = fmap f v
   Just f <**> Just v = Just (f v)
   Just _ <**> Nothing = Nothing
+
+instance Applicative' [] where
+  pure' a = [a]
+  (<**>) fs vs = [f v | f <- fs, v <- vs]
 
 spec :: Spec
 spec = do
@@ -47,3 +51,9 @@ spec = do
     let f a b c = (a,b,c) in
       fmap f     [1,2,3] <*> ["a", "b", "c"] <*> ['x', 'y'] `shouldBe`
            f <$> [1,2,3] <*> ["a", "b", "c"] <*> ['x', 'y']
+
+
+  it "implements Applicative for lists" $ do
+    let f a b = (a,b) in
+      pure' f <**> [1,2,3] <**> ["a"] `shouldBe`
+      pure' f <*> [1,2,3] <*> ["a"]
