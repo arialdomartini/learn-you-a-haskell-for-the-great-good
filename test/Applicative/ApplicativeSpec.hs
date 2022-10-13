@@ -48,11 +48,12 @@ instance Functor ZipList' where
 
 instance Applicative' ZipList' where
   pure' v = ZipList' [v]
-  (ZipList' []) <**> (ZipList' []) = ZipList' []
-  (ZipList' (f:fs)) <**> (ZipList' (v:vs)) =
-    let h = f v
-        (ZipList' rest) = ZipList' fs <**> ZipList' vs -- ZipList rest
-      in ZipList' (h : rest)
+  -- (ZipList' []) <**> (ZipList' []) = ZipList' []
+  -- (ZipList' (f:fs)) <**> (ZipList' (v:vs)) =
+  --   let h = f v
+  --       (ZipList' rest) = ZipList' fs <**> ZipList' vs -- ZipList rest
+  --     in ZipList' (h : rest)
+  (ZipList' fs) <**> (ZipList' vs) = ZipList' $ zipWith (\f v -> f v) fs vs
 
 spec :: Spec
 spec = do
