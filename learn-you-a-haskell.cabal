@@ -103,6 +103,7 @@ test-suite spec
     IO.RandomSpec
     RPNSpec
     Applicative.ApplicativeSpec
+    Applicative.LiftingSpec
     PalindromeSpec
 source-repository head
   type:     git

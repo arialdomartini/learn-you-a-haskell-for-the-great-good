@@ -47,7 +47,7 @@ instance Functor ZipList' where
       ZipList' (v1 : rest)
 
 instance Applicative' ZipList' where
-  pure' v = ZipList' [v]
+  pure' v = ZipList' $ repeat v
   -- (ZipList' []) <**> (ZipList' []) = ZipList' []
   -- (ZipList' (f:fs)) <**> (ZipList' (v:vs)) =
   --   let h = f v
@@ -111,4 +111,4 @@ spec = do
   it "implements Applicative for ZipLists" $ do
     let z1 = ZipList' [1,2,3] :: ZipList' Int
         z2 = ZipList' ["a", "b", "c"] :: ZipList' String
-        in fmap (,) z1 <**> z2 `shouldBe` ZipList' [(1, "a"), (2, "b"), (3, "c")]
+        in pure' (,) <**> z1 <**> z2 `shouldBe` ZipList' [(1, "a"), (2, "b"), (3, "c")]
