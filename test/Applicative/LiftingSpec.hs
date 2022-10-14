@@ -51,4 +51,4 @@ sequenceA' [] = pure []
 sequenceA' (h:t) = (:) <$> h <*> sequenceA' t
                 -- liftA2 (:) h (sequenceA' t)
                 -- h <*> (pure (:)) <*> sequenceA' t
-                -- foldr (\x acc -> (:) <$> x <*> acc) (pure [])
+                -- foldr (liftA2 (:)) (pure [])
