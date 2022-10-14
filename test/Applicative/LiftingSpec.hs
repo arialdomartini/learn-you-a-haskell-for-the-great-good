@@ -32,3 +32,8 @@ spec = do
       in do r1 `shouldBe` r2
             r2 `shouldBe` r3
             r3 `shouldBe` r4
+
+  it "combines 2 applicatives" $ do
+    let a = Just 3 :: Maybe Int
+        b = fmap (: []) (Just 4) -- Just [4]
+      in liftA2 (:) a b `shouldBe` Just [3,4]
