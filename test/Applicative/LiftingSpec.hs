@@ -46,6 +46,10 @@ spec = do
     (sequenceA' [ Just 3, Just 4, Just 5 ]) `shouldBe` Just [3,4,5]
 
 
+  it "sequences functions" $ do
+    (sequence [(+3), (^2), (+1000)] 10) `shouldBe` [30, 100,1010]
+
+
 sequenceA' :: Applicative f => [f a] -> f [a]
 sequenceA' [] = pure []
 sequenceA' (h:t) = (:) <$> h <*> sequenceA' t
