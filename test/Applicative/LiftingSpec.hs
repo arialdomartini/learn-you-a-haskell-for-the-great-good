@@ -49,3 +49,5 @@ spec = do
 sequenceA' :: Applicative f => [f a] -> f [a]
 sequenceA' [] = pure []
 sequenceA' (h:t) = (:) <$> h <*> sequenceA' t
+                -- liftA2 (:) h (sequenceA' t)
+                -- h <*> (pure (:)) <*> sequenceA' t
