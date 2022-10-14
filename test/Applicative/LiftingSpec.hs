@@ -38,3 +38,14 @@ spec = do
         b = fmap (: []) (Just 4) -- Just [4]
       in do liftA2 (:) a b `shouldBe` Just [3,4]
             (:) <$> a <*> b `shouldBe` Just [3,4]
+
+  -- Let’s try implementing a function that takes a list of applicative values
+  -- and returns an applicative value that has a list as its result value. We’ll call it
+  -- sequenceA
+  it "sequences applicatives" $ do
+    (sequenceA' [ Just 3, Just 4, Just 5 ]) `shouldBe` Just [3,4,5]
+
+
+sequenceA' :: Applicative f => [f a] -> f [a]
+sequenceA' [] = pure []
+sequenceA' (h:t) = (:) <$> h <*> sequenceA' t
