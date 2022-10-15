@@ -62,6 +62,10 @@ spec = do
     sequenceA [[1],[2]] `shouldBe` ([[1,2]] :: [[Int]])
     sequenceA [[1,2], [3,4]] `shouldBe` ([[1,3], [1,4], [2,3], [2, 4]] :: [[Int]]) -- Not easy to grasp!
 
+  it "uses sequenceA for checking if all predicates are satisfied" $ do
+      let predicates = [(>0), (>10), odd, even . (*2)] in
+        all (==True) (sequence predicates (11::Int)) `shouldBe` True
+
 sequenceA' :: Applicative f => [f a] -> f [a]
 sequenceA' [] = pure []
 sequenceA' (h:t) = (:) <$> h <*> sequenceA' t
