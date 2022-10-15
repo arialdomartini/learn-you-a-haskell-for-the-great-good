@@ -105,6 +105,7 @@ test-suite spec
     Applicative.ApplicativeSpec
     Applicative.LiftingSpec
     PalindromeSpec
+    Monoids.MonoidSpec
 source-repository head
   type:     git
   location: https://github.com/githubuser/learn-you-a-haskell

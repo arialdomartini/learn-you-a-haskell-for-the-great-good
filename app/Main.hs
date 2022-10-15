@@ -27,11 +27,7 @@ choices = Map.fromList [
 
 main :: IO ()
 main = do
-  args <- getArgs
-  if null args
-    then printHelp args
-    else do let (command : t) = args
-            dispatch command t
+  print $ maximum [n | x <- [100..999], y <- [100..999], let n = x * y, show n == reverse (show n)]
 
 dispatch :: String -> [String] -> IO ()
 dispatch k args = do
