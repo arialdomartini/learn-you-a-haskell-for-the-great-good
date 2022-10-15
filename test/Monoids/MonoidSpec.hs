@@ -22,6 +22,9 @@ instance Functor (Pair b)  where
 --fmap :: (a -> b) -> f a -> f b
   fmap f (Pair (a,b)) = Pair (f a, b)
 
+data CoolBool = CoolBool { getCoolBool:: Bool}
+newtype LazyCoolBool = LazyCoolBool { getLazyCoolBool:: Bool}
+
 spec :: Spec
 spec = do
   it "type alias are loosely checked" $ do
@@ -38,3 +41,15 @@ spec = do
     let pair = Pair ("Joe", "Hey")
         f s = length s in
       fmap f pair `shouldBe` Pair (3, "Hey")
+
+  it "demostrates newtype is lazy" $ do
+    let fStrict (CoolBool    _ ) = True
+        fLazy   (LazyCoolBool _) = True in do
+      -- both the following work
+      fStrict (CoolBool undefined)   `shouldBe` True
+      fLazy (LazyCoolBool undefined) `shouldBe` True
+
+      -- function with data will fail
+      -- functio with newtype won't
+      --fStrict undefined `shouldBe` True
+      fLazy undefined `shouldBe` True
