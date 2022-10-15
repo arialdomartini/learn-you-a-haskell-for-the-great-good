@@ -43,11 +43,11 @@ spec = do
   -- and returns an applicative value that has a list as its result value. We’ll call it
   -- sequenceA
   it "sequences applicatives" $ do
-    (sequenceA' [ Just 3, Just 4, Just 5 ]) `shouldBe` Just [3,4,5]
+    sequenceA' [ Just 3, Just 4, Just 5 ] `shouldBe` (Just [3,4,5] :: Maybe [Int])
 
 
   it "sequences functions" $ do
-    (sequence [(+3), (^2), (+1000)] 10) `shouldBe` [13, 100,1010]
+    sequence [(+3), (^(2 :: Integer)), (+1000)] 10 `shouldBe` ([13, 100,1010] :: [Int])
 
   it "combines functions" $ do
     let r = (*) <$> (+2) <*> (+3)
