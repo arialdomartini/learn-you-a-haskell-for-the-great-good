@@ -3,6 +3,7 @@
 module Monoids.MonoidSpec where
 
 import Test.Hspec
+import Control.Exception
 
 type A = String
 type B = String
@@ -49,7 +50,5 @@ spec = do
       fStrict (CoolBool undefined)   `shouldBe` True
       fLazy (LazyCoolBool undefined) `shouldBe` True
 
-      -- function with data will fail
-      -- functio with newtype won't
-      --fStrict undefined `shouldBe` True
+      evaluate (fStrict undefined) `shouldThrow` anyErrorCall
       fLazy undefined `shouldBe` True
