@@ -58,6 +58,10 @@ spec = do
         xs = [1,2,3,4,5,6,7,8,9] :: [Int] in
       length' xs `shouldBe` length xs
 
+  it "sequencing lists of lists" $ do
+    sequenceA [[1],[2]] `shouldBe` ([[1,2]] :: [[Int]])
+    sequenceA [[1,2], [3,4]] `shouldBe` ([[1,3], [1,4], [2,3], [2, 4]] :: [[Int]]) -- Not easy to grasp!
+
 sequenceA' :: Applicative f => [f a] -> f [a]
 sequenceA' [] = pure []
 sequenceA' (h:t) = (:) <$> h <*> sequenceA' t
