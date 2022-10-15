@@ -64,7 +64,9 @@ spec = do
 
   it "uses sequenceA for checking if all predicates are satisfied" $ do
       let predicates = [(>0), (>10), odd, even . (*2)] in
-        all (==True) (sequence predicates (11::Int)) `shouldBe` True
+        do all (==True) (sequence predicates (11::Int)) `shouldBe` True
+           and (sequence predicates 11)                 `shouldBe` True
+           foldr1 (&&) (sequence predicates 11)         `shouldBe` True
 
 sequenceA' :: Applicative f => [f a] -> f [a]
 sequenceA' [] = pure []
