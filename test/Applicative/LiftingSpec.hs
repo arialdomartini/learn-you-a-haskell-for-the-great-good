@@ -47,8 +47,16 @@ spec = do
 
 
   it "sequences functions" $ do
-    (sequence [(+3), (^2), (+1000)] 10) `shouldBe` [30, 100,1010]
+    (sequence [(+3), (^2), (+1000)] 10) `shouldBe` [13, 100,1010]
 
+  it "combines functions" $ do
+    let r = (*) <$> (+2) <*> (+3)
+     in r 100 `shouldBe` ((100 + 2) * (100 + 3) :: Int)
+
+  it "implements length with const and (+1)" $ do
+    let length' = foldl (const . (+1)) 0
+        xs = [1,2,3,4,5,6,7,8,9] :: [Int] in
+      length' xs `shouldBe` length xs
 
 sequenceA' :: Applicative f => [f a] -> f [a]
 sequenceA' [] = pure []
