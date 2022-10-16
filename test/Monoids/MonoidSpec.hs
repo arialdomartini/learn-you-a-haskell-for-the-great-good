@@ -4,11 +4,13 @@
 {-# HLINT ignore "Use newtype instead of data" #-}
 {-# OPTIONS_GHC -Wno-type-defaults #-}
 {-# OPTIONS_GHC -Wno-noncanonical-monoid-instances #-}
+{-# HLINT ignore "Use fmap" #-}
 
 module Monoids.MonoidSpec where
 
 import Test.Hspec
 import Control.Exception
+import Control.Applicative (liftA, Applicative (liftA2))
 
 type A = String
 type B = String
@@ -132,3 +134,6 @@ spec = do
   it "Maybe as a Monoid" $ do
     Just' (Prod 12) <> Just' (Prod 2) `shouldBe` Just' (Prod 24)
     Just' (Prod 12) <> Nothing' `shouldBe` Nothing'
+
+  it "Maybe as a Monoid, with applicative" $ do
+    liftA2 (<>) (pure (Prod 12)) (pure (Prod 2)) `shouldBe` Just (Prod 24)
