@@ -2,6 +2,7 @@
 {-# OPTIONS_GHC -Wno-name-shadowing #-}
 {-# OPTIONS_GHC -Wno-unrecognised-pragmas #-}
 {-# HLINT ignore "Use newtype instead of data" #-}
+{-# OPTIONS_GHC -Wno-type-defaults #-}
 
 module Monoids.MonoidSpec where
 
@@ -85,3 +86,9 @@ spec = do
     -- associative law
     (["hey"] `mappend`  ["joe"])  `mappend` ["how", "are", "you"] `shouldBe`
      ["hey"] `mappend`  (["joe"]  `mappend` ["how", "are", "you"])
+
+
+  it "List is an instance of Monoid" $ do
+    let empty = []
+        binary = (++)
+    mappend mempty [3,4] `shouldBe` binary empty [3,4]
