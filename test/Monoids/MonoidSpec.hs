@@ -105,3 +105,5 @@ spec = do
   it "Product type as a Monoid" $ do
     mappend (Prod 2) (Prod 42) `shouldBe` mappend mempty (Prod (2 * 42))
     Prod 2 <> Prod 42 `shouldBe` mempty <> Prod (2 * 42)
+    (mconcat . fmap Prod) [1,2,3,4] `shouldBe` Prod (1*2*3*4)
+    (foldr1 (<>) . fmap Prod) [1,2,3,4] `shouldBe` Prod (1*2*3*4)
