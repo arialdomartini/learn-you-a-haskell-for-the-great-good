@@ -32,12 +32,14 @@ newtype LazyCoolBool = LazyCoolBool { getLazyCoolBool:: Bool}
 class Monoid' m where
   mempty' :: m
   mappend' :: m -> m -> m
+  mconcat' :: [m] -> m
 
 newtype SumInt = SumInt Int deriving (Show, Eq)
 
 instance Monoid' SumInt where
   mempty' = SumInt 0
   mappend' (SumInt a) (SumInt b) = SumInt (a + b)
+  mconcat' = foldr mappend' mempty'
 
 
 spec :: Spec
@@ -71,3 +73,6 @@ spec = do
   it "defines what a monoid is" $ do
     mappend' mempty' (SumInt 22) `shouldBe` SumInt 22
     mappend' (SumInt 10) (SumInt 22) `shouldBe` SumInt 32
+
+  it "mconcat is a repeated application of mappend" $ do
+    mconcat' [SumInt 1, SumInt 2, SumInt 10] `shouldBe` SumInt 13
