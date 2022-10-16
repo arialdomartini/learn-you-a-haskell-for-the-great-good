@@ -43,6 +43,14 @@ instance Monoid' SumInt where
   mconcat' = foldr mappend' mempty'
 
 
+newtype Prod a = Prod a deriving (Show, Eq)
+instance Num a => Semigroup (Prod a) where
+  (Prod a) <> (Prod b) = Prod (a * b)
+
+instance Num a => Monoid (Prod a) where
+  mempty = Prod 1
+  -- mappend = (Data.Semigroup.<>) -- this is the canonical monoid definition, which can be omitted
+
 spec :: Spec
 spec = do
   it "type alias are loosely checked" $ do
@@ -92,3 +100,7 @@ spec = do
     let empty = []
         binary = (++)
     mappend mempty [3,4] `shouldBe` binary empty [3,4]
+
+
+  it "Product type as a Monoid" $ do
+    mappend (Prod 2) (Prod 42) `shouldBe` mappend mempty (Prod (2 * 42))
