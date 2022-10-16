@@ -30,14 +30,14 @@ data CoolBool = CoolBool { getCoolBool:: Bool}
 newtype LazyCoolBool = LazyCoolBool { getLazyCoolBool:: Bool}
 
 class Monoid' m where
-  identity :: m
-  binary :: m -> m -> m
+  mempty' :: m
+  mappend' :: m -> m -> m
 
 newtype SumInt = SumInt Int deriving (Show, Eq)
 
 instance Monoid' SumInt where
-  identity = SumInt 0
-  binary (SumInt a) (SumInt b) = SumInt (a + b)
+  mempty' = SumInt 0
+  mappend' (SumInt a) (SumInt b) = SumInt (a + b)
 
 
 spec :: Spec
@@ -69,4 +69,5 @@ spec = do
 
 
   it "defines what a monoid is" $ do
-    binary (SumInt 10) (SumInt 22) `shouldBe` SumInt 32
+    mappend' mempty' (SumInt 22) `shouldBe` SumInt 22
+    mappend' (SumInt 10) (SumInt 22) `shouldBe` SumInt 32
