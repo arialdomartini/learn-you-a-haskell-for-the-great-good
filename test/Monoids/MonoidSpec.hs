@@ -3,6 +3,7 @@
 {-# OPTIONS_GHC -Wno-unrecognised-pragmas #-}
 {-# HLINT ignore "Use newtype instead of data" #-}
 {-# OPTIONS_GHC -Wno-type-defaults #-}
+{-# OPTIONS_GHC -Wno-noncanonical-monoid-instances #-}
 
 module Monoids.MonoidSpec where
 
@@ -57,6 +58,15 @@ instance Semigroup Any' where
 
 instance Monoid Any' where
   mempty = Any' True
+  mappend = (<>)
+
+data Maybe' a = Just' a | Nothing' deriving (Show, Eq)
+instance Monoid a => Semigroup (Maybe' a) where
+  (Just' a) <> (Just' b) = Just' (a <> b)
+  _ <> _ = Nothing'
+
+instance Monoid a => Monoid (Maybe' a) where
+  mempty = mempty
   mappend = (<>)
 
 spec :: Spec
@@ -118,3 +128,7 @@ spec = do
 
   it "Bool (with Any) is an instance of Monoid" $ do
     (foldr1 (<>) . fmap Any') [True, True, True]   `shouldBe` Any' True
+
+  it "Maybe as a Monoid" $ do
+    Just' (Prod 12) <> Just' (Prod 2) `shouldBe` Just' (Prod 24)
+    Just' (Prod 12) <> Nothing' `shouldBe` Nothing'
