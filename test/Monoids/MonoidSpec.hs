@@ -76,3 +76,12 @@ spec = do
 
   it "mconcat is a repeated application of mappend" $ do
     mconcat' [SumInt 1, SumInt 2, SumInt 10] `shouldBe` SumInt 13
+
+  it "verifies the Monoid Laws" $ do
+    -- left and right unit law
+    mappend mempty   ["hey"] `shouldBe` ["hey"]
+    mappend ["hey"]  mempty  `shouldBe` ["hey"]
+
+    -- associative law
+    (["hey"] `mappend`  ["joe"])  `mappend` ["how", "are", "you"] `shouldBe`
+     ["hey"] `mappend`  (["joe"]  `mappend` ["how", "are", "you"])
