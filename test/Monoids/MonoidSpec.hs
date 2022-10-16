@@ -2,6 +2,7 @@
 {-# OPTIONS_GHC -Wno-name-shadowing #-}
 {-# OPTIONS_GHC -Wno-unrecognised-pragmas #-}
 {-# HLINT ignore "Use newtype instead of data" #-}
+
 module Monoids.MonoidSpec where
 
 import Test.Hspec
@@ -27,6 +28,17 @@ instance Functor (Pair b)  where
 
 data CoolBool = CoolBool { getCoolBool:: Bool}
 newtype LazyCoolBool = LazyCoolBool { getLazyCoolBool:: Bool}
+
+class Monoid' m where
+  identity :: m
+  binary :: m -> m -> m
+
+newtype SumInt = SumInt Int deriving (Show, Eq)
+
+instance Monoid' SumInt where
+  identity = SumInt 0
+  binary (SumInt a) (SumInt b) = SumInt (a + b)
+
 
 spec :: Spec
 spec = do
@@ -54,3 +66,7 @@ spec = do
 
       evaluate (fStrict undefined) `shouldThrow` anyErrorCall
       fLazy undefined `shouldBe` True
+
+
+  it "defines what a monoid is" $ do
+    binary (SumInt 10) (SumInt 22) `shouldBe` SumInt 32
