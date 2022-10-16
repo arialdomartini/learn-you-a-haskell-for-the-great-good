@@ -51,6 +51,14 @@ instance Num a => Monoid (Prod a) where
   mempty = Prod 1
   -- mappend = (Data.Semigroup.<>) -- this is the canonical monoid definition, which can be omitted
 
+newtype Any' = Any' Bool deriving (Show, Eq)
+instance Semigroup Any' where
+  Any' a1 <> Any' a2 = Any' (a1 || a2)
+
+instance Monoid Any' where
+  mempty = Any' True
+  mappend = (<>)
+
 spec :: Spec
 spec = do
   it "type alias are loosely checked" $ do
@@ -107,3 +115,6 @@ spec = do
     Prod 2 <> Prod 42 `shouldBe` mempty <> Prod (2 * 42)
     (mconcat . fmap Prod) [1,2,3,4] `shouldBe` Prod (1*2*3*4)
     (foldr1 (<>) . fmap Prod) [1,2,3,4] `shouldBe` Prod (1*2*3*4)
+
+  it "Bool (with Any) is an instance of Monoid" $ do
+    (foldr1 (<>) . fmap Any') [True, True, True]   `shouldBe` Any' True
