@@ -5,12 +5,13 @@
 {-# OPTIONS_GHC -Wno-type-defaults #-}
 {-# OPTIONS_GHC -Wno-noncanonical-monoid-instances #-}
 {-# HLINT ignore "Use fmap" #-}
+{-# HLINT ignore "Monoid law, left identity" #-}
 
 module Monoids.MonoidSpec where
 
 import Test.Hspec
 import Control.Exception
-import Control.Applicative (liftA, Applicative (liftA2))
+import Control.Applicative (Applicative (liftA2))
 
 type A = String
 type B = String
@@ -70,6 +71,16 @@ instance Monoid a => Semigroup (Maybe' a) where
 instance Monoid a => Monoid (Maybe' a) where
   mempty = mempty
   mappend = (<>)
+
+newtype First a = First (Maybe a) deriving (Show, Eq)
+instance Semigroup (First a) where
+  (First (Just a)) <> _ = First (Just a)
+  First Nothing <> s = s
+
+instance Monoid (First a) where
+  mempty = First Nothing
+  mappend = (<>)
+
 
 spec :: Spec
 spec = do
@@ -137,3 +148,8 @@ spec = do
 
   it "Maybe as a Monoid, with applicative" $ do
     liftA2 (<>) (pure (Prod 12)) (pure (Prod 2)) `shouldBe` Just (Prod 24)
+
+  it "First on Maybe as a Monoid" $ do
+    First (Just 4) `mappend` First (Just 5) `shouldBe` First (Just 4)
+    First Nothing `mappend` First (Just 5) `shouldBe` First (Just 5)
+    mempty `mappend` First (Just 5) `shouldBe` First (Just 5)
