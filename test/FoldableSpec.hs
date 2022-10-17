@@ -2,9 +2,12 @@
 {-# OPTIONS_GHC -Wno-missing-methods #-}
 {-# OPTIONS_GHC -Wno-partial-fields #-}
 {-# LANGUAGE StrictData #-}
+{-# OPTIONS_GHC -Wno-unrecognised-pragmas #-}
+{-# HLINT ignore "Redundant bracket" #-}
 module FoldableSpec where
 
 import Test.Hspec
+import qualified Data.Foldable as F
 
 class Foldable' f where
   foldr' :: (a -> b -> b) -> b -> f a -> b
@@ -47,6 +50,11 @@ instance Num a => Monoid (Sum a) where
   mempty = Sum 0
   mappend = (<>)
 
+
+instance Foldable Tree where
+  foldMap _ Leaf = mempty
+  foldMap f (Node v l r) = (f v) <> (F.foldMap f l) <> (F.foldMap f r)
+
 gauss :: Fractional a => a -> a
 gauss n = n * (n + 1) /2
 
@@ -69,3 +77,10 @@ spec = do
 
   it "sums with foldMap" $ do
     foldMap' Sum [1..100] `shouldBe` Sum 5050
+
+  it "folds a tree with FoldMap" $ do
+    let tree = Node { value = 10, left = l   , right = r }
+        r    = Node { value = 30, left = Leaf, right = Leaf }
+        l    = Node { value = 50, left = Leaf, right = Leaf } in
+      do foldr (+) 0 tree `shouldBe` 10 + 30 + 50
+         sum tree `shouldBe` 10 + 30 + 50
