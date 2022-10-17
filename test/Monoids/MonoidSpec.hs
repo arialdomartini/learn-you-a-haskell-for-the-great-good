@@ -82,6 +82,14 @@ instance Monoid (First a) where
   mappend = (<>)
 
 
+newtype Last a = Last { getLast :: Maybe a } deriving (Show, Eq)
+instance Semigroup (Last a) where
+  _ <> Last (Just a) = Last (Just a)
+  f <> Last Nothing = f
+instance Monoid (Last a) where
+  mempty = Last Nothing
+  mappend = (<>)
+
 spec :: Spec
 spec = do
   it "type alias are loosely checked" $ do
@@ -153,3 +161,6 @@ spec = do
     First (Just 4) `mappend` First (Just 5) `shouldBe` First (Just 4)
     First Nothing `mappend` First (Just 5) `shouldBe` First (Just 5)
     mempty `mappend` First (Just 5) `shouldBe` First (Just 5)
+
+  it "Last on Maybe as a Monoid" $ do
+    (getLast . mconcat . fmap Last) [Just 1, Just 2, Just 3] `shouldBe` Just 3
