@@ -8,6 +8,7 @@ module FoldableSpec where
 
 import Test.Hspec
 import qualified Data.Foldable as F
+import Data.Monoid (Any(..))
 
 class Foldable' f where
   foldr' :: (a -> b -> b) -> b -> f a -> b
@@ -84,3 +85,10 @@ spec = do
         l    = Node { value = 50, left = Leaf, right = Leaf } in
       do foldr (+) 0 tree `shouldBe` 10 + 30 + 50
          sum tree `shouldBe` 10 + 30 + 50
+
+  it "uses foldMap to evaluate predicates" $ do
+    let tree = Node { value = 10, left = l   , right = r }
+        r    = Node { value = 30, left = Leaf, right = Leaf }
+        l    = Node { value = 50, left = Leaf, right = Leaf } in
+      do getAny (F.foldMap (\e -> Any (e > 30)) tree) `shouldBe` True
+         getAny (F.foldMap (\e -> Any (e > 50)) tree) `shouldBe` False
