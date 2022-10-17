@@ -14,6 +14,16 @@ instance Foldable' Maybe where
   foldr' _ a Nothing = a
   foldr' f a (Just v) = f v a
 
+
+data Tree a = Leaf | Node {value:: a, left:: Tree a, right:: Tree a}
+
+instance Foldable' Tree where
+  foldr' _ a Leaf = a
+  foldr' f a (Node v l r) =
+    let ar = foldr' f a r
+        al = foldr' f ar l in
+      f v al
+
 gauss :: Fractional a => a -> a
 gauss n = n * (n + 1) /2
 
@@ -27,3 +37,9 @@ spec = do
     foldr' (+) 7 (Just 5) `shouldBe` 12
     foldr' (+) 2 Nothing  `shouldBe` 2
     foldr' (+) 2 (Just 4) `shouldBe` 6
+
+  it "folds a tree" $ do
+    let tree = Node { value = 10, left = l   , right = r }
+        r    = Node { value = 30, left = Leaf, right = Leaf }
+        l    = Node { value = 50, left = Leaf, right = Leaf } in
+      foldr' (+) 0 tree `shouldBe` 10 + 30 + 50
