@@ -72,8 +72,8 @@ spec = do
 
   it "folds a tree" $ do
     let tree = Node { value = 10, left = l   , right = r }
-        r    = Node { value = 30, left = Leaf, right = Leaf }
-        l    = Node { value = 50, left = Leaf, right = Leaf } in
+        l    = Node { value = 50, left = Leaf, right = Leaf }
+        r    = Node { value = 30, left = Leaf, right = Leaf }in
       foldr' (+) 0 tree `shouldBe` 10 + 30 + 50
 
   it "sums with foldMap" $ do
@@ -81,14 +81,21 @@ spec = do
 
   it "folds a tree with FoldMap" $ do
     let tree = Node { value = 10, left = l   , right = r }
-        r    = Node { value = 30, left = Leaf, right = Leaf }
-        l    = Node { value = 50, left = Leaf, right = Leaf } in
+        l    = Node { value = 50, left = Leaf, right = Leaf }
+        r    = Node { value = 30, left = Leaf, right = Leaf }in
       do foldr (+) 0 tree `shouldBe` 10 + 30 + 50
          sum tree `shouldBe` 10 + 30 + 50
 
   it "uses foldMap to evaluate predicates" $ do
     let tree = Node { value = 10, left = l   , right = r }
-        r    = Node { value = 30, left = Leaf, right = Leaf }
-        l    = Node { value = 50, left = Leaf, right = Leaf } in
+        l    = Node { value = 50, left = Leaf, right = Leaf }
+        r    = Node { value = 30, left = Leaf, right = Leaf }in
       do getAny (F.foldMap (\e -> Any (e > 30)) tree) `shouldBe` True
          getAny (F.foldMap (\e -> Any (e > 50)) tree) `shouldBe` False
+
+
+  it "converts a tree into a list using foldMap" $ do
+    let tree = Node { value = 10, left = l   , right = r }
+        l    = Node { value = 50, left = Leaf, right = Leaf }
+        r    = Node { value = 30, left = Leaf, right = Leaf }in
+      F.foldMap ((: [])) tree `shouldBe` [10,50,30]
