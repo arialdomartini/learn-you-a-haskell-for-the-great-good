@@ -1,10 +1,14 @@
 {-# OPTIONS_GHC -Wno-type-defaults #-}
+{-# OPTIONS_GHC -Wno-missing-methods #-}
+{-# OPTIONS_GHC -Wno-partial-fields #-}
+{-# LANGUAGE StrictData #-}
 module FoldableSpec where
 
 import Test.Hspec
 
 class Foldable' f where
   foldr' :: (a -> b -> b) -> b -> f a -> b
+  foldMap :: (Monoid m) => (a -> m) -> f a -> m
 
 instance Foldable' [] where
   foldr' _ a [] = a
@@ -23,6 +27,25 @@ instance Foldable' Tree where
     let ar = foldr' f a r
         al = foldr' f ar l in
       f v al
+
+class MapFoldable f where
+  foldMap' :: (Monoid m) => (a -> m) -> f a -> m
+
+newtype Sum a = Sum { getSum :: a } deriving (Eq, Show)
+
+instance MapFoldable [] where
+  foldMap' _ [] = mempty
+  foldMap' f (x:xs) =
+    let m = f x
+        rest = foldMap' f xs in
+      m <> rest
+
+instance Num a => Semigroup (Sum a) where
+  Sum a <> Sum b = Sum (a + b)
+
+instance Num a => Monoid (Sum a) where
+  mempty = Sum 0
+  mappend = (<>)
 
 gauss :: Fractional a => a -> a
 gauss n = n * (n + 1) /2
@@ -43,3 +66,6 @@ spec = do
         r    = Node { value = 30, left = Leaf, right = Leaf }
         l    = Node { value = 50, left = Leaf, right = Leaf } in
       foldr' (+) 0 tree `shouldBe` 10 + 30 + 50
+
+  it "sums with foldMap" $ do
+    foldMap' Sum [1..100] `shouldBe` Sum 5050
