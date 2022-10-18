@@ -107,6 +107,7 @@ test-suite spec
     PalindromeSpec
     Monoids.MonoidSpec
     FoldableSpec
+    Monads.SystemMonadsSpec
 source-repository head
   type:     git
   location: https://github.com/githubuser/learn-you-a-haskell
