@@ -24,15 +24,23 @@ instance Monad' Maybe' where
 maybeDouble :: Int -> Maybe' Int
 maybeDouble n = if n < 100 then Just' (n * 2) else Nothing'
 
+doubleIfSmall :: Int -> Maybe Int
+doubleIfSmall n = if n < 100 then Just (n * 2) else Nothing
 
-doubleIfSmall :: Int -> Maybe' Int
-doubleIfSmall n = if n < 100 then Just' (n * 2) else Nothing'
+minus1IfEven :: Int -> Maybe Int
+minus1IfEven n =   if even n then Just (n -1) else Nothing
 
-minus1IfEven :: Int -> Maybe' Int
-minus1IfEven n =   if even n then Just' (n -1) else Nothing'
+toStringIfOdd :: Int -> Maybe String
+toStringIfOdd n = if odd n then Just (show n) else Nothing
 
-toStringIfOdd :: Int -> Maybe' String
-toStringIfOdd n = if odd n then Just' (show n) else Nothing'
+
+bound :: Int -> Maybe String
+bound n = do
+  a <- doubleIfSmall n
+  b <- minus1IfEven a
+  c <- toStringIfOdd b
+  return c
+
 
 spec :: Spec
 spec = do
@@ -41,5 +49,9 @@ spec = do
     Nothing' >>>= maybeDouble `shouldBe` Nothing'
 
   it "chains monads with bind" $ do
-    (Just' 50) >>>= doubleIfSmall >>>= minus1IfEven >>>= toStringIfOdd `shouldBe` Just' "99"
-    (Just' 200) >>>= doubleIfSmall >>>= minus1IfEven >>>= toStringIfOdd `shouldBe` Nothing'
+    (Just 50  >>= doubleIfSmall >>= minus1IfEven >>= toStringIfOdd) `shouldBe` Just "99"
+    (Just 200 >>= doubleIfSmall >>= minus1IfEven >>= toStringIfOdd) `shouldBe` Nothing
+
+  it "chains monads with do notation" $ do
+   (bound 50) `shouldBe` (Just "99")
+   (bound 200) `shouldBe` Nothing
