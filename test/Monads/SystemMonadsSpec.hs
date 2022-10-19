@@ -3,6 +3,7 @@
 module Monads.SystemMonadsSpec where
 
 import Test.Hspec
+import Control.Monad ((<=<))
 
 data Maybe' a = Nothing' | Just' a deriving (Show, Eq)
 
@@ -55,3 +56,7 @@ spec = do
   it "chains monads with do notation" $ do
    (bound 50) `shouldBe` (Just "99")
    (bound 200) `shouldBe` Nothing
+
+  it "composes monadic functions" $ do
+    let composed = toStringIfOdd <=< minus1IfEven <=< doubleIfSmall in
+      composed 50 `shouldBe` Just "99"
