@@ -109,6 +109,7 @@ test-suite spec
     FoldableSpec
     Monads.SystemMonadsSpec
     Monads.BirdsSpec
+    Monads.Birds2Spec
 source-repository head
   type:     git
   location: https://github.com/githubuser/learn-you-a-haskell
