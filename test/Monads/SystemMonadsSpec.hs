@@ -12,6 +12,7 @@ class Applicative' f where
 
 class Applicative' m => Monad' m where
   (>>>=) :: m a -> (a -> m b) -> m b
+  (>>>) :: m a -> m b -> m b
 
 instance Applicative' Maybe' where
   _ <*> Nothing' = Nothing'
@@ -21,6 +22,8 @@ instance Applicative' Maybe' where
 instance Monad' Maybe' where
   Nothing' >>>= _ = Nothing'
   Just' a >>>= f = f a
+  _ >>> m = m
+
 
 maybeDouble :: Int -> Maybe' Int
 maybeDouble n = if n < 100 then Just' (n * 2) else Nothing'
@@ -52,6 +55,9 @@ spec = do
   it "chains monads with bind" $ do
     (Just 50  >>= doubleIfSmall >>= minus1IfEven >>= toStringIfOdd) `shouldBe` Just "99"
     (Just 200 >>= doubleIfSmall >>= minus1IfEven >>= toStringIfOdd) `shouldBe` Nothing
+
+  it "defines >>" $ do
+    ((Just' "Hey") >>> Nothing') `shouldBe` (Nothing'  :: (Maybe' Int))
 
   it "chains monads with do notation" $ do
    (bound 50) `shouldBe` (Just "99")
