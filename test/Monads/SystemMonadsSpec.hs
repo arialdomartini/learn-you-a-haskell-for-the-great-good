@@ -66,3 +66,10 @@ spec = do
   it "composes monadic functions" $ do
     let composed = toStringIfOdd <=< minus1IfEven <=< doubleIfSmall in
       composed 50 `shouldBe` Just "99"
+
+  it "nested monadic functions" $ do
+    let result =
+          Just 3 >>=
+          (\n ->
+             (Just "!" >>= (\s -> Just ((show n) ++ s)))) in
+      result `shouldBe` Just "3!"
