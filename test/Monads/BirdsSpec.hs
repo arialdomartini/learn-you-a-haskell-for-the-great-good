@@ -57,3 +57,11 @@ spec = do
       >>= landLeft 1
       >> Nothing
       >>= landLeft (-1))
+
+  it "slips on bananas, in do notation" $ do
+      do
+        let pole = Pole { left = 0, right = 0 }
+        p'  <- landLeft 1 pole
+        p'' <- banana p'
+        landLeft (-1) p''
+      `shouldBe` Nothing
