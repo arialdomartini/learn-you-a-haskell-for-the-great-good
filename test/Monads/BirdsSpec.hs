@@ -52,4 +52,8 @@ spec = do
       >>= landLeft 1
       >>= banana
       >>= landLeft (-1))
-      `shouldBe` Nothing
+      `shouldBe`
+      (return Pole { left = 0, right = 0 }
+      >>= landLeft 1
+      >> Nothing
+      >>= landLeft (-1))
