@@ -1,5 +1,6 @@
 {-# OPTIONS_GHC -Wno-unrecognised-pragmas #-}
 {-# HLINT ignore "Redundant bracket" #-}
+{-# OPTIONS_GHC -Wno-type-defaults #-}
 module Monads.SystemMonadsSpec where
 
 import Test.Hspec
@@ -69,7 +70,11 @@ spec = do
 
   it "nested monadic functions" $ do
     let result =
-          Just 3 >>=
-          (\n ->
-             (Just "!" >>= (\s -> Just ((show n) ++ s)))) in
-      result `shouldBe` Just "3!"
+           Just 3 >>= (\n ->
+           Just "!" >>= (\s ->
+           Just ((show n) ++ s))) in
+      result `shouldBe`
+        do
+          n <- Just 3
+          s <- Just "!"
+          return ((show n) ++ s)
