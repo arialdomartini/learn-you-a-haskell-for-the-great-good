@@ -14,6 +14,9 @@ landLeft l = walk (l, 0)
 landRight :: Right -> Pole -> Maybe Pole
 landRight r = walk (0, r)
 
+banana :: Pole -> Maybe Pole
+banana _ = Nothing
+
 walk :: (Left, Right) -> Pole -> Maybe Pole
 walk (l, r) pole =
   let newLeft  = left pole + l
@@ -42,3 +45,11 @@ spec = do
       >>= landRight 2
       >>= walk (1, 1))
       `shouldBe` Just Pole { left= 2, right= 3 }
+
+
+  it "slips on bananas" $ do
+    (return Pole { left = 0, right = 0 }
+      >>= landLeft 1
+      >>= banana
+      >>= landLeft (-1))
+      `shouldBe` Nothing
