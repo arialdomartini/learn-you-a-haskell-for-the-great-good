@@ -57,6 +57,13 @@ concat' :: List' (List' a) -> List' a
 concat' Empty = Empty
 concat' (List' v rest) = conc v (concat' rest)
 
+n7 :: [Int]
+n7 = do
+  x <- [1..] :: [Int]
+  if '7' `elem` (show x)
+    then return x
+    else []
+
 spec :: Spec
 spec = do
   it "list as an applicative" $ do
@@ -87,3 +94,9 @@ spec = do
         n <- [1,2]
         ch <- ['a', 'b']
         return (n, ch))
+
+  it "filters out numbers not containing a 7" $ do
+    take 10 ( [x | x <- [1..], '7' `elem` show x ]) `shouldBe` [7,17,27,37,47,57,67,70,71,72]
+
+  it "filters out numbers not containing a 7, with do notation" $ do
+    take 10 n7 `shouldBe` [7,17,27,37,47,57,67,70,71,72]
