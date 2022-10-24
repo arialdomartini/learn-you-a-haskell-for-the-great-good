@@ -4,6 +4,7 @@
 module Monads.StandardMonadsSpec where
 
 import Test.Hspec
+import Control.Monad (guard)
 
 data List' a where
   Empty :: List' a
@@ -103,3 +104,7 @@ spec = do
 
   it "filters out numbers not containing a 7, with monads" $ do
     take 10 ([1..] >>= (\i -> if '7' `elem` show i then return i else [])) `shouldBe` [7,17,27,37,47,57,67,70,71,72]
+
+  it "filters out numbers not containing a 7 using MonadPlus" $ do
+    take 10 (
+      [1..] >>= (\i -> guard ('7' `elem` show i) >> return i)) `shouldBe` [7,17,27,37,47,57,67,70,71,72]
