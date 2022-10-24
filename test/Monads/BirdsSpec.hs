@@ -62,6 +62,6 @@ spec = do
       do
         let pole = Pole { left = 0, right = 0 }
         p'  <- landLeft 1 pole
-        p'' <- banana p'
-        landLeft (-1) p''
+        Nothing
+        landLeft (-1) p'  -- This will not be evaluated, because of the previous Nothing
       `shouldBe` Nothing
