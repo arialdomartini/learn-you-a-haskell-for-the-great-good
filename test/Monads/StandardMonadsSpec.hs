@@ -5,6 +5,8 @@ module Monads.StandardMonadsSpec where
 
 import Test.Hspec
 import Control.Monad (guard)
+import GHC.Base (MonadPlus)
+import Control.Monad (MonadPlus(mzero))
 
 data List' a where
   Empty :: List' a
@@ -61,9 +63,13 @@ concat' (List' v rest) = conc v (concat' rest)
 n7 :: [Int]
 n7 = do
   x <- [1..] :: [Int]
-  if '7' `elem` (show x)
+  if '7' `elem` show x
     then return x
     else []
+
+guard' :: MonadPlus m => Bool -> m ()
+guard' True  = return ()
+guard' False = mzero
 
 spec :: Spec
 spec = do
@@ -108,3 +114,7 @@ spec = do
   it "filters out numbers not containing a 7 using MonadPlus" $ do
     take 10 (
       [1..] >>= (\i -> guard ('7' `elem` show i) >> return i)) `shouldBe` [7,17,27,37,47,57,67,70,71,72]
+
+  it "implements guard" $ do
+    (guard' (2 > 0) >> Just "hey") `shouldBe` Just "hey"
+    (guard' (2 < 0) >> Just "hey") `shouldBe` Nothing
