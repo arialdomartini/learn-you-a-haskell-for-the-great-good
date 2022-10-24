@@ -75,3 +75,15 @@ spec = do
         v2 = 3 +: 4  +: Empty  :: List' Int
         f = v1 +: v2 +: Empty  :: List' (List' Int)  in
       concat' f `shouldBe` (1 +: 2 +: 3 +: 4 +: Empty)
+
+
+  it "chaining multiple lists" $ do
+    ([1,2]      >>= (\n ->
+     ['a', 'b'] >>= \ch ->
+     return (n, ch)))
+
+      `shouldBe` (
+      do
+        n <- [1,2]
+        ch <- ['a', 'b']
+        return (n, ch))
