@@ -67,6 +67,12 @@ n7 = do
     then return x
     else []
 
+n7Plus :: [Int]
+n7Plus = do
+  x <- [1..72]
+  guard $ '7' `elem` show x
+  return x
+
 guard' :: MonadPlus m => Bool -> m ()
 guard' True  = return ()
 guard' False = mzero
@@ -114,6 +120,9 @@ spec = do
   it "filters out numbers not containing a 7 using MonadPlus" $ do
     take 10 (
       [1..] >>= (\i -> guard ('7' `elem` show i) >> return i)) `shouldBe` [7,17,27,37,47,57,67,70,71,72]
+
+  it "filters out numbers not containing a 7 using MonadPlus in do notation" $ do
+    n7Plus `shouldBe` [7,17,27,37,47,57,67,70,71,72]
 
   it "implements guard" $ do
     (guard' (2 > 0) >> Just "hey") `shouldBe` Just "hey"
