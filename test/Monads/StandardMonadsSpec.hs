@@ -49,10 +49,13 @@ bind (List' v restV) f =
     conc rs (bind restV f)
 
 
-
 instance Monad List' where
   return = pure
   v >>= f = bind v f
+
+concat' :: List' (List' a) -> List' a
+concat' Empty = Empty
+concat' (List' v rest) = conc v (concat' rest)
 
 spec :: Spec
 spec = do
@@ -66,3 +69,9 @@ spec = do
     let v = 10 +: 20 +: Empty
         f x = (x*2) +: (x*3) +: Empty in
       (v >>= f) `shouldBe` (20 +: 30 +: 40 +: 60 +: Empty)
+
+  it "concat of a list" $ do
+    let v1 = 1 +: 2  +: Empty  :: List' Int
+        v2 = 3 +: 4  +: Empty  :: List' Int
+        f = v1 +: v2 +: Empty  :: List' (List' Int)  in
+      concat' f `shouldBe` (1 +: 2 +: 3 +: 4 +: Empty)
