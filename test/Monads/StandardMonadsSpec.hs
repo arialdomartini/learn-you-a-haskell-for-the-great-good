@@ -100,3 +100,6 @@ spec = do
 
   it "filters out numbers not containing a 7, with do notation" $ do
     take 10 n7 `shouldBe` [7,17,27,37,47,57,67,70,71,72]
+
+  it "filters out numbers not containing a 7, with monads" $ do
+    take 10 ([1..] >>= (\i -> if '7' `elem` show i then return i else [])) `shouldBe` [7,17,27,37,47,57,67,70,71,72]
