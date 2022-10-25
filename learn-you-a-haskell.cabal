@@ -112,6 +112,7 @@ test-suite spec
     Monads.Birds2Spec
     Monads.FailuresSpec
     Monads.StandardMonadsSpec
+    Monads.KnightSpec
 source-repository head
   type:     git
   location: https://github.com/githubuser/learn-you-a-haskell
