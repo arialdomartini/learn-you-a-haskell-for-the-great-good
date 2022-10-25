@@ -1,3 +1,4 @@
+{-# OPTIONS_GHC -Wno-type-defaults #-}
 module Monads.KnightSpec where
 
 import Test.Hspec
@@ -46,7 +47,13 @@ walk p0 =
 
     return p3
 
+moveNext :: Pos -> [Pos]
+moveNext p0 = do
+  p1 <- move p0
+  guard (withinBoard p1)
+  return p1
+
 spec :: Spec
 spec = do
   it "should move 1 step" $ do
-    walk (Pos 1 1) `shouldBe` [Pos 7 4,Pos 7 2,Pos 3 4,Pos 3 2,Pos 6 5,Pos 6 1,Pos 4 5,Pos 4 1,Pos 7 2,Pos 3 2,Pos 6 3,Pos 4 3,Pos 3 4,Pos 3 2,Pos 2 5,Pos 2 1,Pos 3 2,Pos 2 3,Pos 6 5,Pos 6 3,Pos 2 5,Pos 2 3,Pos 5 6,Pos 5 2,Pos 3 6,Pos 3 2,Pos 4 5,Pos 4 3,Pos 3 6,Pos 3 2,Pos 1 6,Pos 1 2,Pos 6 5,Pos 6 3,Pos 2 5,Pos 2 3,Pos 5 6,Pos 5 2,Pos 3 6,Pos 3 2,Pos 6 3,Pos 6 1,Pos 2 3,Pos 2 1,Pos 5 4,Pos 3 4,Pos 5 6,Pos 5 4,Pos 1 6,Pos 1 4,Pos 4 7,Pos 4 3,Pos 2 7,Pos 2 3,Pos 5 2,Pos 1 2,Pos 4 3,Pos 2 3,Pos 3 6,Pos 3 4,Pos 2 7,Pos 2 3,Pos 3 2,Pos 2 3]
+    walk (Pos 1 1) `shouldBe` foldr (\_ a -> concatMap moveNext a) [Pos 1 1] [1,2,3]
