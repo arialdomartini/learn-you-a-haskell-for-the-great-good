@@ -34,6 +34,9 @@ f x = Just $ show x
 g :: String -> Maybe Int
 g s = Just $ length s
 
+h :: Int -> Maybe Int
+h n = return $ n * 2
+
 
 (>=>>) :: Monad m => (a -> m b) -> (b -> m c) -> (a -> m c)
 ff >=>> gg = \x -> ff x >>= gg
@@ -58,10 +61,16 @@ spec = do
       ((Just 3 >>= (\x ->   double x)) >>= prec) `shouldBe`
        (Just 3 >>= (\x ->   double x  >>= prec))
 
-  it "kleisly operators" $ do
+  it "Kleisly operators" $ do
     (f >=> g) 3.14 `shouldBe` Just 4
     (g <=< f) 3.14 `shouldBe` Just 4
 
-  it "kleisly operators implemented by hand" $ do
+  it "Kleisly operators implemented by hand" $ do
     (f >=>> g) 3.14 `shouldBe` (f >=> g) 3.14
     (g <=<< f) 3.14 `shouldBe` (g <=< f) 3.14
+
+  it "Monad laws expressed with the Kleisly operator" $ do
+    (return >=> f)         3 `shouldBe` f 3
+    (f >=> return)         3 `shouldBe` f 3
+    ((f >=> g) >=>    h)  10 `shouldBe`
+     (f >=>    (g >=> h)) 10
