@@ -4,12 +4,39 @@
 {-# HLINT ignore "Monad law, right identity" #-}
 {-# HLINT ignore "Avoid lambda" #-}
 {-# HLINT ignore "Use >=>" #-}
+{-# LANGUAGE DeriveFunctor #-}
 module Monads.LawsSpec where
 
 import Test.Hspec
-import Control.Monad ((>=>), (<=<))
+import Control.Monad ((>=>), (<=<), ap)
 
 -- >>= :: m a -> (a -> m b) -> m b
+
+
+
+
+newtype TraceInt a = TraceInt (Int, a) deriving (Functor, Show, Eq)
+
+instance Applicative TraceInt where
+    pure x = TraceInt (1,x)
+    (<*>) = ap
+instance Monad TraceInt where
+    TraceInt (m, x) >>= f = let
+               TraceInt (n,y) = f x
+               in TraceInt (n + m, y)
+
+lengthAndReverse :: String -> TraceInt String
+lengthAndReverse x = TraceInt (length x, reverse x)
+
+leftId :: Bool
+leftId = lengthAndReverse ("arialdo") == (pure ("arialdo") >>= lengthAndReverse)
+
+
+
+
+
+
+
 
 f' :: Int -> Maybe Int
 f' n = Just $ n * 42
@@ -74,3 +101,7 @@ spec = do
     (f >=> return)         3 `shouldBe` f 3
     ((f >=> g) >=>    h)  10 `shouldBe`
      (f >=>    (g >=> h)) 10
+
+
+  it "violates left identity" $ do
+    lengthAndReverse "arialdo" `shouldNotBe` (pure "arialdo" >>= lengthAndReverse)

@@ -58,6 +58,7 @@ test-suite spec
                      , learn-you-a-haskell
                      , containers
                      , random
+                     , text
   default-language:    Haskell2010
   ghc-options:         -Wall
                        -Wcompat
@@ -114,6 +115,7 @@ test-suite spec
     Monads.StandardMonadsSpec
     Monads.KnightSpec
     Monads.LawsSpec
+    Monads.WriterSpec
 source-repository head
   type:     git
   location: https://github.com/githubuser/learn-you-a-haskell
