@@ -1,5 +1,9 @@
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 {-# LANGUAGE DeriveFunctor #-}
+{-# LANGUAGE TypeSynonymInstances #-}
+{-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE AllowAmbiguousTypes #-}
+{-# LANGUAGE GADTs #-}
 module Monads.MockingMonadSpec where
 
 import Test.Hspec
@@ -26,26 +30,25 @@ instance MonadFS IO where
   myWriteFile = writeFile
 
 
-class Functor a => Result a where
-  length' :: String -> a Int
+class Result a where
+  length' :: String -> a
 
-data Mock a = Mock a deriving (Functor, Show, Eq)
-data Prod a = Prod a deriving (Functor, Show, Eq)
+newtype Mock where
+  Mock :: Int -> Mock
+  deriving (Show, Eq)
 
 instance Result Mock where
   length' s = Mock 100
 
-instance Result Prod where
-  length' s = Prod (length s)
+instance Result Int where
+  length' = length
 
 elevated :: Int -> Int
 elevated = (^(8::Int))
 
 -- calculate :: Result a => Int -> a String
-calculate :: (Result f) => Int -> f String
-calculate n =
-  let r = length' (show  (elevated n)) in
-    fmap show r
+calculate :: (Result f) => Int -> f
+calculate = length' . show . elevated
 
 newtype MockFS a = MockFS (Identity a) deriving (Functor, Applicative, Monad, Show, Eq)
 
@@ -59,7 +62,7 @@ spec = do
     (withSideEffects "foo.txt" "new content" :: MockFS String) `shouldBe` MockFS (return "content of file foo.txt+new content")
 
   it "should mock non IO operations" $ do
-    (calculate 2 :: Prod String)`shouldBe` (Prod "3")
+    (calculate 2 :: Int)`shouldBe` 3
 
   it "should mock non IO operations" $ do
-    (calculate 2 :: Mock String)`shouldBe` (Mock "100")
+    (calculate 2 :: Mock)`shouldBe` Mock 100
