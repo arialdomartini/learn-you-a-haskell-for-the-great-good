@@ -20,4 +20,4 @@ spec = do
 
   it "feeds a tuple to a function returning a tuple" $ do
     let smallGang = (3, "smallish gang,") in
-      applyLog smallGang isBigGang `shouldBe` (False, "smallish gang,compared gang size of 3 to 9")
+      smallGang `applyLog` isBigGang `shouldBe` (False, "smallish gang,compared gang size of 3 to 9")
