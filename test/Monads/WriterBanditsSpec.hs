@@ -5,7 +5,7 @@ import Test.Hspec
 isBigGang :: Int -> (Bool, String)
 isBigGang n = (n > 9, "compared gang size of " <> show n <> " to 9")
 
-applyLog :: (Int, String) -> (Int -> (Bool, String)) -> (Bool, String)
+applyLog :: Semigroup l => (a, l) -> (a -> (b, l)) -> (b, l)
 applyLog (v, l') f =
   let (v'', l'') = f v in
     (v'', l' <> l'')
