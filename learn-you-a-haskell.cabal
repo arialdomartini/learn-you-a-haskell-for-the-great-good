@@ -118,6 +118,7 @@ test-suite spec
     Monads.WriterSpec
     Monads.MockingSpec
     Monads.MockingMonadSpec
+    Monads.WriterBanditsSpec
 source-repository head
   type:     git
   location: https://github.com/githubuser/learn-you-a-haskell
