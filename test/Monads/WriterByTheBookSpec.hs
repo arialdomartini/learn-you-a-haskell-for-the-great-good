@@ -5,7 +5,7 @@ module Monads.WriterByTheBookSpec where
 import Test.Hspec
 import GHC.Float (int2Float)
 
-data Writer' w a where
+newtype Writer' w a where
   Writer' :: {runWriter :: (a, w)} -> Writer' w a
   deriving (Eq, Show)
 
