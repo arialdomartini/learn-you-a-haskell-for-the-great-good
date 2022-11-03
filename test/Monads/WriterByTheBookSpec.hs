@@ -9,19 +9,26 @@ data Writer' w a where
   Writer' :: {runWriter :: (a, w)} -> Writer' w a
   deriving (Eq, Show)
 
+writer' :: (a, w) -> Writer' w a
+writer' (a, w) = Writer' (a, w)
+
 instance Functor (Writer' w) where
   fmap f (Writer' (a, w)) = Writer' (f a, w)
 
 instance Monoid w => Applicative (Writer' w) where
   pure :: a -> Writer' w a
-  pure a = Writer' (a, mempty)
+  pure a = writer' (a, mempty)
   (<*>) :: Writer' w (a -> b) -> Writer' w a -> Writer' w b
-  (Writer' (f, w)) <*> (Writer' (a, w')) = Writer' (f a, w `mappend` w')
+  wf <*> wv =
+    let (f, w) = runWriter wf
+        (a, w') = runWriter wv in
+      writer' (f a, w `mappend` w')
 
 instance Monoid w => Monad (Writer' w) where
   (>>=) :: Writer' w a -> (a -> Writer' w b) -> Writer' w b
-  (Writer' (a, w)) >>= f =
-    let Writer' (r, w') = f a in
+  wv  >>= f =
+    let (a, w) = runWriter wv
+        (r, w') = runWriter (f a) in
       Writer' (r, w `mappend` w')
 
 type Logs = [String]
