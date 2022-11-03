@@ -29,3 +29,6 @@ spec = do
 
   it "uses default values" $ do
     runWriter (return 3 :: Writer String Int) `shouldBe` (3, "")
+
+  it "uses a different default value" $ do
+    runWriter (return 3 :: Writer (Sum Int) Int) `shouldBe` (3, Sum {getSum = 0})
