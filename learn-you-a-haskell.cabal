@@ -59,6 +59,7 @@ test-suite spec
                      , containers
                      , random
                      , text
+                     , mtl
   default-language:    Haskell2010
   ghc-options:         -Wall
                        -Wcompat
@@ -120,6 +121,7 @@ test-suite spec
     Monads.MockingMonadSpec
     Monads.WriterBanditsSpec
     Monads.WriterByTheBookSpec
+    Monads.WriterUsingStandardSpec
 source-repository head
   type:     git
   location: https://github.com/githubuser/learn-you-a-haskell
