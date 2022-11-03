@@ -2,12 +2,13 @@
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE UndecidableInstances #-}
 {-# OPTIONS_GHC -Wno-type-defaults #-}
+{-# OPTIONS_GHC -Wno-unrecognised-pragmas #-}
+{-# HLINT ignore "Use newtype instead of data" #-}
 module Monads.WriterSpec where
 
 import Test.Hspec
 
 data Writer' l o = Writer' (l,o) deriving (Show, Eq)
-
 
 instance Functor (Writer' l) where
   fmap :: (a -> b) -> Writer' l a -> Writer' l b
@@ -29,8 +30,6 @@ instance (Monoid l, Applicative (Writer' l)) => Monad (Writer' l) where
 
 f :: Int -> Writer' String Int
 f n = Writer' ("-doubled", n*2 )
-
-
 
 spec :: Spec
 spec = do

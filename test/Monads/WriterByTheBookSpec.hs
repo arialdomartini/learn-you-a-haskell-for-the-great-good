@@ -46,6 +46,29 @@ withDoNotation s = do
   halve l
 
 
+
+data CommaSeparated where
+  CommaSeparated :: String -> CommaSeparated
+  deriving (Eq, Show)
+
+instance Semigroup CommaSeparated where
+  CommaSeparated s <> CommaSeparated z = CommaSeparated (s <> ", " <> z)
+
+instance Monoid CommaSeparated where
+  mappend = (<>)
+  mempty = CommaSeparated (mempty :: String)
+
+useTellNoDo :: Writer' CommaSeparated Int
+useTellNoDo =
+  writer' (1, CommaSeparated "one") >>=
+  tell' (CommaSeparated "intermezzo") >>=
+  \j -> writer' (j + 1, CommaSeparated "plus 1")
+
+
+tell' :: w -> a -> Writer' w a
+tell' w a = writer' (a, w)
+
+
 spec :: Spec
 spec = do
   it "should bind with Writer" $ do
@@ -53,3 +76,6 @@ spec = do
 
   it "applies Writer using the do notation" $ do
     withDoNotation "Hey Joe!" `shouldBe` Writer' (4, ["Calculated the length", "Divided by 2"])
+
+  it "uses tell" $ do
+    runWriter useTellNoDo `shouldBe` (2, CommaSeparated "one, intermezzo, plus 1")
