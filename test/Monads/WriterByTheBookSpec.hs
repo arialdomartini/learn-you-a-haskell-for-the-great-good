@@ -54,7 +54,7 @@ data CommaSeparated where
 instance Semigroup CommaSeparated where
   CommaSeparated s <> CommaSeparated z = CommaSeparated (s <> ", " <> z)
 
--- Can't be a Moinoid! I'm violating the Monoid rule
+-- Can't be a Moinoid! I'm violating the Monoid laws
 instance Monoid CommaSeparated where
   mappend = (<>)
   mempty = CommaSeparated (mempty :: String)
