@@ -4,6 +4,7 @@ module Monads.WriterUsingStandardSpec where
 import Test.Hspec
 import Control.Monad.Writer
 import Prelude hiding (gcd)
+import Data.List (intercalate)
 
 f :: Writer [String] Int
 f =
@@ -35,6 +36,16 @@ gcd :: Int -> Int -> Int
 gcd n 0 = n
 gcd n m = gcd m (n `mod` m)
 
+
+gcd' :: Int -> Int -> Writer [String] Int
+gcd' n 0 = do
+  tell ["Finished with " <> show n]
+  return n
+gcd' n m = do
+  tell [show n ++ " `mod` " ++ show m]
+  gcd' m (n `mod` m)
+
+
 spec :: Spec
 spec = do
   it "bind monadic functions" $ do
@@ -61,3 +72,8 @@ spec = do
     gcd 12 5 `shouldBe` 1
     gcd 100 25 `shouldBe` 25
     gcd 100 15 `shouldBe` 5
+
+
+  it "calculates the greates common divisor, tracking the steps" $ do
+    fst (runWriter (gcd' 8 4)) `shouldBe` 4
+    intercalate ", " (snd (runWriter (gcd' 12 5))) `shouldBe` "12 `mod` 5, 5 `mod` 2, 2 `mod` 1, Finished with 1"
