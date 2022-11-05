@@ -1,7 +1,9 @@
+{-# OPTIONS_GHC -Wno-type-defaults #-}
 module Monads.WriterUsingStandardSpec where
 
 import Test.Hspec
 import Control.Monad.Writer
+import Prelude hiding (gcd)
 
 f :: Writer [String] Int
 f =
@@ -29,6 +31,10 @@ doMult a b = do
   tell ["got " ++ show result]
   return (x * y)
 
+gcd :: Int -> Int -> Int
+gcd n 0 = n
+gcd n m = gcd m (n `mod` m)
+
 spec :: Spec
 spec = do
   it "bind monadic functions" $ do
@@ -49,3 +55,9 @@ spec = do
 
   it "multiplies numbers with log" $ do
     runWriter (doMult 2 3) `shouldBe` (6, ["got 2", "got 3", "multiplying 2 and 3", "got 6"])
+
+  it "calculates the greatest common divisor" $ do
+    gcd 8 4 `shouldBe` 4
+    gcd 12 5 `shouldBe` 1
+    gcd 100 25 `shouldBe` 25
+    gcd 100 15 `shouldBe` 5
