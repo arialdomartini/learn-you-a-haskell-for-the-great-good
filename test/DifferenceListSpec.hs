@@ -15,6 +15,9 @@ append f g = DiffList (f' . g') where
   f' = getDiffList f
   g' = getDiffList g
 
+fromDiffList :: DiffList a -> [a]
+fromDiffList l = getDiffList l []
+
 spec :: Spec
 spec = do
   it "should append Difference Lists" $ do
@@ -22,3 +25,9 @@ spec = do
         l2  = diffList ([10,20,30]:: [Int])
         l12 = l1 `append` l2 in
       getDiffList l12 [] `shouldBe` getDiffList (diffList ([1,2,3,10,20,30]:: [Int])) []
+
+  it "convert DiffList to ordinary List" $ do
+    let l1  = diffList ([1,2,3]:: [Int])
+        l2  = diffList ([10,20,30]:: [Int])
+        l12 = l1 `append` l2 in
+      fromDiffList l12 `shouldBe` [1,2,3,10,20,30]
