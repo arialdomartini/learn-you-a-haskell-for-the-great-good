@@ -25,7 +25,8 @@ instance Semigroup (DiffList a) where
 
 instance Monoid (DiffList a) where
   mempty :: DiffList a
-  mempty = diffList []
+  -- mempty = diffList []
+  mempty = DiffList id
 
   mappend = (<>)
 
