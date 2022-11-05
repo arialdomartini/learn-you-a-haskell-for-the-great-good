@@ -1,5 +1,6 @@
 {-# LANGUAGE GADTs #-}
 {-# LANGUAGE InstanceSigs #-}
+{-# OPTIONS_GHC -Wno-name-shadowing #-}
 module Monads.WriterByTheBookSpec where
 
 import Test.Hspec
@@ -64,6 +65,20 @@ useTellNoDo =
   tell' (CommaSeparated "intermezzo") >>=
   \j -> writer' (j + 1, CommaSeparated "plus 1")
 
+useTell :: Writer' CommaSeparated Int
+useTell = do
+  x <- writer' (1, CommaSeparated "one")
+  _ <- tell' (CommaSeparated "intermezzo") x
+  let y = (\z -> writer' (z+1, CommaSeparated "plus 1")) x
+  y
+
+
+useTellWithReturn :: Writer' CommaSeparated Int
+useTellWithReturn = do
+  x <- writer' (1, CommaSeparated "one")
+  _ <- tell' (CommaSeparated "intermezzo") x
+  y <- (\z -> writer' (z+1, CommaSeparated "plus 1")) x
+  return y
 
 tell' :: w -> a -> Writer' w a
 tell' w a = writer' (a, w)
@@ -78,4 +93,10 @@ spec = do
     withDoNotation "Hey Joe!" `shouldBe` Writer' (4, ["Calculated the length", "Divided by 2"])
 
   it "uses tell" $ do
-    runWriter useTellNoDo `shouldBe` (2, CommaSeparated "one, intermezzo, plus 1")
+    runWriter useTellNoDo       `shouldBe` (2, CommaSeparated "one, intermezzo, plus 1")
+
+  it "uses tell with do notation" $ do
+    runWriter useTell           `shouldBe` (2, CommaSeparated "one, intermezzo, plus 1")
+
+  it "uses tell with do notation and an explicit return" $ do
+    runWriter useTellWithReturn `shouldBe` (2, CommaSeparated "one, intermezzo, plus 1, ")
