@@ -5,6 +5,7 @@ module Monads.WriterByTheBookSpec where
 
 import Test.Hspec
 import GHC.Float (int2Float)
+import GHC.IO.Encoding (setFileSystemEncoding)
 
 newtype Writer' w a where
   Writer' :: {runWriter :: (a, w)} -> Writer' w a
@@ -46,8 +47,6 @@ withDoNotation s = do
   l <- len s
   halve l
 
-
-
 data CommaSeparated where
   CommaSeparated :: String -> CommaSeparated
   deriving (Eq, Show)
@@ -55,6 +54,7 @@ data CommaSeparated where
 instance Semigroup CommaSeparated where
   CommaSeparated s <> CommaSeparated z = CommaSeparated (s <> ", " <> z)
 
+-- Can't be a Moinoid! I'm violating the Monoid rule
 instance Monoid CommaSeparated where
   mappend = (<>)
   mempty = CommaSeparated (mempty :: String)
@@ -100,3 +100,6 @@ spec = do
 
   it "uses tell with do notation and an explicit return" $ do
     runWriter useTellWithReturn `shouldBe` (2, CommaSeparated "one, intermezzo, plus 1, ")
+
+  it "combines CommaSeparated" $ do
+    CommaSeparated "ciao" <> CommaSeparated "mamma" `shouldBe` CommaSeparated "ciao, mamma"
