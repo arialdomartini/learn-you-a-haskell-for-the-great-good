@@ -5,6 +5,7 @@ import Test.Hspec
 import Control.Monad.Writer
 import Prelude hiding (gcd)
 import Data.List (intercalate)
+import DifferenceListSpec(DiffList, fromDiffList, toDiffList)
 
 f :: Writer [String] Int
 f =
@@ -46,6 +47,15 @@ gcd' n m = do
   gcd' m (n `mod` m)
 
 
+gcd'' :: Int -> Int -> Writer (DiffList String) Int
+gcd'' n 0 = do
+  tell $ toDiffList ["Finished with " <> show n]
+  return n
+gcd'' n m = do
+  tell $ toDiffList [show n ++ " `mod` " ++ show m]
+  gcd'' m (n `mod` m)
+
+
 spec :: Spec
 spec = do
   it "bind monadic functions" $ do
@@ -73,7 +83,13 @@ spec = do
     gcd 100 25 `shouldBe` 25
     gcd 100 15 `shouldBe` 5
 
-
-  it "calculates the greates common divisor, tracking the steps" $ do
+  it "calculates the greatest common divisor, tracking the steps" $ do
     fst (runWriter (gcd' 8 4)) `shouldBe` 4
     intercalate ", " (snd (runWriter (gcd' 12 5))) `shouldBe` "12 `mod` 5, 5 `mod` 2, 2 `mod` 1, Finished with 1"
+
+
+  it "calculates the greates common divisor tracking steps with DiffLists" $ do
+    let result = gcd'' 12 5
+        (_, l) = runWriter result
+        logs = fromDiffList l in
+      logs `shouldBe` ["12 `mod` 5", "5 `mod` 2", "2 `mod` 1", "Finished with 1"]
