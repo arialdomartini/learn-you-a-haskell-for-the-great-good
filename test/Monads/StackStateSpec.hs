@@ -1,5 +1,6 @@
 {-# OPTIONS_GHC -Wno-type-defaults #-}
 {-# OPTIONS_GHC -Wno-incomplete-uni-patterns #-}
+{-# OPTIONS_GHC -Wno-unused-do-bind #-}
 module Monads.StackStateSpec where
 
 import Test.Hspec ( shouldBe, it, Spec )
@@ -32,10 +33,18 @@ combined = state (\i ->
   let (_, s) = runState useStack i in
     runState anotherUseOfStack s)
 
+combinedDo :: State (Stack Int) Int
+combinedDo = do
+  _ <- useStack
+  anotherUseOfStack
+
 spec :: Spec
 spec = do
   it "use a stack with Reader" $ do
    runState useStack [] `shouldBe` (3, [2,1])
 
   it "combines 2 stateful computations" $ do
+    runState combined [] `shouldBe` (2, [1])
+
+  it "combines 2 stateful computations, using do notation" $ do
     runState combined [] `shouldBe` (2, [1])
