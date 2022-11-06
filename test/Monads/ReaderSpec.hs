@@ -1,6 +1,7 @@
 module Monads.ReaderSpec where
 
 import Test.Hspec
+import Control.Monad.Reader
 
 class Monad' m where
   return' ::  a -> m a
@@ -35,6 +36,20 @@ bound = do
   r' <- g r
   return r'
 
+op :: Int -> Int
+op = do
+  a <- (*2)     -- 10 * 2 = 20
+  b <- (+1)     -- 10 + 1 = 11
+  return (a + b)  -- 20 + 11 = 31
+
+opr :: Reader Int Int
+opr = do
+  i <- ask
+  let a = i * 2
+  let b = i +1
+  return (a + b)
+
+
 spec :: Spec
 spec = do
   it "binds 2 functions" $ do
@@ -45,3 +60,9 @@ spec = do
 
   it "binds 2 functions using the custom implementation" $ do
     ((f' "hey") >>>= g')("joe") `shouldBe` 15
+
+  it "uses functions as monads" $ do
+    op 10 `shouldBe` 31
+
+  it "uses functions as monads, using Reader" $ do
+    (runReader opr) 10 `shouldBe` 31
