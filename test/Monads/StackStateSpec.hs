@@ -47,4 +47,4 @@ spec = do
     runState combined [] `shouldBe` (2, [1])
 
   it "combines 2 stateful computations, using do notation" $ do
-    runState combined [] `shouldBe` (2, [1])
+    runState combinedDo [] `shouldBe` (2, [1])
