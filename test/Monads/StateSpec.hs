@@ -25,6 +25,17 @@ instance Applicative (State' s) where
                   (v, s'') = runState sv s' in
                 (f v, s''))
 
+instance Monad (State' s) where
+  return :: a -> State' s a
+  return = pure
+  (>>=) :: State' s a -> (a -> State' s b) -> State' s b
+  st >>= f =
+    State' (\s ->
+              let (v, s') = runState st s
+                  st' = f v
+                  (v'', s'') = runState st' s' in
+                (v'', s''))
+
 toString :: Float -> State' Int String
 toString n = State' (\count -> (show n, count+1))
 
@@ -33,6 +44,9 @@ fs = State' (\count -> ((++ "!"), count + 1))
 
 vs :: State' Int String
 vs = State' (\count -> ("Hey", count+1))
+
+screamAndCount :: String -> State' Int String
+screamAndCount s = State' (\count -> (s ++ "!!", count+1))
 
 spec :: Spec
 spec = do
@@ -45,3 +59,6 @@ spec = do
 
   it "has an instance of Applicative" $ do
     runState (fs <*> vs) 100 `shouldBe` ("Hey!", 102)
+
+  it "has an instance of Monad" $ do
+    runState (return "Hey" >>= screamAndCount) 100 `shouldBe` ("Hey!!", 101)
