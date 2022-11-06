@@ -21,7 +21,21 @@ useStack = do
     a <- pop'
     return a
 
+anotherUseOfStack :: State (Stack Int) Int
+anotherUseOfStack = do
+  push' 100
+  _ <- pop' --100
+  pop'      -- 2
+
+combined :: State (Stack Int) Int
+combined = state (\i ->
+  let (_, s) = runState useStack i in
+    runState anotherUseOfStack s)
+
 spec :: Spec
 spec = do
-  it "use a stack with Reader" $
+  it "use a stack with Reader" $ do
    runState useStack [] `shouldBe` (3, [2,1])
+
+  it "combines 2 stateful computations" $ do
+    runState combined [] `shouldBe` (2, [1])
