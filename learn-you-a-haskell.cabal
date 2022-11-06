@@ -125,6 +125,7 @@ test-suite spec
     DifferenceListSpec
     Monads.ReaderSpec
     Monads.StateSpec
+    Monads.StackStateSpec
 source-repository head
   type:     git
   location: https://github.com/githubuser/learn-you-a-haskell
