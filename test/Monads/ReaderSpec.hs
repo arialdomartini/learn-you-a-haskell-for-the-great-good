@@ -8,6 +8,7 @@ class Monad' m where
 
 instance Monad' ((->) a) where
   return' a = \_ -> a
+  -- f1 >>>= g2 = \a -> g1 (f1 a) a
   f1 >>>= g1 = \a ->
     let r = f1 a
         r' = g1 r in
