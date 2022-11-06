@@ -5,15 +5,13 @@ module Monads.StackStateSpec where
 import Test.Hspec ( shouldBe, it, Spec )
 import Control.Monad.State
 
-newtype Stack a = Stack [a] deriving (Eq, Show)
+type Stack a = [a]
 
 push' :: a -> State (Stack a) ()
-push' a = state (\s ->
-                let Stack xs = s in
-                   ((), Stack (a:xs) ))
+push' a = state (\xs -> ((), a:xs ))
 
 pop' :: State (Stack a) a
-pop' = state (\(Stack (x:xs)) -> (x, Stack xs))
+pop' = state (\(x:xs) -> (x, xs))
 
 useStack :: State (Stack Int) Int
 useStack = do
@@ -26,4 +24,4 @@ useStack = do
 spec :: Spec
 spec = do
   it "use a stack with Reader" $
-   runState useStack (Stack []) `shouldBe` (3, Stack [2,1])
+   runState useStack [] `shouldBe` (3, [2,1])
