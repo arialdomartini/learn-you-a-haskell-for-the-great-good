@@ -1,4 +1,5 @@
 {-# OPTIONS_GHC -Wno-type-defaults #-}
+{-# OPTIONS_GHC -Wno-incomplete-uni-patterns #-}
 module Monads.StackStateSpec where
 
 import Test.Hspec ( shouldBe, it, Spec )
@@ -12,9 +13,7 @@ push' a = state (\s ->
                    ((), Stack (a:xs) ))
 
 pop' :: State (Stack a) a
-pop' = state (\s ->
-                 let Stack (x:xs) = s in
-                   (x, Stack xs))
+pop' = state (\(Stack (x:xs)) -> (x, Stack xs))
 
 useStack :: State (Stack Int) Int
 useStack = do
