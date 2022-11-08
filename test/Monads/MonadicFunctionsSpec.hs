@@ -17,6 +17,11 @@ fA2 = liftA2 f
 fM2 :: Maybe Int -> Maybe Int -> Maybe Int
 fM2 = liftM2 f
 
+join' :: Monad m => m (m a) -> m a
+join' a = do
+  v <- a
+  v
+
 
 spec :: Spec
 spec = do
@@ -33,3 +38,9 @@ spec = do
     f 1 2 `shouldBe` 3
     fA2 (Just 1) (Just 2) `shouldBe` Just 3
     fM2 (Just 1) (Just 2) `shouldBe` Just 3
+
+  it "implements join" $ do
+    join (Just (Just 1)) `shouldBe` join' (Just (Just 1))
+    join (Just Nothing)  `shouldBe` join' (Just Nothing :: Maybe (Maybe Int))
+    join Nothing         `shouldBe` join' (Nothing :: Maybe (Maybe Int))
+    join [[1,2],[3,4]]   `shouldBe` join' [[1,2],[3,4]]
