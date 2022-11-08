@@ -22,6 +22,10 @@ join' a = do
   v <- a
   v
 
+join'' :: Monad m => m (m a) -> m a
+join'' mm =
+  mm >>= id
+
 
 spec :: Spec
 spec = do
@@ -44,3 +48,9 @@ spec = do
     join (Just Nothing)  `shouldBe` join' (Just Nothing :: Maybe (Maybe Int))
     join Nothing         `shouldBe` join' (Nothing :: Maybe (Maybe Int))
     join [[1,2],[3,4]]   `shouldBe` join' [[1,2],[3,4]]
+
+  it "implements join without do notation" $ do
+    join (Just (Just 1)) `shouldBe` join'' (Just (Just 1))
+    join (Just Nothing)  `shouldBe` join'' (Just Nothing :: Maybe (Maybe Int))
+    join Nothing         `shouldBe` join'' (Nothing :: Maybe (Maybe Int))
+    join [[1,2],[3,4]]   `shouldBe` join'' [[1,2],[3,4]]
