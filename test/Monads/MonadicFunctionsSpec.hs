@@ -34,6 +34,11 @@ oddM n =
   else writer (False, [(show n) ++ " is even"])
 
 
+ff :: Int -> Maybe Int
+ff n = return (n * 2)
+
+bind' :: Monad m => m a -> (a -> m b) -> m b
+bind' m f' = (join . fmap f') m
 
 spec :: Spec
 spec = do
@@ -66,3 +71,6 @@ spec = do
   it "filterM is filter for Monads" $ do
     filter odd [1,2,3,4] `shouldBe` [1,3]
     runWriter (filterM oddM [1,2,3,4]) `shouldBe` ([1,3], ["1 is odd", "2 is even", "3 is odd", "4 is even"])
+
+  it "bind is join . fmap" $ do
+    ((Just 3) >>= ff) `shouldBe` Just 6
