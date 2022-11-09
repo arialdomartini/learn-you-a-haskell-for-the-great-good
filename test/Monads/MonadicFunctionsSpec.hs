@@ -53,11 +53,11 @@ powerset :: [a] -> [[a]]
 powerset = filterM (const [True, False])
 
 foldM' :: (Foldable t, Monad m) => (b -> a -> m b) -> b -> t a -> m b
-foldM' f b foldable =
- foldl f' (return b) foldable where
-  f' b' a = do
+foldM' g b foldable =
+ foldl g' (return b) foldable where
+  g' b' a = do
     v <- b'
-    f v a
+    g v a
 
 spec :: Spec
 spec = do
@@ -105,3 +105,11 @@ spec = do
     -- foldM (b -> a -> m b) b (t a)
     foldM  (\i acc -> Just (i + acc)) 0 [1,2,3,4] `shouldBe` Just 10
     foldM' (\i acc -> Just (i + acc)) 0 [1,2,3,4] `shouldBe` Just 10
+
+  it "uses of foldM, sum numbers, but fail if any n > 9 " $ do
+    foldM (\i acc -> if i > 9 then Nothing else Just (i + acc)) 0 [1,2,3,4] `shouldBe` Just 10
+    foldM (\i acc -> if i > 9 then Nothing else Just (i + acc)) 0 [1,9,3,4] `shouldBe` Nothing
+
+  it "folds keepign logs" $ do
+    runWriter (foldM (\acc i -> writer (i+acc, ["+" ++ show i])) 0 [1,2,3])
+      `shouldBe` (6, ["+1", "+2", "+3"])
