@@ -27,6 +27,14 @@ join'' mm =
   mm >>= id
 
 
+oddM :: Int -> Writer [String] Bool
+oddM n =
+  if odd n
+  then writer (True, [(show n) ++ " is odd"])
+  else writer (False, [(show n) ++ " is even"])
+
+
+
 spec :: Spec
 spec = do
   it "liftM is fmap for Monads" $ do
@@ -54,3 +62,7 @@ spec = do
     join (Just Nothing)  `shouldBe` join'' (Just Nothing :: Maybe (Maybe Int))
     join Nothing         `shouldBe` join'' (Nothing :: Maybe (Maybe Int))
     join [[1,2],[3,4]]   `shouldBe` join'' [[1,2],[3,4]]
+
+  it "filterM is filter for Monads" $ do
+    filter odd [1,2,3,4] `shouldBe` [1,3]
+    runWriter (filterM oddM [1,2,3,4]) `shouldBe` ([1,3], ["1 is odd", "2 is even", "3 is odd", "4 is even"])
