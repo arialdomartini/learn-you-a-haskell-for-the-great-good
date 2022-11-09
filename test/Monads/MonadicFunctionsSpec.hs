@@ -52,6 +52,13 @@ filterM' f' (x:xs) = do
 powerset :: [a] -> [[a]]
 powerset = filterM (const [True, False])
 
+foldM' :: (Foldable t, Monad m) => (b -> a -> m b) -> b -> t a -> m b
+foldM' f b foldable =
+ foldl f' (return b) foldable where
+  f' b' a = do
+    v <- b'
+    f v a
+
 spec :: Spec
 spec = do
   it "liftM is fmap for Monads" $ do
@@ -93,3 +100,8 @@ spec = do
 
   it "calculates the powerset of a set" $ do
     powerset [1,2,3] `shouldBe` [[1,2,3],[1,2],[1,3],[1],[2,3],[2],[3],[]]
+
+  it "implements foldM" $ do
+    -- foldM (b -> a -> m b) b (t a)
+    foldM  (\i acc -> Just (i + acc)) 0 [1,2,3,4] `shouldBe` Just 10
+    foldM' (\i acc -> Just (i + acc)) 0 [1,2,3,4] `shouldBe` Just 10
