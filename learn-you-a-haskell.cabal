@@ -128,6 +128,7 @@ test-suite spec
     Monads.StackStateSpec
     Monads.RandomStateSpec
     Monads.MonadicFunctionsSpec
+    Monads.SafeRPNSpec
 source-repository head
   type:     git
   location: https://github.com/githubuser/learn-you-a-haskell
