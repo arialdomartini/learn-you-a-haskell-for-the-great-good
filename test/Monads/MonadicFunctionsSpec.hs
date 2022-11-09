@@ -49,6 +49,9 @@ filterM' f' (x:xs) = do
     then return (x : rest)
     else return rest
 
+powerset :: [a] -> [[a]]
+powerset = filterM (const [True, False])
+
 spec :: Spec
 spec = do
   it "liftM is fmap for Monads" $ do
@@ -87,3 +90,6 @@ spec = do
 
   it "implements filterM" $ do
     runWriter (filterM oddM [1,2,3,4]) `shouldBe` runWriter (filterM' oddM [1,2,3,4])
+
+  it "calculates the powerset of a set" $ do
+    powerset [1,2,3] `shouldBe` [[1,2,3],[1,2],[1,3],[1],[2,3],[2],[3],[]]
