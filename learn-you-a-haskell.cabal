@@ -131,6 +131,7 @@ test-suite spec
     Monads.SafeRPNSpec
     Monads.ComposingSpec
     Monads.ProbabilitySpec
+    TreeSpec
     ZipperSpec
 source-repository head
   type:     git
