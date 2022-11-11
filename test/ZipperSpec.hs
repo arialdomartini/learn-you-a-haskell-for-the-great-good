@@ -55,7 +55,7 @@ changeElement v' (R:ds) (Node v l r) =
 
 spec :: Spec
 spec = do
-  it "should modify W in X" $ do
+  it "should modify W in X using Pattern Matching" $ do
     let Node root l r = freeTree
         Node value l' r' = r
         Node _ l'' r'' = l'
