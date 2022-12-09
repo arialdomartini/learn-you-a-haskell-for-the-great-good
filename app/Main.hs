@@ -10,6 +10,11 @@ import GHC.Show (intToDigit)
 import System.Environment (getArgs)
 import qualified FastCopy as Fast(copyFile)
 
+import qualified Data.Map as Map
+import GHC.Base (join)
+import Data.List (intersperse, sortBy)
+
+
 choices :: Map.Map String ([String] -> IO ())
 choices = Map.fromList [
   ("help", printHelp),
@@ -19,6 +24,7 @@ choices = Map.fromList [
   ("read-input-with-getContents", readInputWithGetContents),
   ("only-short-lines", shortLines),
   ("read-a-file", readAFile),
+  ("stats", stats),
   ("copy-a-file", copyFile),
   ("fast-cp", Fast.copyFile),
   ("delete-line-from-file", deleteLine),
@@ -27,7 +33,11 @@ choices = Map.fromList [
 
 main :: IO ()
 main = do
-  print $ maximum [n | x <- [100..999], y <- [100..999], let n = x * y, show n == reverse (show n)]
+  args <- getArgs
+  if null args
+    then printHelp args
+    else do let (command : t) = args
+            dispatch command t
 
 dispatch :: String -> [String] -> IO ()
 dispatch k args = do
@@ -77,6 +87,33 @@ readAFile _ = do
     \h -> do
        content <- hGetContents h
        putStr content
+
+stats :: [a] -> IO ()
+stats _ = do
+  args <- getArgs
+  withFile (args!!1) ReadMode $
+    \h -> do
+       content <- hGetContents h
+       putStr $ join $ intersperse "\n" $ statistics content
+
+
+prettyPrint :: (String, Int) -> String
+prettyPrint (s, c) = s ++ ", " ++ show c
+
+statistics :: String -> [String]
+statistics = fmap prettyPrint .  sortBy va . Map.toList .  foldl countGrouped Map.empty . lines
+
+va :: (String, Int) -> (String, Int) -> Ordering
+va (_, c1) (_, c2) = compare c2 c1
+
+
+countGrouped :: Map.Map String Int -> String -> Map.Map String Int
+countGrouped acc s =
+  case Map.lookup s acc of
+    Just c  -> Map.insert s (c + 1) acc
+    Nothing -> Map.insert s 1 acc
+
+
 
 readInputWithGetContents :: [a] -> IO ()
 readInputWithGetContents _ = forever $ do
